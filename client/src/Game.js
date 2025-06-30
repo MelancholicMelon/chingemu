@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-export default function AddPost() {
-    const [Scores, setScores] = useState([]);
+export default function Game() {
+    const [scores, setScores] = useState([]);
     const [score, setScore] = useState('');
 
     const addScore = async (score) => {
@@ -33,7 +33,7 @@ export default function AddPost() {
     return (
         <div>
             <h2>Add Score</h2>
-            <input value={post} onChange={e => setScore(e.target.value)} placeholder="Score" />
+            <input value={score} onChange={e => setScore(e.target.value)} placeholder="Score" />
             <button onClick={() => addScore(score)}>add</button>
             <ul>{scores.map(p => 
                 <li key={p.id}>Score Id: {p.id}, Score: {p.title}, User Id: {p.userId}</li>)} 

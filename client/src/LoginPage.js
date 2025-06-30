@@ -17,7 +17,7 @@ export default function LoginPage() {
             const data = await res.json();
             localStorage.setItem("token", data.token);
             alert("Login success!");
-            navigate("posts/", { replace: true }); window.location.reload();
+            navigate("game/", { replace: true }); window.location.reload();
         } else {
             alert("Invalid credentials");
         }

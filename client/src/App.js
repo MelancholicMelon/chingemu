@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NavBar from "./NavBar";
-import PostsPage from "./PostsPage";
-import AddPost from "./AddPost";
+// import PostsPage from "./PostsPage";
+// import AddPost from "./AddPost";
+import ScorePage from "./ScorePage";
+import Game from "./Game";
 import LoginPage from "./LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -26,8 +28,8 @@ export default function App() {
             <NavBar nametag = {nametag}/>
             <Routes>
                 <Route path="/" element={<LoginPage/>}/>
-                <Route path="/posts" element={<ProtectedRoute><PostsPage/></ProtectedRoute>} />
-                <Route path="/add" element={<ProtectedRoute><AddPost/></ProtectedRoute>} />
+                <Route path="/leaderboard" element={<ProtectedRoute><ScorePage/></ProtectedRoute>} />
+                <Route path="/game" element={<ProtectedRoute><Game/></ProtectedRoute>} />
             </Routes>
         </Router>
     ); 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function ScoresPage() {
+export default function ScorePage() {
     const [scores, setScores] = useState([]);
     const [deleteId, setDeleteId] = useState(-1);
 
