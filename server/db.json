@@ -1,0 +1,36 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "Ritsumei",
+      "password": "0000"
+    },
+    {
+      "id": 2,
+      "username": "Taro",
+      "password": "1111"
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "title": "Hello from server",
+      "userId": 1
+    },
+    {
+      "id": 0,
+      "title": "hey",
+      "userId": 2
+    },
+    {
+      "id": 3,
+      "title": "yo wassup",
+      "userId": 2
+    },
+    {
+      "id": 4,
+      "title": "asdgasfg",
+      "userId": 2
+    }
+  ]
+}
