@@ -59,6 +59,55 @@ app.get("/posts/add", (req, res) => {
     });
 });
 
+app.get("/scores", (req, res) => {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) return res.status(401).json({ message: "No token provided"});
+    jwt.verify(token, SECRET, (err, user) => {
+        if (err) return res.status(403).json({ message: "Invalid token" });
+            const db = JSON.parse(fs.readFileSync("db.json", "utf-8"));
+            const scores = db.scores.filter(p => p.userId === user.id);
+            console.log(scores)
+            res.json(scores);
+    });
+});
+
+app.get("/scores/delete", (req, res) => {
+    const token = req.headers.authorization?.split(" ")[1];
+    const scoreid = parseInt(req.headers.scoreid);
+    if (!token) return res.status(401).json({ message: "No token provided"});
+    jwt.verify(token, SECRET, (err, user) => {
+        if (err) return res.status(403).json({ message: "Invalid token" });
+            const db = JSON.parse(fs.readFileSync("db.json", "utf-8"));
+            db.scores = db.scores.filter((s) => !(s.id === scoreid && s.userId === user.id));
+            console.log(scoreid, user.id)
+            fs.writeFileSync("db.json", JSON.stringify(db, null, 2));
+            res.json(db.scores.filter(s => s.userId === user.id));
+    });
+});
+
+app.get("/scores/add", (req, res) => {
+    const token = req.headers.authorization?.split(" ")[1];
+    const score = req.headers.score
+    if (!token) return res.status(401).json({ message: "No token provided"});
+    jwt.verify(token, SECRET, (err, user) => {
+        if (err) return res.status(403).json({ message: "Invalid token" });
+            const db = JSON.parse(fs.readFileSync("db.json", "utf-8"));
+            const scoreid = () => {
+                let i = 0;
+                while(true){
+                    if(db.scores.filter(p => p.id === i).length === 0){
+                        break; 
+                    } else { i+=1; }
+                }
+                return i;
+            }
+            db.scores.push({ "id": scoreid(), "title": score, "userId": user.id});
+            console.log(db.scores)
+            fs.writeFileSync("db.json", JSON.stringify(db, null, 2));
+            res.json(db.scores.filter(s => s.userId === user.id));
+    });
+});
+
 const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const SECRET = "mySecretKey";
