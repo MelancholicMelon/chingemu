@@ -4,6 +4,9 @@ import os
 import shutil
 
 def clear_folder(folder_path):
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+        return
     for filename in os.listdir(folder_path):
         file_path = os.path.join(folder_path, filename)
         try:
@@ -28,7 +31,8 @@ def savejs(binary_map, output_dir, min_size):
     print(f"Found {num_labels - 1} continents/islands.")
 
     cleaned_map = np.zeros_like(binary_map)
-    
+    continent_count = 1
+
     for i in range(1, num_labels):
         component = (labels == i)
         if np.sum(component.astype(int)) < min_size: continue
@@ -36,9 +40,9 @@ def savejs(binary_map, output_dir, min_size):
         cleaned_map[component] = 1
         component = component.astype(int)
 
-        filename = os.path.join(output_dir, f"continent{i}.js")
+        filename = os.path.join(output_dir, f"continent{continent_count}.js")
         with open(filename, 'w') as f:
-            f.write(f"export const continent{i} = [\n")
+            f.write(f"export const continent{continent_count} = [\n")
             for r, row in enumerate(component):
                 line = "  [" + ", ".join(str(val) for val in row) + "]"
                 if r != len(component) - 1:
@@ -46,14 +50,20 @@ def savejs(binary_map, output_dir, min_size):
                 line += "\n"
                 f.write(line)
             f.write("];\n")
+        continent_count+=1
     return cleaned_map
 
 
-path = "map/japan/"
-n = 100
+paths = [
+    "map/japan/",
+    "map/world/"
+]
+n = 500
 min_continent_size = n/20
-binary_map = image_to_binary_array(path+"img.jpg", n)
 
-clear_folder(path+"continents")
-binary_map = savejs(binary_map, path+"continents", min_continent_size)
-cv2.imwrite(path+"img_p.jpg", binary_map * 255)
+for path in paths:
+    binary_map = image_to_binary_array(path+"img.jpg", n)
+
+    clear_folder(path+"continents")
+    binary_map = savejs(binary_map, path+"continents", min_continent_size)
+    cv2.imwrite(path+"img_p.jpg", binary_map * 255)
