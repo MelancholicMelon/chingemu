@@ -1,43 +1,23 @@
 {
   "users": [
     {
-      "id": 1,
-      "username": "Ritsumei",
-      "password": "0000"
-    },
-    {
-      "id": 2,
-      "username": "Taro",
-      "password": "1111"
+      "id": 0,
+      "username": "admin",
+      "password": "admin"
     }
   ],
   "posts": [
     {
-      "id": 1,
-      "title": "Hello from server",
-      "userId": 1
-    },
-    {
       "id": 0,
-      "title": "hey",
-      "userId": 2
-    },
-    {
-      "id": 3,
-      "title": "yo wassup",
-      "userId": 2
-    },
-    {
-      "id": 4,
-      "title": "asdgasfg",
-      "userId": 2
+      "title": "Hello from server",
+      "userId": 0
     }
   ],
   "scores":[
     {
-      "id": 4,
+      "id": 0,
       "score": 1000000,
-      "userId": 2
+      "userId": 0
     }
   ]
 }
