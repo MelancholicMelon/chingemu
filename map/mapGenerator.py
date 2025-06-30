@@ -24,34 +24,45 @@ def image_to_binary_array(image_path, n):
     _, binary = cv2.threshold(gray, 127, 1, cv2.THRESH_BINARY)
     return 1- binary
 
-def savejs(binary_map, output_dir, min_size):
-    os.makedirs(output_dir, exist_ok=True)
-
+def savejs(binary_map, output_file, min_size):
     num_labels, labels = cv2.connectedComponents(binary_map.astype(np.uint8))
-    print(f"Found {num_labels - 1} continents/islands.")
+    print(f"Found {num_labels - 1} total components.")
 
+    continent_index = 1
     cleaned_map = np.zeros_like(binary_map)
-    continent_count = 1
+    names = []
 
-    for i in range(1, num_labels):
-        component = (labels == i)
-        if np.sum(component.astype(int)) < min_size: continue
+    with open(output_file, 'w') as f:
+        for i in range(1, num_labels):
+            component_mask = (labels == i)
+            pixel_count = np.sum(component_mask)
+            if pixel_count < min_size:
+                continue
 
-        cleaned_map[component] = 1
-        component = component.astype(int)
+            cleaned_map[component_mask] = 1
+            name = f"continent{continent_index}"
+            names.append(name)
 
-        filename = os.path.join(output_dir, f"continent{continent_count}.js")
-        with open(filename, 'w') as f:
-            f.write(f"export const continent{continent_count} = [\n")
-            for r, row in enumerate(component):
+            f.write(f"export const {name} = [\n")
+            for r, row in enumerate(component_mask.astype(int)):
                 line = "  [" + ", ".join(str(val) for val in row) + "]"
-                if r != len(component) - 1:
+                if r != len(component_mask) - 1:
                     line += ","
                 line += "\n"
                 f.write(line)
-            f.write("];\n")
-        continent_count+=1
+            f.write("];\n\n")
+            continent_index += 1
+
+        # Export combined list and map
+        list_line = "export const allContinents = [" + ", ".join(names) + "];\n"
+        map_line = "export const continentMap = {\n" + "".join([f"  {n},\n" for n in names]) + "};\n"
+
+        f.write(list_line)
+        f.write("\n")
+        f.write(map_line)
+
     return cleaned_map
+
 
 
 paths = [
@@ -63,7 +74,6 @@ min_continent_size = n/20
 
 for path in paths:
     binary_map = image_to_binary_array(path+"img.jpg", n)
-
     clear_folder(path+"continents")
-    binary_map = savejs(binary_map, path+"continents", min_continent_size)
+    binary_map = savejs(binary_map, path+"continents.js", min_continent_size)
     cv2.imwrite(path+"img_p.jpg", binary_map * 255)
