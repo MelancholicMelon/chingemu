@@ -32,9 +32,7 @@ export default function ScorePage() {
 
     return (
         <div>
-            <h2>Scores</h2>
-            <input value={deleteId} onChange={e => setDeleteId(e.target.value)} placeholder="Score ID to delete" />
-            <button onClick={() => deleteScore(deleteId)}>delete by score id</button>
+            <h2>LeaderBoard</h2>
             <ul>{scores.map(p => 
                 <li key={p.id}>User Id: {p.userId}, Score Id: {p.id}, Score: {p.title}</li>)} 
             </ul>

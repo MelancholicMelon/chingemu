@@ -1,10 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 export default function LoginPage() {
+    const [loginState, setLoginState] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if(token == null){
+          return
+        }
+        setLoginState(jwtDecode(token));
+    }, []);
 
     const login = async () => {
         const res = await
