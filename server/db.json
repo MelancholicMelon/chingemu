@@ -32,5 +32,12 @@
       "title": "asdgasfg",
       "userId": 2
     }
+  ],
+  "scores":[
+    {
+      "id": 4,
+      "score": 1000000,
+      "userId": 2
+    }
   ]
 }
