@@ -3,18 +3,17 @@
     {
       "id": 0,
       "name": "world",
-      "continents": {
-        "continent1": [],
-        "continent2": []
-      }
+      "continents": "/maps/world/continents.json"
     },
     {
       "id": 1,
       "name": "japan",
-      "continent": {
-        "continent1": [],
-        "continent2": []
-      }
+      "continents": "/maps/japan/continents.json"
+    },
+    {
+      "id": 1,
+      "name": "northAmerica",
+      "continents": "/maps/northAmerica/continents.json"
     } 
   ],
   "facilities":[

@@ -126,3 +126,11 @@ app.post("/login", (req, res) => {
         res.status(401).json({ message: "Invalid credentials" });
     }
 });
+
+
+const db = JSON.parse(fs.readFileSync("kernels.json", "utf-8"));
+const PATH = db.maps.filter((p) => {p.id == 0}).continents
+
+for (const [name, map] of Object.entries(continentMap)) {
+  console.log(`${name} has`, map);
+}
