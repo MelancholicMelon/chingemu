@@ -48,7 +48,7 @@ facilityMap = [
 policyActivate = [
     {
         "policy":p1,
-        "activate": Bool
+        "activate": Bool # activate or not
     },
     {
         "policy":p2,
