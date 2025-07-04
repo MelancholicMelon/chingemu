@@ -132,7 +132,7 @@ paths = [
     "maps/world/",
     "maps/northAmerica/"
 ]
-n = 500
+n = 50
 min_continent_size = n/10
 
 for path in paths:
