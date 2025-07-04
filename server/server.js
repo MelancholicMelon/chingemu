@@ -19,7 +19,6 @@ app.get("/posts", (req, res) => {
         if (err) return res.status(403).json({ message: "Invalid token" });
             const db = JSON.parse(fs.readFileSync("db.json", "utf-8"));
             const posts = db.posts.filter(p => p.userId === user.id);
-            console.log(posts)
             res.json(posts);
     });
 });
@@ -32,7 +31,6 @@ app.get("/posts/delete", (req, res) => {
         if (err) return res.status(403).json({ message: "Invalid token" });
             const db = JSON.parse(fs.readFileSync("db.json", "utf-8"));
             db.posts = db.posts.filter((p) => !(p.id === postid && p.userId === user.id));
-            console.log(postid, user.id)
             fs.writeFileSync("db.json", JSON.stringify(db, null, 2));
             res.json(db.posts.filter(p => p.userId === user.id));
     });
@@ -55,7 +53,6 @@ app.get("/posts/add", (req, res) => {
                 return i;
             }
             db.posts.push({ "id": postid(), "title": post, "userId": user.id});
-            console.log(db.posts)
             fs.writeFileSync("db.json", JSON.stringify(db, null, 2));
             res.json(db.posts.filter(p => p.userId === user.id));
     });
@@ -70,7 +67,6 @@ app.get("/scores", (req, res) => {
         if (err) return res.status(403).json({ message: "Invalid token" });
             const db = JSON.parse(fs.readFileSync("db.json", "utf-8"));
             const scores = db.scores.filter(p => p.userId === user.id);
-            console.log(scores)
             res.json(scores);
     });
 });
@@ -83,7 +79,6 @@ app.get("/scores/delete", (req, res) => {
         if (err) return res.status(403).json({ message: "Invalid token" });
             const db = JSON.parse(fs.readFileSync("db.json", "utf-8"));
             db.scores = db.scores.filter((s) => !(s.id === scoreid && s.userId === user.id));
-            console.log(scoreid, user.id)
             fs.writeFileSync("db.json", JSON.stringify(db, null, 2));
             res.json(db.scores.filter(s => s.userId === user.id));
     });
@@ -106,7 +101,6 @@ app.get("/scores/add", (req, res) => {
                 return i;
             }
             db.scores.push({ "id": scoreid(), "title": score, "userId": user.id});
-            console.log(db.scores)
             fs.writeFileSync("db.json", JSON.stringify(db, null, 2));
             res.json(db.scores.filter(s => s.userId === user.id));
     });
@@ -122,7 +116,6 @@ app.get("/kernel/maps", (req, res) => {
         if (err) return res.status(403).json({ message: "Invalid token" });
             const db = JSON.parse(fs.readFileSync("kernels.json", "utf-8"));
             const map = db.maps.filter(m => m.id === id)[0]; // const map = db.maps.filter(m => m.name === name);
-            console.log(map.continents)
             const kernels = JSON.parse(fs.readFileSync(map.continents, "utf-8"));
             res.json(kernels);
     });

@@ -130,13 +130,22 @@ def savejson(map, binary, output_file, min_size):
 paths = [
     "maps/japan/",
     "maps/world/",
-    "maps/northAmerica/"
+    "maps/northAmerica/",
+    "maps/indonesia/",
+    "maps/shigoku/"
 ]
-n = 50
+eP = [
+    [2, 5],
+    [2, 5],
+    [2, 5],
+    [2, 5],
+    [5, 6],
+]
+n = 80
 min_continent_size = n/10
 
-for path in paths:
-    map, binary, eroded = processImage(path+"img.jpg", n, 2, 5)
+for i, path in enumerate(paths):
+    map, binary, eroded = processImage(path+"img.jpg", n, eP[i][0], eP[i][1])
     map = savejs(map, binary, path+"continents.js", min_continent_size)
     map = savejson(map, binary, path+"continents.json", min_continent_size)
     cv2.imwrite(path+"img_p.jpg", map)

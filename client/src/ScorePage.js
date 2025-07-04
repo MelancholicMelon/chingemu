@@ -23,7 +23,7 @@ export default function ScorePage() {
         const token = localStorage.getItem("token");
         fetch("http://localhost:3001/scores", {
             headers: {
-                Authorization: "Bearer " + token,
+                Authorization: "Bearer " + token
             }
         })
         .then(res => res.json())
