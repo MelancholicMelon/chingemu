@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Simulation from "./Simulation";
 
 export default function Game() {
     const [scores, setScores] = useState([]);
@@ -32,12 +33,7 @@ export default function Game() {
 
     return (
         <div>
-            <h2>Add Score</h2>
-            <input value={score} onChange={e => setScore(e.target.value)} placeholder="Score" />
-            <button onClick={() => addScore(score)}>add</button>
-            <ul>{scores.map(p => 
-                <li key={p.id}>Score Id: {p.id}, Score: {p.title}, User Id: {p.userId}</li>)} 
-            </ul>
+            <Simulation/>
         </div>
     );
 }

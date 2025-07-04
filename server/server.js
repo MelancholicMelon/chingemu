@@ -10,6 +10,8 @@ app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });
 
+// Posts management: not needed for now
+
 app.get("/posts", (req, res) => {
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) return res.status(401).json({ message: "No token provided"});
@@ -58,6 +60,8 @@ app.get("/posts/add", (req, res) => {
             res.json(db.posts.filter(p => p.userId === user.id));
     });
 });
+
+// Score management: Get Score, Post Score, Delete Score by user id.
 
 app.get("/scores", (req, res) => {
     const token = req.headers.authorization?.split(" ")[1];
@@ -108,11 +112,49 @@ app.get("/scores/add", (req, res) => {
     });
 });
 
+// Kernel Management
+
+app.get("/kernel/maps", (req, res) => {
+    const token = req.headers.authorization?.split(" ")[1];
+    const id = parseInt(req.headers.id); //const name = parseInt(req.headers.name);
+    if (!token) return res.status(401).json({ message: "No token provided"});
+    jwt.verify(token, SECRET, (err, user) => {
+        if (err) return res.status(403).json({ message: "Invalid token" });
+            const db = JSON.parse(fs.readFileSync("kernels.json", "utf-8"));
+            const map = db.maps.filter(m => m.id === id)[0]; // const map = db.maps.filter(m => m.name === name);
+            console.log(map.continents)
+            const kernels = JSON.parse(fs.readFileSync(map.continents, "utf-8"));
+            res.json(kernels);
+    });
+});
+
+app.get("/kernel/facilities", (req, res) => {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) return res.status(401).json({ message: "No token provided"});
+    jwt.verify(token, SECRET, (err, user) => {
+        if (err) return res.status(403).json({ message: "Invalid token" });
+            const db = JSON.parse(fs.readFileSync("kernels.json", "utf-8"));
+            res.json(db.facilities);
+    });
+});
+
+app.get("/kernel/policies", (req, res) => {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) return res.status(401).json({ message: "No token provided"});
+    jwt.verify(token, SECRET, (err, user) => {
+        if (err) return res.status(403).json({ message: "Invalid token" });
+            const db = JSON.parse(fs.readFileSync("kernels.json", "utf-8"));
+            res.json(db.policies);
+    });
+});
+
 const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const SECRET = "mySecretKey";
 
 app.use(bodyParser.json());
+
+// User Management: Login, Signup, Delete Account
 
 app.post("/login", (req, res) => {
     const { username, password } = req.body;
@@ -128,9 +170,3 @@ app.post("/login", (req, res) => {
 });
 
 
-const db = JSON.parse(fs.readFileSync("kernels.json", "utf-8"));
-const PATH = db.maps.filter((p) => {p.id == 0}).continents
-
-for (const [name, map] of Object.entries(continentMap)) {
-  console.log(`${name} has`, map);
-}

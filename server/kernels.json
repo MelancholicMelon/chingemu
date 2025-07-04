@@ -1,19 +1,19 @@
 {
-  "WorldMaps": [
+  "maps":[
     {
       "id": 0,
       "name": "world",
-      "continents": "/maps/world/continents.json"
+      "continents": "maps/world/continents.json"
     },
     {
       "id": 1,
       "name": "japan",
-      "continents": "/maps/japan/continents.json"
+      "continents": "maps/japan/continents.json"
     },
     {
       "id": 1,
       "name": "northAmerica",
-      "continents": "/maps/northAmerica/continents.json"
+      "continents": "maps/northAmerica/continents.json"
     } 
   ],
   "facilities":[
