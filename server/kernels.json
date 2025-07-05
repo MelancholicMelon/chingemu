@@ -1,19 +1,24 @@
 {
-  "WorldMaps": [
+  "maps":[
     {
       "id": 0,
       "name": "world",
-      "continents": "/maps/world/continents.json"
+      "continents": "maps/world/continents.json"
     },
     {
       "id": 1,
       "name": "japan",
-      "continents": "/maps/japan/continents.json"
+      "continents": "maps/japan/continents.json"
     },
     {
-      "id": 1,
+      "id": 2,
       "name": "northAmerica",
-      "continents": "/maps/northAmerica/continents.json"
+      "continents": "maps/northAmerica/continents.json"
+    },
+    {
+      "id": 3,
+      "name": "indonesia",
+      "continents": "maps/indonesia/continents.json"
     } 
   ],
   "facilities":[
@@ -22,7 +27,8 @@
       "name": "factory",
       "cost": 0,
       "maxImpact": 1,
-      "stddev": 1
+      "stddev": 1,
+      "revenue": 1
     },
     {
       "id": 1,
@@ -30,7 +36,8 @@
       "cost": 0,
       "effectTime": 1,
       "maxImpact": 1,
-      "stddev": 1
+      "stddev": 1,
+      "revenue": 1
     },
     {
       "id": 2,
@@ -38,7 +45,8 @@
       "cost": 0,
       "effectTime": 1,
       "maxImpact": 1,
-      "stddev": 1
+      "stddev": 1,
+      "revenue": 1
     }
   ],
   "policies":[

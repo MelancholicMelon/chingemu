@@ -34,7 +34,7 @@ export default function ScorePage() {
         <div>
             <h2>LeaderBoard</h2>
             <ul>{scores.map(p => 
-                <li key={p.id}>User Id: {p.userId}, Score Id: {p.id}, Score: {p.title}</li>)} 
+                <li key={p.id}>User Id: {p.userId}, Score Id: {p.id}, Score: {p.score}</li>)} 
             </ul>
         </div>
     );
