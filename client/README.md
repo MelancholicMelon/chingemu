@@ -26,6 +26,7 @@ enum Params         {"sd", "maxImpact"}                     # Parameters modifie
 facilitySpecification = [
     {
         "id"         : FacilityTypes,
+        "size"       : int[2]  # Size of the facility in (x, y) direction
         "pdf"        : PDFTypes,
         "maxImpact"  : int
         "description": str     # Explain the characteristics of this facility. (so everyone understand how this faciltiy works)
@@ -66,7 +67,6 @@ facilityCoordinate = [
     {
         "id"        : FacilityTypes,
         "coordinate": int[2],  # Placement coordinates (x, y)
-        "size"      : int[2]   # Size of the facility in (x, y) direction
     },
     ... (continue until the last)
 ]
@@ -93,5 +93,3 @@ policyActivate = [
 ```
 
 ## State Initialization Flow
-
-(not yet)
