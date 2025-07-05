@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
-let CANVAS_WIDTH = 400;
-const CANVAS_HEIGHT = 500;
+let CANVAS_WIDTH = 700;
+const CANVAS_HEIGHT = 700;
 const TICK_INTERVAL = 1000;
 
 export default function Simulation() {
@@ -10,36 +10,35 @@ export default function Simulation() {
   const canvasRef = useRef(null);
   const intervalRef = useRef(null);
   const [scores, setScores] = useState([]);
-  const [score, setScore] = useState('');
   const [resources, setResources] = useState({
     map: null,
     facilities: [],
     policies: [],
   });
-    
-  const addScore = async (score) => {
-      const token = localStorage.getItem("token");
-      fetch("http://localhost:3001/scores/add", {
-          headers: {
-              Authorization: "Bearer " + token,
-              score: score
-          }
-      })
-      .then(res => res.json())
-      .then(data => setScores(data));
+  const [placedObjects, setPlacedObjects] = useState([]); // stores placed objects
+  const [cellSize, setCellSize] = useState({ width: 0, height: 0 });
 
-      console.log(scores)
+  const addScore = async (score) => {
+    const token = localStorage.getItem("token");
+    fetch("http://localhost:3001/scores/add", {
+      headers: {
+        Authorization: "Bearer " + token,
+        score: score,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setScores(data));
   };
 
   useEffect(() => {
-      const token = localStorage.getItem("token");
-      fetch("http://localhost:3001/scores", {
-          headers: {
-              Authorization: "Bearer " + token
-          }
-      })
-      .then(res => res.json())
-      .then(data => setScores(data));
+    const token = localStorage.getItem("token");
+    fetch("http://localhost:3001/scores", {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setScores(data));
   }, []);
 
   // Fetch resources (maps, facilities, policies)
@@ -48,7 +47,7 @@ export default function Simulation() {
       const token = localStorage.getItem("token");
       const headers = {
         Authorization: "Bearer " + token,
-        id: 1, // Assuming map ID 0
+        id: 1,
       };
 
       try {
@@ -83,12 +82,32 @@ export default function Simulation() {
 
     const runTick = () => {
       setTickCount((prev) => prev + 1);
-      console.log("Tick", tickCount + 1);
     };
 
     intervalRef.current = setInterval(runTick, TICK_INTERVAL);
     return () => clearInterval(intervalRef.current);
   }, [resources, isRunning]);
+
+  // Canvas click → grid cell
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || !resources.map) return;
+
+    const handleClick = (event) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+
+      const col = Math.floor(x / cellSize.width);
+      const row = Math.floor(y / cellSize.height);
+
+      console.log(`Clicked cell: (${col}, ${row})`);
+      setPlacedObjects((prev) => [...prev, { x: col, y: row, type: "object" }]);
+    };
+
+    canvas.addEventListener("click", handleClick);
+    return () => canvas.removeEventListener("click", handleClick);
+  }, [cellSize, resources.map]);
 
   // Draw kernel map on canvas
   useEffect(() => {
@@ -99,36 +118,52 @@ export default function Simulation() {
     const rows = kernels[0].kernel.length;
     const cols = kernels[0].kernel[0].length;
 
-
-    const cellHeight = CANVAS_HEIGHT / rows;
-    const cellWidth = cellHeight 
+    const cellHeight = Math.floor(CANVAS_HEIGHT / rows);
+    const cellWidth = cellHeight;
     CANVAS_WIDTH = cellWidth * cols;
 
+    canvasRef.current.width = CANVAS_WIDTH;
+    canvasRef.current.height = CANVAS_HEIGHT;
+
+    setCellSize({ width: cellWidth, height: cellHeight });
+
+    // Clear background
     ctx.fillStyle = `rgb(31, 189, 237)`;
     ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-    for(let i = 0;i<kernels.length;i++){
-        const kernel = kernels[i].kernel
-        for (let y = 0; y < rows; y++) {
-            for (let x = 0; x < cols; x++) {
-                const value = kernel[y][x]
-                if(value !== 0){
-                    ctx.fillStyle = `rgb(${(value-205)*-1}, ${255}, ${(value-255)*-1})`;
-                    ctx.fillRect(
-                      Math.floor(x * cellWidth),
-                      Math.floor(y * cellHeight),
-                      Math.ceil(cellWidth),
-                      Math.ceil(cellHeight)
-                    );
-                }
-            }
+    // Draw each continent
+    for (let i = 0; i < kernels.length; i++) {
+      const kernel = kernels[i].kernel;
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          const value = kernel[y][x];
+          if (value !== 0) {
+            ctx.fillStyle = `rgb(${(value - 205) * -1}, 255, ${(value - 255) * -1})`;
+            ctx.fillRect(
+              Math.floor(x * cellWidth),
+              Math.floor(y * cellHeight),
+              Math.ceil(cellWidth),
+              Math.ceil(cellHeight)
+            );
+          }
         }
+      }
     }
-  }, [resources.map]);
+
+    // Draw placed objects
+    for (const obj of placedObjects) {
+      ctx.fillStyle = "red"; // could be based on obj.type
+      ctx.fillRect(
+        obj.x * cellWidth,
+        obj.y * cellHeight,
+        Math.ceil(cellWidth),
+        Math.ceil(cellHeight)
+      );
+    }
+  }, [resources.map, placedObjects]);
 
   return (
     <div>
-      <h3>Simulation</h3>
       <p>Tick: {tickCount}</p>
       <button onClick={() => setIsRunning((prev) => !prev)}>
         {isRunning ? "Pause" : "Resume"}
@@ -138,7 +173,7 @@ export default function Simulation() {
         ref={canvasRef}
         width={CANVAS_WIDTH}
         height={CANVAS_HEIGHT}
-        style={{ border: "0px solid black", marginTop: "1rem" }}
+        style={{ display: "block", marginTop: "1rem", cursor: "pointer" }}
       />
 
       <pre style={{ fontSize: "0.75rem", maxHeight: "300px", overflow: "auto" }}>
