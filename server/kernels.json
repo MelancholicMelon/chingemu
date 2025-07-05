@@ -19,6 +19,11 @@
       "id": 3,
       "name": "indonesia",
       "continents": "maps/indonesia/continents.json"
+    },
+    {
+      "id": 4,
+      "name": "shikoku",
+      "continents": "maps/shikoku/continents.json"
     } 
   ],
   "facilities":[
