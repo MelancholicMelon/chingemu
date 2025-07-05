@@ -18,7 +18,27 @@ def clear_folder(folder_path):
         except Exception as e:
             print(f"Failed to delete {file_path}. Reason: {e}")
 
-def processImage(image_path, n, erosion_kernel_size=3, erosion_iterations=3):
+def edge_aware_erosion(image, iternation, erosion_value=0):
+    """
+    Erodes only the edge pixels of non-zero regions (grayscale).
+    A pixel is eroded (set to erosion_value) if it has any zero-valued neighbor.
+    """
+    if iternation == 0: return image
+    # Create a mask of non-zero pixels
+    mask = (image > 0).astype(np.uint8)
+
+    # Dilate the zero region to find neighbors of 0
+    zero_neighbors = cv2.dilate((image == 0).astype(np.uint8), np.ones((3, 3), np.uint8), iterations=1)
+
+    # Edge pixels are non-zero pixels that touch zero
+    edge_mask = np.logical_and(mask, zero_neighbors)
+
+    # Apply erosion: set edge pixels to erosion_value
+    eroded_image = image.copy()
+    eroded_image[edge_mask] = erosion_value
+    return edge_aware_erosion(eroded_image, iternation-1)
+
+def processImage(image_path, n, erosion_iterations=3):
     # Read image and convert to grayscale
     img = cv2.imread(image_path)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY).astype(np.int32)
@@ -35,10 +55,12 @@ def processImage(image_path, n, erosion_kernel_size=3, erosion_iterations=3):
 
     # Convert to uint8 for morphological operations
     gray = gray.astype(np.uint8)
+    gray = cv2.GaussianBlur(gray, (3, 3), 0)
 
     # Apply morphological erosion (corrosion)
-    kernel = np.ones((erosion_kernel_size, erosion_kernel_size), np.uint8)
-    eroded = cv2.erode(gray, kernel, iterations=erosion_iterations)
+    #kernel = np.ones((erosion_kernel_size, erosion_kernel_size), np.uint8)
+    eroded = edge_aware_erosion(gray, erosion_iterations)
+    #eroded = cv2.erode(gray, kernel, iterations=erosion_iterations)
 
     # Resize after erosion (preserve outline shape better)
     aspect_ratio = img.shape[1] / img.shape[0]
@@ -128,24 +150,18 @@ def savejson(map, binary, output_file, min_size):
     return cleaned_grayscale
 
 paths = [
-    "maps/japan/",
     "maps/world/",
+    "maps/japan/",
     "maps/northAmerica/",
     "maps/indonesia/",
-    "maps/shigoku/"
+    "maps/shikoku/"
 ]
-eP = [
-    [2, 5],
-    [2, 5],
-    [2, 5],
-    [2, 5],
-    [5, 6],
-]
-n = 80
+eP = [10, 10, 10, 10, 12]
+n = 150
 min_continent_size = n/10
 
 for i, path in enumerate(paths):
-    map, binary, eroded = processImage(path+"img.jpg", n, eP[i][0], eP[i][1])
+    map, binary, eroded = processImage(path+"img.jpg", n, eP[i])
     map = savejs(map, binary, path+"continents.js", min_continent_size)
     map = savejson(map, binary, path+"continents.json", min_continent_size)
     cv2.imwrite(path+"img_p.jpg", map)
