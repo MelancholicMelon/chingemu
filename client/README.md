@@ -83,7 +83,7 @@ PolicySpecification = [
 ]
 
 # Describe whether each policy is currently activated
-policyActivate = [
+policyActivation = [
     {
         "id"      : PolicyTypes,
         "activate": Bool  # True if activated, otherwise False
@@ -93,3 +93,50 @@ policyActivate = [
 ```
 
 ## State Initialization Flow
+
+## Server Defines
+
+- `n_k`
+- `n_c`
+- `n_f`
+- `ObjectTypes`
+- `Continents`
+- `FacilityTypes`
+- `PDFTypes`
+- `PolicyTypes`
+- `Params`
+- `facilitySpecification`
+- `ContinentLocation`
+- `ObjectLocation`
+- `greennessMap`
+- `PolicySpecification`
+
+please create a getter for each variable
+
+- `getKernelSize()` → `n_k`
+- `getNumContinents()` → `n_c`
+- `getNumFacilityTypes()` → `n_f`
+- `getObjectTypes()` → `ObjectTypes`
+- `getContinents()` → `Continents`
+- `getFacilityTypes()` → `FacilityTypes`
+- `getPdfTypes()` → `PDFTypes`
+- `getPolicyTypes()` → `PolicyTypes`
+- `getModifiableParams()` → `Params`
+- `getFacilitySpecification()` → `facilitySpecification`
+- `getContinentLocation()` → `ContinentLocation`
+- `getObjectLocation()` → `ObjectLocation`
+- `getGreennessMap()` → `greennessMap`
+- `getPolicySpecification()` → `PolicySpecification`
+
+please create a function that updates greenness
+
+- `setGreennessMap(gm: greennessMap, fc: facilityCoordinate, pa: policyActivation)` → `(no return)`
+
+---
+
+## Client Defines
+
+- `facilityCoordinate`
+- `policyActivation`
+
+Once you call `setGreennessMap`, use `getGreennessMap` to get the updated values.
