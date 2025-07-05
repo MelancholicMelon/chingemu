@@ -13,7 +13,7 @@ User states follow the structure of the class examples.
 ```
 n_k: int  # World (kernel) size
 n_c: int  # Number of continents
-n_f: int  # Number of facilities
+n_f: int  # Number of facility types
 
 enum ObjectTypes    {"ocean"}                               # Names of objects other than continents
 enum Continents     {"c1", "c2", "c3", "c4", ..., "cn_c"}   # Names of continents
@@ -23,7 +23,7 @@ enum PolicyTypes    {"p1", "p2", "p3", "p4", ..., "pn_p"}   # Names of policies
 enum Params         {"sd", "maxImpact"}                     # Parameters modified by policies
 
 # Define the properties of each facility
-facilityTypes = [
+facilitySpecification = [
     {
         "id"         : FacilityTypes,
         "pdf"        : PDFTypes,
