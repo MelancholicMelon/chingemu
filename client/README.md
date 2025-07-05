@@ -2,62 +2,96 @@
 
 data strucre in client
 
--status for game status
+Client-side Data Structure
+
+States are initialized as empty in the client and later set with values returned from backend functions.
+
+Below are the data types shared between server and cient
+
+User states follow the structure of the class examples.
 
 ```
-kernelSize        : n_k
-Number of islands : n_i
-Number of facility: n_f
-falicityTypes     : str[f1,f2,f3,f4...fn_f]
-policyTypes       : str[p1,p2,p3,p4...pn_p]
+n_k: int  # World (kernel) size
+n_c: int  # Number of continents
+n_f: int  # Number of facilities
 
+enum ObjectTypes    {"ocean"}                               # Names of objects other than continents
+enum Continents     {"c1", "c2", "c3", "c4", ..., "cn_c"}   # Names of continents
+enum FacilityTypes  {"f1", "f2", "f3", "f4", ..., "fn_f"}   # Names of facility types
+enum PDFTypes       {"normal"}                              # Types of PDFs
+enum PolicyTypes    {"p1", "p2", "p3", "p4", ..., "pn_p"}   # Names of policies
+enum Params         {"sd", "maxImpact"}                     # Parameters modified by policies
 
+# Define the properties of each facility
+facilityTypes = [
+    {
+        "id"         : FacilityTypes,
+        "pdf"        : PDFTypes,
+        "maxImpact"  : int
+        "description": str     # Explain the characteristics of this facility. (so everyone understand how this faciltiy works)
+    },
+    ... (continue until the last)
+]
+
+# Describe the presence of continents in the 2D game grid (n_k × n_k)
+ContinentLocation = [
+    {
+        "id"  : Continents,
+        "loc" : Bool[n_k][n_k]  # True where the continent exists, otherwise False
+    },
+    ... (continue until the last)
+]
+
+# Describe the presence of each object in the 2D game grid (n_k × n_k)
+ObjectLocation = [
+    {
+        "id"  : ObjectTypes,
+        "loc" : Bool[n_k][n_k]  # True where the continent exists, otherwise False
+    },
+    ... (continue until the last)
+]
+
+# Describe greenness values for each cell (0–255), with NaN outside the continent area
 greennessMap = [
     {
-        "islandType": island_1,
-        "greenness" : int[n_k][n_k]{0..255}
+        "id"        : Continents,
+        "greenness" : int[n_k][n_k] {0..255 or NaN}
     },
+    ... (continue until the last)
+]
+
+# Describe facility placement in the game world
+# Instead of using a 2D array, define position and size, and let the server compute the impact
+facilityCoordinate = [
     {
-        "islandType": island_2,
-        "greenness" : int[n_k][n_k]{0..255}
+        "id"        : FacilityTypes,
+        "coordinate": int[2],  # Placement coordinates (x, y)
+        "size"      : int[2]   # Size of the facility in (x, y) direction
     },
-    ...
-    {
-        "islandType": island_n_i,
-        "greenness" : int[n_k][n_k]{0..255}
-    }
+    ... (continue until the last)
 ]
 
 
-facilityMap = [
+# Describe how each policy modifies the impact of each facility
+PolicySpecification = [
     {
-        "fType"     :f1
-        "coordinate":int[2] # placement coordinate (x,y)
-        "size"      :int[2] # facility placement size for (x,y)
+        "id"            : PolicyTypes,
+        "parameter"     : Params,
+        "coefficient"   : int
     },
-    {
-        "fType":f2
-        "coordinate": int[2]
-    }
-    {
-        "fType":f1
-        "coordinate": int[2]
-    }
+    ... (continue until the last)
 ]
 
+# Describe whether each policy is currently activated
 policyActivate = [
     {
-        "policy":p1,
-        "activate": Bool # activate or not
+        "id"      : PolicyTypes,
+        "activate": Bool  # True if activated, otherwise False
     },
-    {
-        "policy":p2,
-        "activate": Bool
-    },
-    ...
-    {
-        "policy":pn_p,
-        "activate": Bool
-    }
+    ... (continue until the last)
 ]
 ```
+
+## State Initialization Flow
+
+(not yet)
