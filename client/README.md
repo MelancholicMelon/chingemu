@@ -159,3 +159,5 @@ A function that calculates the score
 A function that checks if the game has ended and finishes the game if it has ended.
 
 - `checkGameStates(y: year)` → updates `gameStates`
+
+### profit is not specified yet
