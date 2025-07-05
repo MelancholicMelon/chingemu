@@ -113,6 +113,7 @@ policyActivation = [
 - `PDFTypes`
 - `PolicyTypes`
 - `Params`
+- `colorSpecification`
 - `facilitySpecification`
 - `ContinentLocation`
 - `ObjectLocation`
@@ -126,6 +127,7 @@ please create getters for each variable except greennessMap
 - `getNumFacilityTypes()` → `n_f`
 - `getObjectTypes()` → `ObjectTypes`
 - `getContinents()` → `Continents`
+- `getColorSpecification()` → `colorSpecification`
 - `getFacilityTypes()` → `FacilityTypes`
 - `getPdfTypes()` → `PDFTypes`
 - `getPolicyTypes()` → `PolicyTypes`
