@@ -1,13 +1,5 @@
 ### Deforestation Simulation Game
 
-data strucre in client
-
-Client-side Data Structure
-
-States are initialized as empty in the client and later set with values returned from backend functions.
-
-Below are the data types shared between server and cient
-
 User states follow the structure of the class examples.
 
 ```
