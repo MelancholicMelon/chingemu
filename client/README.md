@@ -11,9 +11,16 @@ Below are the data types shared between server and cient
 User states follow the structure of the class examples.
 
 ```
-n_k: int  # World (kernel) size
-n_c: int  # Number of continents
-n_f: int  # Number of facility types
+n_k   : int > 0         # World (kernel) size
+n_c   : int > 0         # Number of continents
+n_f   : int > 0         # Number of facility types
+
+budget: int > 0         # Budget amount
+profit: int             # Profit amount
+score : int             # score of the game
+year  : int >= 0        # how many years (turns) passed in the game
+
+gameStates: Bool        # True=> the game is in progress, False=> the game has ended
 
 enum ObjectTypes    {"ocean"}                               # Names of objects other than continents
 enum Continents     {"c1", "c2", "c3", "c4", ..., "cn_c"}   # Names of continents
@@ -26,7 +33,7 @@ enum Params         {"sd", "maxImpact"}                     # Parameters modifie
 facilitySpecification = [
     {
         "id"         : FacilityTypes,
-        "size"       : int[2]  # Size of the facility in (x, y) direction
+        "size"       : int[2] (odd numbers only)  # Size of the facility in (x, y) direction
         "pdf"        : PDFTypes,
         "maxImpact"  : int
         "description": str     # Explain the characteristics of this facility. (so everyone understand how this faciltiy works)
@@ -128,15 +135,35 @@ please create a getter for each variable
 - `getGreennessMap()` → `greennessMap`
 - `getPolicySpecification()` → `PolicySpecification`
 
-please create a function that updates greenness
+A function that updates greenness
 
 - `setGreennessMap(gm: greennessMap, fc: facilityCoordinate, pa: policyActivation)` → `(no return)`
+
+A function that records the score
+
+- `recordStore(s: score)`
 
 ---
 
 ## Client Defines
 
+- `budget`
+- `profit`
+- `score`
+- `year`
 - `facilityCoordinate`
 - `policyActivation`
 
 Once you call `setGreennessMap`, use `getGreennessMap` to get the updated values.
+
+A function that checks whether the input coordinates for facility placement are valid. If the coordinates are invalid, it shows an error message and ask the user to enter new coordinates until a valid input is given. The facility coordinate represents the center of its area.
+
+- `validateInput(fs: facilitySpecification, fc: facilityCoordinate)` → `(no return)`
+
+A function that calculates the score
+
+- `calculateScore(b: budget, gm: greennessMap, pa: policyActivation, fc: facilityCoordinate)` → updates `score`
+
+A function that checks if the game has ended and finishes the game if it has ended.
+
+- `checkGameStates(y: year)` → updates `gameStates`
