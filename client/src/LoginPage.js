@@ -1,37 +1,89 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
+export default function LoginPage({ setUser }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isRegistering, setIsRegistering] = useState(false);
+  const navigate = useNavigate();
+  const baseUrl = process.env.REACT_APP_API_URL;
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        navigate("/game", { replace: true });
+    }
+        }, [navigate]);
 
-export default function LoginPage() {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const navigate = useNavigate();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
 
-    const login = async () => {
-        const res = await
-        fetch("http://localhost:3001/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json"},
-            body: JSON.stringify({ username, password }),
-        });
-        if (res.ok) {
-            const data = await res.json();
-            localStorage.setItem("token", data.token);
-            alert("Login success!");
-            navigate("game/", { replace: true }); window.location.reload();
-        } else {
-            alert("Invalid credentials");
-        }
-    };
+    try {
+      const endpoint = isRegistering ? "register" : "login";
 
-    return (
-        <div>
-            <h2>Login</h2>
-            <form onSubmit={(e) => { e.preventDefault(); login(); }}>
-                <input value={username} onChange={e => setUsername(e.target.value)} placeholder="Username"/>
-                <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password"/>
-                <button type="submit">Log In</button>
-            </form>
-        </div>
+      const res = await fetch(`${baseUrl}/${endpoint}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
 
-    );
+      if (!res.ok) {
+        const message = await res.text();
+        throw new Error(message || "Authentication failed");
+      }
+
+      const data = await res.json();
+
+      // Save token & decode user info
+      localStorage.setItem("token", data.token);
+      const decodedUser = jwtDecode(data.token);
+      setUser(decodedUser);
+
+      // Redirect to protected page
+      navigate("/game", { replace: true });
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  return (
+    <div>
+      <h2>{isRegistering ? "Register" : "Login"}</h2>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      <form onSubmit={handleSubmit}>
+        <input
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+
+        <button type="submit">{isRegistering ? "Create Account" : "Log In"}</button>
+      </form>
+
+      <p>
+        {isRegistering
+          ? "Already have an account?"
+          : "Don't have an account?"}{" "}
+        <button
+          onClick={() => {
+            setError("");
+            setIsRegistering(!isRegistering);
+          }}
+        >
+          {isRegistering ? "Login here" : "Register here"}
+        </button>
+      </p>
+    </div>
+  );
 }

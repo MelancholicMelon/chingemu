@@ -6,9 +6,12 @@ import ScorePage from "./ScorePage";
 import Game from "./Game";
 import LoginPage from "./LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
+//For testing http://localhost:3000/scoretest
+import ScoreTestPage from "./ScoreTestPage";
 
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
+
 
 export default function App() {
     const [user, setUser] = useState(null);
@@ -27,9 +30,10 @@ export default function App() {
         <Router>
             <NavBar nametag = {nametag}/>
             <Routes>
-                <Route path="/" element={<LoginPage/>}/>
+                <Route path="/" element={<LoginPage setUser={setUser} />} />
                 <Route path="/leaderboard" element={<ProtectedRoute><ScorePage/></ProtectedRoute>} />
                 <Route path="/game" element={<ProtectedRoute><Game/></ProtectedRoute>} />
+                <Route path="/scoretest" element={<ProtectedRoute><ScoreTestPage /></ProtectedRoute>} />
             </Routes>
         </Router>
     ); 

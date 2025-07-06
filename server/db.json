@@ -3,17 +3,28 @@
     {
       "id": 0,
       "username": "admin",
-      "password": "admin"
-    }
-  ],
-  "posts": [
+      "password": "admin",
+      "highScoreId": 1
+    },
     {
-      "id": 0,
-      "title": "Hello from server",
-      "userId": 0
+      "id": 1751815731846,
+      "username": "user2",
+      "password": "1234",
+      "highScoreId": 2
+    },
+    {
+      "id": 1751822549334,
+      "username": "test1",
+      "password": "1234"
+    },
+    {
+      "id": 1751822797286,
+      "username": "testuser1",
+      "password": "1234",
+      "highScoreId": 1751823066369
     }
   ],
-  "scores":[
+  "scores": [
     {
       "id": 0,
       "score": 1000000,
@@ -21,8 +32,66 @@
     },
     {
       "id": 1,
+      "score": 999999,
+      "userId": 0,
+      "finalBudget": 400,
+      "finalAvgGreenness": 85.3
+    },
+    {
+      "id": 2,
+      "score": 3000,
+      "userId": 1751815731846,
+      "finalBudget": 600,
+      "finalAvgGreenness": 90.1
+    },
+    {
+      "id": 1751823060493,
+      "score": 1000,
+      "userId": 1751822797286,
+      "finalBudget": 500,
+      "finalAvgGreenness": 80
+    },
+    {
+      "id": 1751823062336,
+      "score": 1000,
+      "userId": 1751822797286,
+      "finalBudget": 500,
+      "finalAvgGreenness": 80
+    },
+    {
+      "id": 1751823062773,
+      "score": 1000,
+      "userId": 1751822797286,
+      "finalBudget": 500,
+      "finalAvgGreenness": 80
+    },
+    {
+      "id": 1751823062925,
+      "score": 1000,
+      "userId": 1751822797286,
+      "finalBudget": 500,
+      "finalAvgGreenness": 80
+    },
+    {
+      "id": 1751823063245,
+      "score": 1000,
+      "userId": 1751822797286,
+      "finalBudget": 500,
+      "finalAvgGreenness": 80
+    },
+    {
+      "id": 1751823063400,
+      "score": 1000,
+      "userId": 1751822797286,
+      "finalBudget": 500,
+      "finalAvgGreenness": 80
+    },
+    {
+      "id": 1751823066369,
       "score": 1000000,
-      "userId": 0
+      "userId": 1751822797286,
+      "finalBudget": 500,
+      "finalAvgGreenness": 80
     }
   ]
 }

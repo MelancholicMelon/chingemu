@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 export default function AddPost() {
     const [posts, setPosts] = useState([]);
     const [post, setPost] = useState('');
-
+    const baseUrl = process.env.REACT_APP_API_URL;
     const addPost = async (post) => {
         const token = localStorage.getItem("token");
-        fetch("http://localhost:3001/posts/add", {
+        fetch(`${baseUrl}/posts/add`, {
             headers: {
                 Authorization: "Bearer " + token,
                 post: post
@@ -21,7 +21,7 @@ export default function AddPost() {
 
     useEffect(() => {
         const token = localStorage.getItem("token");
-        fetch("http://localhost:3001/posts", {
+        fetch(`${baseUrl}/posts`, {
             headers: {
                 Authorization: "Bearer " + token
             }

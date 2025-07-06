@@ -17,10 +17,11 @@ export default function Simulation() {
   });
   const [placedObjects, setPlacedObjects] = useState([]); // stores placed objects
   const [cellSize, setCellSize] = useState({ width: 0, height: 0 });
+  const baseUrl = process.env.REACT_APP_API_URL;
 
   const addScore = async (score) => {
     const token = localStorage.getItem("token");
-    fetch("http://localhost:3001/scores/add", {
+    fetch(`${baseUrl}/scores/add`, {
       headers: {
         Authorization: "Bearer " + token,
         score: score,
@@ -32,7 +33,7 @@ export default function Simulation() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    fetch("http://localhost:3001/scores", {
+    fetch(`${baseUrl}/scores`, {
       headers: {
         Authorization: "Bearer " + token,
       },
@@ -51,9 +52,9 @@ export default function Simulation() {
       };
 
       try {
-        const mapRes = await fetch("http://localhost:3001/kernel/maps", { headers });
-        const facilitiesRes = await fetch("http://localhost:3001/kernel/facilities", { headers });
-        const policiesRes = await fetch("http://localhost:3001/kernel/policies", { headers });
+        const mapRes = await fetch(`${baseUrl}/kernel/maps`, { headers });
+        const facilitiesRes = await fetch(`${baseUrl}/kernel/facilities`, { headers });
+        const policiesRes = await fetch(`${baseUrl}/kernel/policies`, { headers });
 
         if (!mapRes.ok || !facilitiesRes.ok || !policiesRes.ok) {
           throw new Error("Resource loading failed.");
