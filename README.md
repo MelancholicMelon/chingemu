@@ -14,12 +14,21 @@ year  : int >= 0        # how many years (turns) passed in the game
 
 gameStates: Bool        # True=> the game is in progress, False=> the game has ended
 
-enum ObjectTypes    {"ocean"}                               # Names of objects other than continents
-enum Continents     {"c1", "c2", "c3", "c4", ..., "cn_c"}   # Names of continents
-enum FacilityTypes  {"f1", "f2", "f3", "f4", ..., "fn_f"}   # Names of facility types
-enum PDFTypes       {"normal"}                              # Types of PDFs
-enum PolicyTypes    {"p1", "p2", "p3", "p4", ..., "pn_p"}   # Names of policies
-enum Params         {"sd", "maxImpact"}                     # Parameters modified by policies
+enum ObjectTypes        { "continent", "facility", "ocean" }               # Types of objects
+enum Continents         { "c1", "c2", "c3", "c4", ..., "cn_c" }            # Names of continents
+enum FacilityTypes      { "f1", "f2", "f3", "f4", ..., "fn_f" }            # Types of facilities
+enum PDFTypes           { "normal" }                                       # Types of PDFs
+enum PolicyTypes        { "p1", "p2", "p3", "p4", ..., "pn_p" }            # Policy names
+enum Params             { "sd", "maxImpact" }                              # Parameters affected by policies
+
+
+colorSpecification = [
+    {
+        "id": ObjectTypes \ {"continent"}, # objects excluding continent
+        "color": hex
+    }
+    ... (continue until the last)
+]
 
 # Define the properties of each facility
 facilitySpecification = [
@@ -45,7 +54,7 @@ ContinentLocation = [
 # Describe the presence of each object in the 2D game grid (n_k × n_k)
 ObjectLocation = [
     {
-        "id"  : ObjectTypes,
+        "id"  : ObjectTypes \ {"continent", "facility"},  # objects excluding continent and facility
         "loc" : Bool[n_k][n_k]  # True where the continent exists, otherwise False
     },
     ... (continue until the last)
@@ -104,19 +113,21 @@ policyActivation = [
 - `PDFTypes`
 - `PolicyTypes`
 - `Params`
+- `colorSpecification`
 - `facilitySpecification`
 - `ContinentLocation`
 - `ObjectLocation`
 - `greennessMap`
 - `PolicySpecification`
 
-please create a getter for each variable
+please create getters for each variable except greennessMap
 
 - `getKernelSize()` → `n_k`
 - `getNumContinents()` → `n_c`
 - `getNumFacilityTypes()` → `n_f`
 - `getObjectTypes()` → `ObjectTypes`
 - `getContinents()` → `Continents`
+- `getColorSpecification()` → `colorSpecification`
 - `getFacilityTypes()` → `FacilityTypes`
 - `getPdfTypes()` → `PDFTypes`
 - `getPolicyTypes()` → `PolicyTypes`
@@ -124,12 +135,11 @@ please create a getter for each variable
 - `getFacilitySpecification()` → `facilitySpecification`
 - `getContinentLocation()` → `ContinentLocation`
 - `getObjectLocation()` → `ObjectLocation`
-- `getGreennessMap()` → `greennessMap`
 - `getPolicySpecification()` → `PolicySpecification`
 
-A function that updates greenness
+A function that give the initial state of the greennessMap
 
-- `setGreennessMap(gm: greennessMap, fc: facilityCoordinate, pa: policyActivation)` → `(no return)`
+- `initializeGreennessMap()` → `greennessMap`
 
 A function that records the score
 
@@ -146,15 +156,19 @@ A function that records the score
 - `facilityCoordinate`
 - `policyActivation`
 
-Once you call `setGreennessMap`, use `getGreennessMap` to get the updated values.
+A function that updates greenness (implemented by backend people at a client side file)
+gm_set: setGreennessMap is a setter of useState.
+
+- `setGreennessMap(gm: greennessMap, gm_set: setGreennessMap, fc: facilityCoordinate, pa: policyActivation)` → `(no return)`
 
 A function that checks whether the input coordinates for facility placement are valid. If the coordinates are invalid, it shows an error message and ask the user to enter new coordinates until a valid input is given. The facility coordinate represents the center of its area.
 
 - `validateInput(fs: facilitySpecification, fc: facilityCoordinate)` → `(no return)`
 
-A function that calculates the score
+A function that calculate and set the score
+s_set: setScore is a setter of useState
 
-- `calculateScore(b: budget, gm: greennessMap, pa: policyActivation, fc: facilityCoordinate)` → updates `score`
+- `calculateScore(b: budget, gm: greennessMap, pa: policyActivation, fc: facilityCoordinate, s_set: setScore)` → `(no return)`
 
 A function that checks if the game has ended and finishes the game if it has ended.
 
