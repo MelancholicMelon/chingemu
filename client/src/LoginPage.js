@@ -2,8 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 export default function LoginPage({ setUser }) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("admin");
+  const [password, setPassword] = useState("admin");
   const [error, setError] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
   const navigate = useNavigate();

@@ -18,25 +18,29 @@ def clear_folder(folder_path):
         except Exception as e:
             print(f"Failed to delete {file_path}. Reason: {e}")
 
-def edge_aware_erosion(image, iternation, erosion_value=0):
-    """
-    Erodes only the edge pixels of non-zero regions (grayscale).
-    A pixel is eroded (set to erosion_value) if it has any zero-valued neighbor.
-    """
-    if iternation == 0: return image
-    # Create a mask of non-zero pixels
+def edge_aware_erosion(image, iteration, erosion_value=0, max_neighbors=6):
+    if iteration == 0:
+        return image
+
     mask = (image > 0).astype(np.uint8)
 
-    # Dilate the zero region to find neighbors of 0
+    # Find pixels adjacent to zero pixels (edge pixels)
     zero_neighbors = cv2.dilate((image == 0).astype(np.uint8), np.ones((3, 3), np.uint8), iterations=1)
+    edge_mask = np.logical_and(mask == 1, zero_neighbors == 1)
 
-    # Edge pixels are non-zero pixels that touch zero
-    edge_mask = np.logical_and(mask, zero_neighbors)
+    # Count non-zero neighbors for each pixel (including self)
+    kernel = np.ones((3, 3), dtype=np.uint8)
+    neighbor_count = cv2.filter2D(mask, -1, kernel)
+    neighbor_count -= mask  # subtract self count to get neighbors only
 
-    # Apply erosion: set edge pixels to erosion_value
+    # Select edge pixels with ≤ max_neighbors non-zero neighbors
+    to_erode = np.logical_and(edge_mask, neighbor_count <= max_neighbors)
+
     eroded_image = image.copy()
-    eroded_image[edge_mask] = erosion_value
-    return edge_aware_erosion(eroded_image, iternation-1)
+    eroded_image[to_erode] = erosion_value
+
+    return edge_aware_erosion(eroded_image, iteration - 1, erosion_value, max_neighbors)
+
 
 def processImage(image_path, n, erosion_iterations=3):
     # Read image and convert to grayscale
@@ -55,7 +59,6 @@ def processImage(image_path, n, erosion_iterations=3):
 
     # Convert to uint8 for morphological operations
     gray = gray.astype(np.uint8)
-    gray = cv2.GaussianBlur(gray, (3, 3), 0)
 
     # Apply morphological erosion (corrosion)
     #kernel = np.ones((erosion_kernel_size, erosion_kernel_size), np.uint8)
@@ -149,19 +152,18 @@ def savejson(map, binary, output_file, min_size):
     print(f"Saved {continent_index - 1} continents to {output_file}")
     return cleaned_grayscale
 
-paths = [
-    "maps/world/",
-    "maps/japan/",
-    "maps/northAmerica/",
-    "maps/indonesia/",
-    "maps/shikoku/"
-]
-eP = [10, 10, 10, 10, 12]
+paths = {
+    "maps/world/": 3,
+    "maps/japan/": 5,
+    "maps/northAmerica/": 5,
+    "maps/indonesia/": 5,
+    "maps/shikoku/": 5
+}
 n = 150
 min_continent_size = n/10
 
-for i, path in enumerate(paths):
-    map, binary, eroded = processImage(path+"img.jpg", n, eP[i])
+for path, eP in paths.items():
+    map, binary, eroded = processImage(path+"img.jpg", n, eP)
     map = savejs(map, binary, path+"continents.js", min_continent_size)
     map = savejson(map, binary, path+"continents.json", min_continent_size)
     cv2.imwrite(path+"img_p.jpg", map)

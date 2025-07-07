@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
+import Simulation from './Simulation'
 
 let CANVAS_WIDTH = 700;
 const CANVAS_HEIGHT = 700;
 const TICK_INTERVAL = 1000;
 
-export default function Simulation() {
+export default function Game() {
   const [tickCount, setTickCount] = useState(0);
   const [isRunning, setIsRunning] = useState(true);
   const canvasRef = useRef(null);

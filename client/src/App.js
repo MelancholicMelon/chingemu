@@ -3,7 +3,8 @@ import NavBar from "./NavBar";
 // import PostsPage from "./PostsPage";
 // import AddPost from "./AddPost";
 import ScorePage from "./ScorePage";
-import Game from "./Game";
+//import Game from "./Game";
+import Game from "./GameAlias";
 import LoginPage from "./LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
 //For testing http://localhost:3000/scoretest
