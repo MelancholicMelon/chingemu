@@ -34,12 +34,7 @@ export default class SimulationEngine {
     const facilitiesData = await facilitiesRes.json();
     const policiesData = await policiesRes.json();
 
-    let k = []
-    for(let i = 0;i<mapData.length;i++){
-      k.push(mapData[i].kernel)
-    }
-
-    this.kernel = k
+    this.kernel = mapData
     this.facilities = facilitiesData;
     this.policies = policiesData;
     this.budget = budget;
@@ -59,10 +54,7 @@ export default class SimulationEngine {
   }
 
   validateInput(coordinate, objectId) {
-    const { x, y } = coordinate;
-    const occupied = this.facilities.some(f => f.x === x && f.y === y);
-    if (occupied) return false;
-    this.facilities.push({ x, y, id: objectId });
+    console.log(coordinate, objectId)
     return true;
   }
 

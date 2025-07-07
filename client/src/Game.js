@@ -11,6 +11,7 @@ export default function Game() {
   const canvasRef = useRef(null);
   const intervalRef = useRef(null);
   const [scores, setScores] = useState([]);
+  const [selectObject, setSelectObject] = useState('')
   const [resources, setResources] = useState({
     map: null,
     facilities: [],
@@ -68,16 +69,16 @@ export default function Game() {
   }, []);
 
   const handleCellClick = (col, row) => {
-    const success = sim.validateInput({ x: col, y: row }, "object");
+    const success = sim.validateInput({ x: col, y: row }, selectObject);
     if (success) {
-      setPlacedObjects((prev) => [...prev, { x: col, y: row, type: "object" }]);
+      setPlacedObjects((prev) => [...prev, { x: col, y: row, type: selectObject }]);
     }
   };
 
   return (
     <div style={{ display: "flex", height: `calc(100vh - var(--navbar-height, 50px))`, padding: 10 }}>
       {/* Left: Canvas */}
-      <div style={{ flex: 1, marginRight: 10 }}>
+      <div style={{ flex: 1, marginRight: 15, marginLeft: 15 }}>
         <Render
           canvasRef={canvasRef}
           map={sim.getGreennessMap()}

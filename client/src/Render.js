@@ -13,9 +13,10 @@ export default function Render({
   useEffect(() => {
     if (!canvasRef.current || !map) return;
 
+
     const ctx = canvasRef.current.getContext("2d");
-    const rows = map[0].length;
-    const cols = map[0][0].length;
+    const rows = map[0].kernel.length;
+    const cols = map[0].kernel[0].length;
 
     const cellHeight = Math.floor(canvasHeight / rows);
     const cellWidth = cellHeight;
@@ -30,9 +31,10 @@ export default function Render({
     ctx.fillStyle = `rgb(31, 189, 237)`;
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
+
     let kernel
     for(let i = 0;i<map.length;i++){
-        kernel = map[i]
+        kernel = map[i].kernel
         for (let y = 0; y < rows; y++) {
             for (let x = 0; x < cols; x++) {
                 const value = kernel[y][x];
