@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import Simulation from "./Simulation";
-import Render from "./Render";
+import Simulation from "../utils/Simulation";
+import MapRender from "./subView/MapRender";
 
 const sim = new Simulation();
 const TICK_INTERVAL = 1000;
@@ -90,7 +90,7 @@ export default function Game() {
       }}>
       {/* Left: Canvas */}
       <div style={{ flex: 1, marginRight: 15, marginLeft: 15 }}>
-        <Render
+        <MapRender
           canvasRef={canvasRef}
           map={sim.getGreennessMap()}
           placedObjects={placedObjects}

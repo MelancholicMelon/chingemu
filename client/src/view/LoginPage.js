@@ -11,9 +11,9 @@ export default function LoginPage({ setUser }) {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-        navigate("/game", { replace: true });
+      navigate("/game", { replace: true });
     }
-        }, [navigate]);
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,19 +68,18 @@ export default function LoginPage({ setUser }) {
           required
         />
 
-        <button type="submit">{isRegistering ? "Create Account" : "Log In"}</button>
+        <button type="submit">
+          {isRegistering ? "Create Account" : "Log In"}
+        </button>
       </form>
 
       <p>
-        {isRegistering
-          ? "Already have an account?"
-          : "Don't have an account?"}{" "}
+        {isRegistering ? "Already have an account?" : "Don't have an account?"}{" "}
         <button
           onClick={() => {
             setError("");
             setIsRegistering(!isRegistering);
-          }}
-        >
+          }}>
           {isRegistering ? "Login here" : "Register here"}
         </button>
       </p>

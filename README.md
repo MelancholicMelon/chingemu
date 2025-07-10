@@ -213,12 +213,12 @@ A function that records the score
 
 - client team
 
-initilization stage
+initilization stage (see the previous section)
 
 - define variables to be defined in client
 - define and initialize all variables by calling getters.
 
-In rendering, (depending on your UI design)
+In rendering
 
 - please put a button for starting new game.
 

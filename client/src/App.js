@@ -1,13 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import NavBar from "./view/NavBar";
+import NavBar from "./view/subView/NavBar";
 // import PostsPage from "./PostsPage";
 // import AddPost from "./AddPost";
-import ScorePage from "./ScorePage";
+import LeaderBoard from "./view/LeaderBoard";
 import Game from "./view/Game";
-import LoginPage from "./LoginPage";
+import LoginPage from "./view/LoginPage";
 import ProtectedRoute from "./utils/ProtectedRoute";
 //For testing http://localhost:3000/scoretest
-import ScoreTestPage from "./ScoreTestPage";
+import ScoreTestPage from "./utils/ScoreTestPage";
 
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
@@ -36,7 +36,7 @@ export default function App() {
           path="/leaderboard"
           element={
             <ProtectedRoute>
-              <ScorePage />
+              <LeaderBoard />
             </ProtectedRoute>
           }
         />
