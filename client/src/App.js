@@ -11,30 +11,52 @@ import ScoreTestPage from "./ScoreTestPage";
 
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
-
+import "./App.css";
 
 export default function App() {
-    const [user, setUser] = useState(null);
-    const nametag = !user ? "Not Logged In" : `ID: ${user.id} Username: ${user.username}`;
+  const [user, setUser] = useState(null);
+  const nametag = !user
+    ? "Not Logged In"
+    : `ID: ${user.id} Username: ${user.username}`;
 
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-        if(token == null){
-          return
-        }
-        setUser(jwtDecode(token));
-    }, []);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token == null) {
+      return;
+    }
+    setUser(jwtDecode(token));
+  }, []);
 
-    
-    return (
-        <Router>
-            <NavBar nametag = {nametag}/>
-            <Routes>
-                <Route path="/" element={<LoginPage setUser={setUser} />} />
-                <Route path="/leaderboard" element={<ProtectedRoute><ScorePage/></ProtectedRoute>} />
-                <Route path="/game" element={<ProtectedRoute><Game/></ProtectedRoute>} />
-                <Route path="/scoretest" element={<ProtectedRoute><ScoreTestPage /></ProtectedRoute>} />
-            </Routes>
-        </Router>
-    ); 
+  return (
+    <Router>
+      <NavBar nametag={nametag} />
+      <Routes>
+        <Route path="/" element={<LoginPage setUser={setUser} />} />
+        <Route
+          path="/leaderboard"
+          element={
+            <ProtectedRoute>
+              <ScorePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/game"
+          element={
+            <ProtectedRoute>
+              <Game />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/scoretest"
+          element={
+            <ProtectedRoute>
+              <ScoreTestPage />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </Router>
+  );
 }
