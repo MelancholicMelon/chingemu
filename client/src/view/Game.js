@@ -11,7 +11,7 @@ export default function Game() {
   const canvasRef = useRef(null);
   const intervalRef = useRef(null);
   const [scores, setScores] = useState([]);
-  const [selectObject, setSelectObject] = useState('')
+  const [selectObject, setSelectObject] = useState("");
   const [resources, setResources] = useState({
     map: null,
     facilities: [],
@@ -30,7 +30,10 @@ export default function Game() {
 
     const init = async () => {
       try {
-        const { map, facilities, policies } = await sim.initialize(baseUrl, token);
+        const { map, facilities, policies } = await sim.initialize(
+          baseUrl,
+          token
+        );
         setResources({ map, facilities, policies });
       } catch (err) {
         console.error("Failed to initialize simulation:", err);
@@ -71,12 +74,20 @@ export default function Game() {
   const handleCellClick = (col, row) => {
     const success = sim.validateInput({ x: col, y: row }, selectObject);
     if (success) {
-      setPlacedObjects((prev) => [...prev, { x: col, y: row, type: selectObject }]);
+      setPlacedObjects((prev) => [
+        ...prev,
+        { x: col, y: row, type: selectObject },
+      ]);
     }
   };
 
   return (
-    <div style={{ display: "flex", height: `calc(100vh - var(--navbar-height, 50px))`, padding: 10 }}>
+    <div
+      style={{
+        display: "flex",
+        height: `calc(100vh - var(--navbar-height, 50px))`,
+        padding: 10,
+      }}>
       {/* Left: Canvas */}
       <div style={{ flex: 1, marginRight: 15, marginLeft: 15 }}>
         <Render
@@ -98,8 +109,7 @@ export default function Game() {
           flexDirection: "column",
           gap: 10,
           overflowY: "auto",
-        }}
-      >
+        }}>
         <p>Year: {tickCount}</p>
         <button onClick={() => setIsRunning((prev) => !prev)}>
           {isRunning ? "Pause" : "Resume"}
@@ -114,8 +124,7 @@ export default function Game() {
             padding: 10,
             borderRadius: 4,
             border: "1px solid #ccc",
-          }}
-        >
+          }}>
           {JSON.stringify(resources.facilities, null, 2)}
         </pre>
 

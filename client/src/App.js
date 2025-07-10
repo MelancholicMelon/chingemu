@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import NavBar from "./NavBar";
+import NavBar from "./view/NavBar";
 // import PostsPage from "./PostsPage";
 // import AddPost from "./AddPost";
 import ScorePage from "./ScorePage";
-import Game from "./Game";
+import Game from "./view/Game";
 import LoginPage from "./LoginPage";
-import ProtectedRoute from "./ProtectedRoute";
+import ProtectedRoute from "./utils/ProtectedRoute";
 //For testing http://localhost:3000/scoretest
 import ScoreTestPage from "./ScoreTestPage";
 
