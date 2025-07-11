@@ -4,7 +4,7 @@
 
 1. explain what key variables exist
 2. what client and server defines
-3. What exactly each person will do.
+3. What exactly each person will do
 
 ### Note
 

@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const fs = require("fs");
 const os = require("os");
-require('dotenv').config();
+require("dotenv").config();
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -47,17 +47,16 @@ app.get("/user/highscore", (req, res) => {
   if (!user) return res.status(401).json({ message: "Unauthorized" });
 
   const db = readDB();
-  const currentUser = db.users.find(u => u.id === user.id);
+  const currentUser = db.users.find((u) => u.id === user.id);
   if (!currentUser || currentUser.highScoreId === undefined) {
     return res.json({ score: 0, scoreId: null });
   }
 
-  const score = db.scores.find(s => s.id === currentUser.highScoreId);
+  const score = db.scores.find((s) => s.id === currentUser.highScoreId);
   if (!score) return res.json({ score: 0, scoreId: null });
 
   res.json({ ...score, scoreId: score.id });
 });
-
 
 //Score add, kinda redundant. need to merge later.
 app.post("/scores/add", (req, res) => {
@@ -65,7 +64,8 @@ app.post("/scores/add", (req, res) => {
   if (!user) return res.status(401).json({ message: "Unauthorized" });
 
   const { score, finalBudget, finalAvgGreenness } = req.body;
-  if (score === undefined) return res.status(400).json({ message: "Score is required" });
+  if (score === undefined)
+    return res.status(400).json({ message: "Score is required" });
 
   const db = readDB();
 
@@ -74,13 +74,15 @@ app.post("/scores/add", (req, res) => {
     score,
     userId: user.id,
     finalBudget,
-    finalAvgGreenness
+    finalAvgGreenness,
   };
   db.scores.push(newScore);
 
-  const currentUser = db.users.find(u => u.id === user.id);
+  const currentUser = db.users.find((u) => u.id === user.id);
 
-  const currentHighScore = db.scores.find(s => s.id === currentUser.highScoreId);
+  const currentHighScore = db.scores.find(
+    (s) => s.id === currentUser.highScoreId
+  );
   const isNewHigh = !currentHighScore || score > currentHighScore.score;
 
   if (isNewHigh) {
@@ -102,7 +104,6 @@ app.get("/scores/leaderboard", (req, res) => {
   res.json(sliced);
 });
 
-
 app.listen(PORT, () => {
   const localIp = getLocalIp();
   console.log(`Server running at:`);
@@ -110,138 +111,91 @@ app.listen(PORT, () => {
   console.log(` - http://${localIp}:${PORT}  (LAN IP)`);
 });
 
-
-
-
-// Posts management: not needed for now
-
-app.get("/posts", (req, res) => {
-    const token = req.headers.authorization?.split(" ")[1];
-    if (!token) return res.status(401).json({ message: "No token provided"});
-    jwt.verify(token, SECRET, (err, user) => {
-        if (err) return res.status(403).json({ message: "Invalid token" });
-            const db = JSON.parse(fs.readFileSync("db.json", "utf-8"));
-            const posts = db.posts.filter(p => p.userId === user.id);
-            res.json(posts);
-    });
-});
-
-app.get("/posts/delete", (req, res) => {
-    const token = req.headers.authorization?.split(" ")[1];
-    const postid = parseInt(req.headers.postid);
-    if (!token) return res.status(401).json({ message: "No token provided"});
-    jwt.verify(token, SECRET, (err, user) => {
-        if (err) return res.status(403).json({ message: "Invalid token" });
-            const db = JSON.parse(fs.readFileSync("db.json", "utf-8"));
-            db.posts = db.posts.filter((p) => !(p.id === postid && p.userId === user.id));
-            fs.writeFileSync("db.json", JSON.stringify(db, null, 2));
-            res.json(db.posts.filter(p => p.userId === user.id));
-    });
-});
-
-app.get("/posts/add", (req, res) => {
-    const token = req.headers.authorization?.split(" ")[1];
-    const post = req.headers.post
-    if (!token) return res.status(401).json({ message: "No token provided"});
-    jwt.verify(token, SECRET, (err, user) => {
-        if (err) return res.status(403).json({ message: "Invalid token" });
-            const db = JSON.parse(fs.readFileSync("db.json", "utf-8"));
-            const postid = () => {
-                let i = 0;
-                while(true){
-                    if(db.posts.filter(p => p.id === i).length === 0){
-                        break; 
-                    } else { i+=1; }
-                }
-                return i;
-            }
-            db.posts.push({ "id": postid(), "title": post, "userId": user.id});
-            fs.writeFileSync("db.json", JSON.stringify(db, null, 2));
-            res.json(db.posts.filter(p => p.userId === user.id));
-    });
-});
-
 // Score management: Get Score, Post Score, Delete Score by user id.
 
 app.get("/scores", (req, res) => {
-    const token = req.headers.authorization?.split(" ")[1];
-    if (!token) return res.status(401).json({ message: "No token provided"});
-    jwt.verify(token, SECRET, (err, user) => {
-        if (err) return res.status(403).json({ message: "Invalid token" });
-            const db = JSON.parse(fs.readFileSync("db.json", "utf-8"));
-            const scores = db.scores.filter(p => p.userId === user.id);
-            res.json(scores);
-    });
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) return res.status(401).json({ message: "No token provided" });
+  jwt.verify(token, SECRET, (err, user) => {
+    if (err) return res.status(403).json({ message: "Invalid token" });
+    const db = JSON.parse(fs.readFileSync("db.json", "utf-8"));
+    const scores = db.scores.filter((p) => p.userId === user.id);
+    res.json(scores);
+  });
 });
 
 app.get("/scores/delete", (req, res) => {
-    const token = req.headers.authorization?.split(" ")[1];
-    const scoreid = parseInt(req.headers.scoreid);
-    if (!token) return res.status(401).json({ message: "No token provided"});
-    jwt.verify(token, SECRET, (err, user) => {
-        if (err) return res.status(403).json({ message: "Invalid token" });
-            const db = JSON.parse(fs.readFileSync("db.json", "utf-8"));
-            db.scores = db.scores.filter((s) => !(s.id === scoreid && s.userId === user.id));
-            fs.writeFileSync("db.json", JSON.stringify(db, null, 2));
-            res.json(db.scores.filter(s => s.userId === user.id));
-    });
+  const token = req.headers.authorization?.split(" ")[1];
+  const scoreid = parseInt(req.headers.scoreid);
+  if (!token) return res.status(401).json({ message: "No token provided" });
+  jwt.verify(token, SECRET, (err, user) => {
+    if (err) return res.status(403).json({ message: "Invalid token" });
+    const db = JSON.parse(fs.readFileSync("db.json", "utf-8"));
+    db.scores = db.scores.filter(
+      (s) => !(s.id === scoreid && s.userId === user.id)
+    );
+    fs.writeFileSync("db.json", JSON.stringify(db, null, 2));
+    res.json(db.scores.filter((s) => s.userId === user.id));
+  });
 });
 
 app.get("/scores/add", (req, res) => {
-    const token = req.headers.authorization?.split(" ")[1];
-    const score = req.headers.score
-    if (!token) return res.status(401).json({ message: "No token provided"});
-    jwt.verify(token, SECRET, (err, user) => {
-        if (err) return res.status(403).json({ message: "Invalid token" });
-            const db = JSON.parse(fs.readFileSync("db.json", "utf-8"));
-            const scoreid = () => {
-                let i = 0;
-                while(true){
-                    if(db.scores.filter(p => p.id === i).length === 0){
-                        break; 
-                    } else { i+=1; }
-                }
-                return i;
-            }
-            db.scores.push({ "id": scoreid(), "title": score, "userId": user.id});
-            fs.writeFileSync("db.json", JSON.stringify(db, null, 2));
-            res.json(db.scores.filter(s => s.userId === user.id));
-    });
+  const token = req.headers.authorization?.split(" ")[1];
+  const score = req.headers.score;
+  if (!token) return res.status(401).json({ message: "No token provided" });
+  jwt.verify(token, SECRET, (err, user) => {
+    if (err) return res.status(403).json({ message: "Invalid token" });
+    const db = JSON.parse(fs.readFileSync("db.json", "utf-8"));
+    const scoreid = () => {
+      let i = 0;
+      while (true) {
+        if (db.scores.filter((p) => p.id === i).length === 0) {
+          break;
+        } else {
+          i += 1;
+        }
+      }
+      return i;
+    };
+    db.scores.push({ id: scoreid(), title: score, userId: user.id });
+    fs.writeFileSync("db.json", JSON.stringify(db, null, 2));
+    res.json(db.scores.filter((s) => s.userId === user.id));
+  });
 });
 
 // Kernel Management
 
 app.get("/kernel/maps", (req, res) => {
-    const token = req.headers.authorization?.split(" ")[1];
-    const id = parseInt(req.headers.id); //const name = parseInt(req.headers.name);
-    if (!token) return res.status(401).json({ message: "No token provided"});
-    jwt.verify(token, SECRET, (err, user) => {
-        if (err) return res.status(403).json({ message: "Invalid token" });
-            const db = JSON.parse(fs.readFileSync("kernels.json", "utf-8"));
-            const map = db.maps.filter(m => m.id === id)[0]; // const map = db.maps.filter(m => m.name === name);
-            const kernels = JSON.parse(fs.readFileSync(map.continents, "utf-8"));
-            res.json(kernels);
-    });
+  const token = req.headers.authorization?.split(" ")[1];
+  const id = parseInt(req.headers.id); //const name = parseInt(req.headers.name);
+  if (!token) return res.status(401).json({ message: "No token provided" });
+  jwt.verify(token, SECRET, (err, user) => {
+    if (err) return res.status(403).json({ message: "Invalid token" });
+    const db = JSON.parse(fs.readFileSync("kernels.json", "utf-8"));
+    const map = db.maps.filter((m) => m.id === id)[0]; // const map = db.maps.filter(m => m.name === name);
+    const kernels = JSON.parse(fs.readFileSync(map.continents, "utf-8"));
+    res.json(kernels);
+  });
 });
 
 app.get("/kernel/facilities", (req, res) => {
-    const token = req.headers.authorization?.split(" ")[1];
-    if (!token) return res.status(401).json({ message: "No token provided"});
-    jwt.verify(token, SECRET, (err, user) => {
-        if (err) return res.status(403).json({ message: "Invalid token" });
-            const db = JSON.parse(fs.readFileSync("kernels.json", "utf-8"));
-            res.json(db.facilities);
-    });
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) return res.status(401).json({ message: "No token provided" });
+  jwt.verify(token, SECRET, (err, user) => {
+    if (err) return res.status(403).json({ message: "Invalid token" });
+    const db = JSON.parse(fs.readFileSync("kernels.json", "utf-8"));
+    res.json(db.facilities);
+  });
 });
 
 app.get("/kernel/policies", (req, res) => {
-    const token = req.headers.authorization?.split(" ")[1];
-    if (!token) return res.status(401).json({ message: "No token provided"});
-    jwt.verify(token, SECRET, (err, user) => {
-        if (err) return res.status(403).json({ message: "Invalid token" });
-            const db = JSON.parse(fs.readFileSync("kernels.json", "utf-8"));
-            res.json(db.policies);
-    });
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) return res.status(401).json({ message: "No token provided" });
+  jwt.verify(token, SECRET, (err, user) => {
+    if (err) return res.status(403).json({ message: "Invalid token" });
+    const db = JSON.parse(fs.readFileSync("kernels.json", "utf-8"));
+    res.json(db.policies);
+  });
 });
 
 const bodyParser = require("body-parser");
@@ -255,11 +209,15 @@ app.use(bodyParser.json());
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
   const db = JSON.parse(fs.readFileSync("db.json", "utf-8"));
-  const user = db.users.find(u => u.username === username && u.password === password);
+  const user = db.users.find(
+    (u) => u.username === username && u.password === password
+  );
 
   if (user) {
-    const token = jwt.sign({ id: user.id, username: user.username }, SECRET, { expiresIn: "1h" });
-    res.json({ token, username: user.username, id: user.id });  // Include user info for client
+    const token = jwt.sign({ id: user.id, username: user.username }, SECRET, {
+      expiresIn: "1h",
+    });
+    res.json({ token, username: user.username, id: user.id }); // Include user info for client
   } else {
     res.status(401).json({ message: "Invalid credentials" });
   }
@@ -271,13 +229,17 @@ app.post("/register", (req, res) => {
     return res.status(400).send("Username and password are required");
 
   const db = JSON.parse(fs.readFileSync("db.json", "utf-8"));
-  const existingUser = db.users.find(u => u.username === username);
+  const existingUser = db.users.find((u) => u.username === username);
   if (existingUser) return res.status(409).send("Username already exists");
 
   const newUser = { id: Date.now(), username, password };
   db.users.push(newUser);
   fs.writeFileSync("db.json", JSON.stringify(db, null, 2));
 
-  const token = jwt.sign({ id: newUser.id, username: newUser.username }, SECRET, { expiresIn: "1h" });
-  res.status(201).json({ token, username: newUser.username, id: newUser.id });  // Same structure as login
+  const token = jwt.sign(
+    { id: newUser.id, username: newUser.username },
+    SECRET,
+    { expiresIn: "1h" }
+  );
+  res.status(201).json({ token, username: newUser.username, id: newUser.id }); // Same structure as login
 });
