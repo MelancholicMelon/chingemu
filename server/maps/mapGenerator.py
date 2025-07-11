@@ -164,7 +164,7 @@ min_continent_size = n/10
 
 for path, eP in paths.items():
     map, binary, eroded = processImage(path+"img.jpg", n, eP)
-    map = savejs(map, binary, path+"continents.js", min_continent_size)
+    # map = savejs(map, binary, path+"continents.js", min_continent_size) //deleted
     map = savejson(map, binary, path+"continents.json", min_continent_size)
     cv2.imwrite(path+"img_p.jpg", map)
     cv2.imwrite(path+"img_b.jpg", binary*255)

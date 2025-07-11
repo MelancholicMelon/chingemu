@@ -165,36 +165,33 @@ app.get("/scores/add", (req, res) => {
 
 // Kernel Management
 
-app.get("/kernel/maps", (req, res) => {
+app.get("/specification", (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
-  const id = parseInt(req.headers.id); //const name = parseInt(req.headers.name);
   if (!token) return res.status(401).json({ message: "No token provided" });
   jwt.verify(token, SECRET, (err, user) => {
     if (err) return res.status(403).json({ message: "Invalid token" });
-    const db = JSON.parse(fs.readFileSync("kernels.json", "utf-8"));
-    const map = db.maps.filter((m) => m.id === id)[0]; // const map = db.maps.filter(m => m.name === name);
-    const kernels = JSON.parse(fs.readFileSync(map.continents, "utf-8"));
-    res.json(kernels);
+    const db = JSON.parse(fs.readFileSync("specification.json", "utf-8"));
+    res.json(db);
   });
 });
 
-app.get("/kernel/facilities", (req, res) => {
+app.get("/continentJson", (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
-  if (!token) return res.status(401).json({ message: "No token provided" });
-  jwt.verify(token, SECRET, (err, user) => {
-    if (err) return res.status(403).json({ message: "Invalid token" });
-    const db = JSON.parse(fs.readFileSync("kernels.json", "utf-8"));
-    res.json(db.facilities);
-  });
-});
+  const filePath = req.query.filePath;
 
-app.get("/kernel/policies", (req, res) => {
-  const token = req.headers.authorization?.split(" ")[1];
   if (!token) return res.status(401).json({ message: "No token provided" });
+
   jwt.verify(token, SECRET, (err, user) => {
     if (err) return res.status(403).json({ message: "Invalid token" });
-    const db = JSON.parse(fs.readFileSync("kernels.json", "utf-8"));
-    res.json(db.policies);
+
+    try {
+      const db = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+      res.json(db);
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: "File not found or invalid", error: error.message });
+    }
   });
 });
 

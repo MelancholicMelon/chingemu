@@ -40,7 +40,11 @@ list Params             [ "sd", "maxImpact"]                           # Paramet
 colorSpecification = [
     {
         "id": ObjectTypes # objects
-        "color": hex
+        "color": {[
+            "r": int ∈ [0, 255]
+            "g": int ∈ [0, 255]
+            "b": int ∈ [0, 255]
+        ]}
     }
     ... (continue until the last)
 ]
@@ -54,7 +58,11 @@ facilitySpecification = [
         "id"         : FacilityTypes,
         "size"       : int[2] (odd numbers only)  # Size of the facility in (x, y) direction
         "pdf"        : PDFTypes,
+        "stddtv"     : int     # standard deviation of the pdf
         "maxImpact"  : int
+        "cost"       : int     # cost when placing
+        "profit"     : int     # every year profit
+        "timeToLive" : int     # how many years it has been working after placed.
         "description": str     # Explain the characteristics of this facility. (so everyone understand how this faciltiy works)
     },
     ... (continue until the last)
@@ -118,7 +126,7 @@ PolicySpecification = [
     {
         "id"            : PolicyTypes,
         "parameter"     : Params,
-        "coefficient"   : int
+        "multiplier"    : int
     },
     ... (continue until the last)
 ]
