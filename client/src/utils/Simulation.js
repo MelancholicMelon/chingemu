@@ -59,7 +59,7 @@ export default class SimulationEngine {
   }
 
   calculateScore() {
-    this.score = this.budget + this.profit - this.facilities.length * 100;
+    this.score = this.budget + this.profit - this.facilities.length * 100; // Example score calculation
     return this.score;
   }
 

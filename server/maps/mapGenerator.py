@@ -71,6 +71,9 @@ def processImage(image_path, n, erosion_iterations=3):
     resized = cv2.resize(eroded, (new_width, n), interpolation=cv2.INTER_AREA)
     _, binary = cv2.threshold(resized, 1, 1, cv2.THRESH_BINARY)
 
+    resized = resized.astype(np.int32)
+    resized[resized == 0] = -1
+
     return resized, binary, eroded
 
 
@@ -134,7 +137,7 @@ def savejson(map, binary, output_file, min_size):
             continue
 
         # Extract grayscale values for this continent
-        component = np.where(mask, map, 0)
+        component = np.where(mask, map, -1)
         cleaned_grayscale = np.where(mask, map, cleaned_grayscale)
 
         continents.append({
