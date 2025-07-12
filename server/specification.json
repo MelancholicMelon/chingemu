@@ -177,17 +177,17 @@
   ],
   "policySpecification": [
     {
-      "id": "p1",
+      "id": "Free Diddy",
       "parameter": "maxImpact",
       "multiplier": -100
     },
     {
-      "id": "p2",
+      "id": "Resurrect the Lorax",
       "parameter": "sd",
       "multiplier": 3
     },
     {
-      "id": "p3",
+      "id": "Imprison Taylor Swift",
       "parameter": "timeToLive",
       "multiplier": 1.5
     }

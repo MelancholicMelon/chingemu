@@ -4,6 +4,7 @@ import MapRender from "./subView/MapRender";
 import Simulation from "../utils/Simulation";
 import "../css/game.css"
 import Facilities from "./Facilities";
+import Policy from "./Policy"
 
 export default function Game() {
   const [specifications, setSpecifications] = useState({
@@ -30,15 +31,56 @@ export default function Game() {
   const [greennessMap, setGreennessMap] = useState(null);
   const greennessMapRef = useRef(greennessMap);
 
+  // Policy state handling
+  const policySpecification = [
+    {
+      "id": "Free Diddy",
+      "parameter": "maxImpact",
+      "multiplier": -100
+    },
+    {
+      "id": "Resurrect the Lorax",
+      "parameter": "sd",
+      "multiplier": 3
+    },
+    {
+      "id": "Imprison Taylor Swift",
+      "parameter": "timeToLive",
+      "multiplier": 1.5
+    },
+    {
+      "id": "Temporary",
+      "parameter": "timeToLive",
+      "multiplier": 1.5
+    }
+  ]
+
+  const [form, setForm] = useState(
+    policySpecification.reduce((acc, policy) => {
+      acc[policy.id] = false;
+      return acc;
+    }, {})
+  );
+
+  const onClickPolicy = (e) => {
+    const { name, checked } = e.target;
+    setForm((prev) => ({ ...prev, [name]: checked }));
+  };
+
+  // Policy state debugging 
+  useEffect(() => {
+    console.log(form);
+  }, [form])
+
   const [facilityContinent, setFacilityContinet] = useState({});
 
   // temporary state for selected facilities
   const [selFacility, setSelFacility] = useState("");
 
-  // temporary useeffect for debugging
-  useEffect(() => {
-    console.log(`${selFacility} is selected`)
-  }, [selFacility])
+  // // temporary useeffect for debugging
+  // useEffect(() => {
+  //   console.log(`${selFacility} is selected`)
+  // }, [selFacility])
 
   const onClickFacility = (val) => {
     const selectedFacility = val.currentTarget.value;
@@ -199,6 +241,15 @@ export default function Game() {
           </div>
           {/*Policies list*/}
           <div className="policies-container">
+            {policySpecification.map((policy, key) => (
+              <div key={key}>
+                <Policy
+                  id={policy.id}
+                  bool={form[policy.id]}
+                  onChange={onClickPolicy}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -210,8 +261,6 @@ export default function Game() {
 }
 
 // Dylan's TODO
-// Add components that can be placed on the map
-// Add policies to toggle
-// Add a timeline slider on the top
 // Add buttons to control the game like pause, continue, reset, etc. 
 // Add current money and cost per facility
+// Add a timeline slider on the top

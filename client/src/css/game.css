@@ -104,3 +104,26 @@
   background-color: blue;
   min-height: 150px;
 }
+
+/* Policy Item - Contains checkbox and label */
+.policy-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 4px;
+}
+
+.policy-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.policy-item label {
+  font-size: 12px;
+  color: #333;
+  cursor: pointer;
+  flex: 1;
+}
