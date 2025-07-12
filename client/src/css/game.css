@@ -1,0 +1,28 @@
+.game-container {
+  display: flex;
+  height: calc(100vh - var(--navbar-height, 50px));
+  padding: 10px;
+}
+
+.canvas-container {
+  flex: 1;
+  margin: 0 15px;
+}
+
+.controls-container {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.debug-panel {
+  font-size: 0.75rem;
+  max-height: 300px;
+  overflow: auto;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}

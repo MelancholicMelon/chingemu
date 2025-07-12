@@ -25,10 +25,16 @@ export default function Game() {
   const [facilityCoordinate, setFacilityCoordinate] = useState([]);
   const [policyActivation, setPolicyActivation] = useState(null);
   const [gameState, setGameState] = useState(false);
-
   const [greennessMap, setGreennessMap] = useState(null);
 
   const [facilityContinent, setFacilityContinet] = useState({});
+
+  const canvasRef = useRef(null);
+
+  const [placedObjects, setPlacedObjects] = useState([]);
+  const [cellSize, setCellSize] = useState({ width: 0, height: 0 });
+  const [canvasHeight, setCanvasHeight] = useState(500);
+  const baseUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     Utils()
@@ -60,142 +66,49 @@ export default function Game() {
       });
   }, []);
 
+  // Adjust canvas height dynamically to fill remaining viewport below navbar
   useEffect(() => {
-    console.log("specifications:", specifications);
-  }, [specifications]);
+    const updateCanvasHeight = () => {
+      const navbarHeight = document.getElementById("navbar")?.offsetHeight || 0;
+      const viewportHeight = window.innerHeight;
+      const padding = 20; // some bottom margin
 
-  useEffect(() => {
-    console.log("greennessMap:", greennessMap);
-  }, [greennessMap]);
+      const height = viewportHeight - navbarHeight - padding;
+      setCanvasHeight(height);
+    };
 
-  useEffect(() => {
-    console.log("policyActivation:", policyActivation);
-  }, [policyActivation]);
+    updateCanvasHeight();
+    window.addEventListener("resize", updateCanvasHeight);
+    return () => window.removeEventListener("resize", updateCanvasHeight);
+  }, []);
 
-  // const [tickCount, setTickCount] = useState(2025);
-  // const [isRunning, setIsRunning] = useState(true);
-  // const canvasRef = useRef(null);
-  // const intervalRef = useRef(null);
-  // const [scores, setScores] = useState([]);
-  // const [selectObject, setSelectObject] = useState("");
-  // const [resources, setResources] = useState({
-  //   map: null,
-  //   facilities: [],
-  //   policies: [],
-  // });
-  // const [placedObjects, setPlacedObjects] = useState([]);
-  // const [cellSize, setCellSize] = useState({ width: 0, height: 0 });
-  // const [canvasHeight, setCanvasHeight] = useState(500);
-  // const baseUrl = process.env.REACT_APP_API_URL;
+  const handleCellClick = (col, row) => {
+    const success = sim.validateInput({ x: col, y: row }, selectObject);
+    if (success) {
+      setPlacedObjects((prev) => [
+        ...prev,
+        { x: col, y: row, type: selectObject },
+      ]);
+    }
+  };
 
-  // // Fetch scores and resources omitted for brevity; same as before
+  return (
+    <div className="game-container">
+      <div className="canvas-container">
+        <MapRender
+          canvasRef={canvasRef}
+          placedObjects={placedObjects}
+          cellSize={cellSize}
+          setCellSize={setCellSize}
+          onCellClick={handleCellClick}
+          canvasHeight={canvasHeight}
+        />
+      </div>
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (!token) return;
-
-  //   const init = async () => {
-  //     try {
-  //       // const { map, facilities, policies } = await util.initialize(
-  //       //   baseUrl,
-  //       //   token
-  //       // );
-  //       // setResources({ map, facilities, policies });
-  //     } catch (err) {
-  //       console.error("Failed to initialize simulation:", err);
-  //     }
-  //   };
-
-  //   init();
-  // }, []);
-
-  // useEffect(() => {
-  //   if (!resources.map || !isRunning) return;
-
-  //   const runTick = () => {
-  //     // sim.progress();
-  //     setTickCount((prev) => prev + 1);
-  //   };
-
-  //   intervalRef.current = setInterval(runTick, TICK_INTERVAL);
-  //   return () => clearInterval(intervalRef.current);
-  // }, [resources, isRunning]);
-
-  // // Adjust canvas height dynamically to fill remaining viewport below navbar
-  // useEffect(() => {
-  //   const updateCanvasHeight = () => {
-  //     const navbarHeight = document.getElementById("navbar")?.offsetHeight || 0;
-  //     const viewportHeight = window.innerHeight;
-  //     const padding = 20; // some bottom margin
-
-  //     const height = viewportHeight - navbarHeight - padding;
-  //     setCanvasHeight(height);
-  //   };
-
-  //   updateCanvasHeight();
-  //   window.addEventListener("resize", updateCanvasHeight);
-  //   return () => window.removeEventListener("resize", updateCanvasHeight);
-  // }, []);
-
-  // const handleCellClick = (col, row) => {
-  //   // const success = sim.validateInput({ x: col, y: row }, selectObject);
-  //   // if (success) {
-  //   //   setPlacedObjects((prev) => [
-  //   //     ...prev,
-  //   //     { x: col, y: row, type: selectObject },
-  //   //   ]);
-  //   // }
-  // };
-
-  // return (
-  //   <div
-  //     style={{
-  //       display: "flex",
-  //       height: `calc(100vh - var(--navbar-height, 50px))`,
-  //       padding: 10,
-  //     }}>
-  //     {/* Left: Canvas */}
-  //     <div style={{ flex: 1, marginRight: 15, marginLeft: 15 }}>
-  //       <MapRender
-  //         canvasRef={canvasRef}
-  //         // map={sim.getGreennessMap()}
-  //         placedObjects={placedObjects}
-  //         cellSize={cellSize}
-  //         setCellSize={setCellSize}
-  //         onCellClick={handleCellClick}
-  //         canvasHeight={canvasHeight} // pass this prop
-  //       />
-  //     </div>
-
-  //     {/* Right: Controls */}
-  //     <div
-  //       style={{
-  //         width: 300,
-  //         display: "flex",
-  //         flexDirection: "column",
-  //         gap: 10,
-  //         overflowY: "auto",
-  //       }}>
-  //       <p>Year: {tickCount}</p>
-  //       <button onClick={() => setIsRunning((prev) => !prev)}>
-  //         {isRunning ? "Pause" : "Resume"}
-  //       </button>
-
-  //       <pre
-  //         style={{
-  //           fontSize: "0.75rem",
-  //           maxHeight: "300px",
-  //           overflow: "auto",
-  //           backgroundColor: "#f9f9f9",
-  //           padding: 10,
-  //           borderRadius: 4,
-  //           border: "1px solid #ccc",
-  //         }}>
-  //         {JSON.stringify(resources.facilities, null, 2)}
-  //       </pre>
-
-  //       {/* Add more controls here */}
-  //     </div>
-  //   </div>
-  // );
+      <div className="controls-container">
+        <pre className="debug-panel"></pre>
+        {/* Add more controls here */}
+      </div>
+    </div>
+  );
 }
