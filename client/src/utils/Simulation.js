@@ -50,32 +50,41 @@ export default class Simulation {
 
   calculateScore(budget, profit, setScore) {}
 
-  progress(mapDict, facilityCoordinate, policyActivation, specifications, setGreennessMap) {
-    const map = mapDict.map(continent => ({
+  progress(
+    mapDict,
+    facilityCoordinate,
+    policyActivation,
+    specifications,
+    setGreennessMap
+  ) {
+    const map = mapDict.map((continent) => ({
       ...continent,
-      kernel: continent.kernel.map(row => [...row]),
+      kernel: continent.kernel.map((row) => [...row]),
     }));
-    const mapSize = [mapDict[0]['kernel'].length, mapDict[0]['kernel'][0].length]
-    const PDFKernel = this.generatePDFKernel(facilityCoordinate, policyActivation, specifications.facilitySpecification, specifications.policySpecification, mapSize);
+    const mapSize = [
+      mapDict[0]["kernel"].length,
+      mapDict[0]["kernel"][0].length,
+    ];
+    const PDFKernel = this.generatePDFKernel(
+      facilityCoordinate,
+      policyActivation,
+      specifications.facilitySpecification,
+      specifications.policySpecification,
+      mapSize
+    );
     let greennessMap = this.get2DGreennessMap(mapDict);
-    for(let i = 0;i<mapDict.length;i++){
-      for(let x =0;x<mapSize[0];x++){
-        for(let y=0;y< mapSize[1];y++){
-          if(mapDict[i]['kernel'][x][y] !== -1){
-            map[i]['kernel'][x][y] = greennessMap[i][x][y] * (Math.random() * (1.05 - 0.9) + 0.9) + PDFKernel[x][y]
+    for (let i = 0; i < mapDict.length; i++) {
+      for (let x = 0; x < mapSize[0]; x++) {
+        for (let y = 0; y < mapSize[1]; y++) {
+          if (mapDict[i]["kernel"][x][y] !== -1) {
+            map[i]["kernel"][x][y] =
+              greennessMap[i][x][y] *
+              (Math.random() * (1.05 - 0.9) + 0.9 + PDFKernel[x][y]);
           }
         }
       }
     }
     setGreennessMap(map);
-  }
-
-  gaussian3D(x, y, pX, pY, sd) {
-    const exponent = -(
-      (x - pX) ** 2 / (2 * sd ** 2) +
-      (y - pY) ** 2 / (2 * sd ** 2)
-    );
-    return Math.exp(exponent);
   }
 
   generatePDFKernel(
@@ -109,8 +118,13 @@ export default class Simulation {
           let val = null;
 
           const fc = facilityCoordinate[i];
-          const fs = facilitySpecification.find(item => item.id = fc.id);
+          const fs = facilitySpecification.find((item) => (item.id = fc.id));
           const sd = fs.stddtv;
+
+          if (x === 0 && y === 0) {
+            console.log(fc);
+            console.log(fs);
+          }
 
           if (fs.pdf === "normal") {
             const muX = fc.coordinate[0];
@@ -121,6 +135,10 @@ export default class Simulation {
             );
             val =
               policyMultiplier.maxImpact * fs.maxImpact * Math.exp(exponent);
+
+            // if (x === muX && y === muY) {
+            //   console.log(val);
+            // }
           } else {
             throw new Error("wrong PDF specified");
           }
@@ -133,7 +151,7 @@ export default class Simulation {
 
       pdfKernel.push(row);
     }
-    return pdfKernel
+    return pdfKernel;
   }
 
   endSimulation() {}
