@@ -27,7 +27,7 @@
     padding: 2rem;
     border-radius: 12px;
     border: 2px dashed var(--color-border-primary);
-    box-shadow: 0px 4px 12px rgba(109, 76, 65, 0.2); /* earth brown rgba */
+    box-shadow: 0px 4px 12px rgba(109, 76, 65, 0.2); 
   }
   
   /* LOGIN SECTION */
@@ -66,7 +66,7 @@
   .login-input:focus {
     border-color: var(--color-highlight);
     outline: none;
-    background-color: #fffaf3;  /* keep this as is or make variable if needed */
+    background-color: #fffaf3;  
   }
   
   .login-button {

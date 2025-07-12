@@ -97,13 +97,7 @@ export default function Game() {
     "big factory2": { img: "/img/pngegg.png", cost: 150, name: "big factory" },
     "tree3": { img: "/img/pngegg.png", cost: 50, name: "tree" },
     "factory3": { img: "/img/pngegg.png", cost: 100, name: "factory" },
-    "big factory3": { img: "/img/pngegg.png", cost: 150, name: "big factory" },
-    "tree4": { img: "/img/pngegg.png", cost: 50, name: "tree" },
-    "factory4": { img: "/img/pngegg.png", cost: 100, name: "factory" },
-    "big factory4": { img: "/img/pngegg.png", cost: 150, name: "big factory" },
-    "tree5": { img: "/img/pngegg.png", cost: 50, name: "tree" },
-    "factory5": { img: "/img/pngegg.png", cost: 100, name: "factory" },
-    "big factory5": { img: "/img/pngegg.png", cost: 150, name: "big factory" }
+    "big factory3": { img: "/img/pngegg.png", cost: 150, name: "big factory" }
   }
 
   const tickRef = useRef(null);
@@ -238,6 +232,7 @@ export default function Game() {
 
         <div className="controls-container">
           {/*Facilities list*/}
+          <div className="section-header">Facilities</div>
           <div className="facilities-container">
             {Object.values(facilities).map((facility, key) => (
               <div key={key}>
@@ -251,6 +246,7 @@ export default function Game() {
             ))}
           </div>
           {/*Policies list*/}
+          <div className="section-header">Policies</div>
           <div className="policies-container">
             {policySpecification.map((policy, key) => (
               <div key={key}>
