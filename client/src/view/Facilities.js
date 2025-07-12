@@ -1,7 +1,7 @@
 import React from "react"
 export default function Facilities(props) {
     return (
-      <div className="facility-container">
+      <div className={`facility-container ${props.active ? "active" : ""}`}>
         <button
           className="image-button"
           onClick={props.onClick}

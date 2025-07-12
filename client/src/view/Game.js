@@ -80,10 +80,10 @@ export default function Game() {
     setPolicyActivation((prev) => ({ ...prev, [name]: checked }));
   };
 
-  // Policy state debugging 
-  useEffect(() => {
-    console.log(policyActivation);
-  }, [policyActivation])
+  // // Policy state debugging 
+  // useEffect(() => {
+  //   console.log(policyActivation);
+  // }, [policyActivation])
 
   const [facilityContinent, setFacilityContinet] = useState({});
 
@@ -93,7 +93,7 @@ export default function Game() {
   // }, [selectedFacility])
 
   const onClickFacility = (val) => {
-    console.log("DEBUG: Facility Clicked")
+    // console.log("DEBUG: Facility Clicked")
     const selectedFacility = val.currentTarget.value;
     setSelectedFacility(selectedFacility);
   }
@@ -137,7 +137,7 @@ export default function Game() {
         
         setPolicyActivation(
         data.policySpecification.reduce((acc, policy) => {
-          console.log("Set policy activation triggered")
+          // console.log("Set policy activation triggered") // Debug
           acc[policy.id] = false;
           return acc;
         }, {})
