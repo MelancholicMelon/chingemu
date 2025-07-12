@@ -14,6 +14,7 @@ export default async function Utils() {
 
   const token = localStorage.getItem("token");
   const baseUrl = process.env.REACT_APP_API_URL;
+  const mapId = 1;
 
   const headers = {
     Authorization: "Bearer " + token,
@@ -27,7 +28,7 @@ export default async function Utils() {
 
   const s = await allSpecification.json();
 
-  const continentMapPath = s["greennessAndLocationMap"][1]["loc"];
+  const continentMapPath = s["greennessAndLocationMap"][mapId]["loc"];
 
   const greennessAndLocationMapRes = await fetch(
     `${baseUrl}/continentJson?filePath=${continentMapPath}`,
