@@ -18,13 +18,59 @@ export default function Game() {
     modifiableParams: null,
   });
 
-  useEffect(() => {
-    Utils().then(setSpecifications);
-  }, []);
+  const [budge, setBudget] = useState(10000000);
+  const [profit, setProfit] = useState(0);
+  const [score, setScore] = useState(0);
+  const [year, setYear] = useState(2025);
+  const [facilityCoordinate, setFacilityCoordinate] = useState([]);
+  const [policyActivation, setPolicyActivation] = useState(null);
+  const [gameState, setGameState] = useState(false);
 
-  console.log(specifications);
+  const [greennessMap, setGreennessMap] = useState(null);
 
   const [facilityContinent, setFacilityContinet] = useState({});
+
+  useEffect(() => {
+    Utils()
+      .then((data) => {
+        setSpecifications({
+          colorSpecification: data.colorSpecification,
+          facilitySpecification: data.facilitySpecification,
+          greennessMap: data.greennessMap,
+          policySpecification: data.policySpecification,
+          objectTypes: data.objectTypes,
+          continents: data.continents,
+          facilityTypes: data.facilityTypes,
+          pdfTypes: data.pdfTypes,
+          policyTypes: data.policyTypes,
+          modifiableParams: data.modifiableParams,
+        });
+
+        setGreennessMap(data.greennessMap);
+
+        setPolicyActivation(
+          data.policyTypes.map((id) => ({
+            id: id,
+            activate: false,
+          }))
+        );
+      })
+      .catch((error) => {
+        console.error("Failed to load specifications:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    console.log("specifications:", specifications);
+  }, [specifications]);
+
+  useEffect(() => {
+    console.log("greennessMap:", greennessMap);
+  }, [greennessMap]);
+
+  useEffect(() => {
+    console.log("policyActivation:", policyActivation);
+  }, [policyActivation]);
 
   // const [tickCount, setTickCount] = useState(2025);
   // const [isRunning, setIsRunning] = useState(true);
