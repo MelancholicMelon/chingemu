@@ -96,7 +96,6 @@ export default function Game() {
     console.log("DEBUG: Facility Clicked")
     const selectedFacility = val.currentTarget.value;
     setSelectedFacility(selectedFacility);
-    setSelectedFacility(selectedFacility);
   }
 
   // temporary facilities json for testing
