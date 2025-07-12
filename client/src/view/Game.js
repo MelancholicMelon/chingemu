@@ -6,12 +6,8 @@ import MapRender from "./subView/MapRender";
 
 export default function Game() {
   const [specifications, setSpecifications] = useState({
-    kernelSize: null,
-    numContinents: null,
-    numFacilityTypes: null,
     colorSpecification: null,
     facilitySpecification: null,
-    continentLocation: null,
     greennessMap: null,
     policySpecification: null,
     objectTypes: null,
@@ -25,6 +21,8 @@ export default function Game() {
   useEffect(() => {
     Utils().then(setSpecifications);
   }, []);
+
+  console.log(specifications);
 
   const [facilityContinent, setFacilityContinet] = useState({});
 

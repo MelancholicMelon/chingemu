@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 
 export default async function Utils() {
-  let n_k;
-  let n_c;
-  let n_f;
   let objectTypes;
   let continents;
   let colorSpecification;
@@ -12,7 +9,6 @@ export default async function Utils() {
   let policyTypes;
   let params;
   let facilitySpecification;
-  let continentLocation;
   let greennessMap;
   let policySpecification;
 
@@ -33,22 +29,20 @@ export default async function Utils() {
 
   const continentMapPath = s["greennessAndLocationMap"][0]["loc"];
 
-  const greennessAndLocationMapRes = await fetch(`${baseUrl}/continentJson?filePath=${continentMapPath}`, { headers });
+  const greennessAndLocationMapRes = await fetch(
+    `${baseUrl}/continentJson?filePath=${continentMapPath}`,
+    { headers }
+  );
   if (!greennessAndLocationMapRes.ok) {
     throw new Error("Resource loading failed.");
   }
-
-  console.log(greennessAndLocationMapRes);
 
   const greennessAndLocationMapJson = await greennessAndLocationMapRes.json();
 
   greennessMap = greennessAndLocationMapJson[0]["kernel"];
   facilitySpecification = s["facilitySpecification"];
   policySpecification = s["policySpecification"];
-
-  n_k = greennessAndLocationMapJson[0]["size"];
-  n_c = greennessMap.length;
-  n_f = facilitySpecification.length;
+  colorSpecification = s["colorSpecification"];
 
   objectTypes = ["continent", "facility", "ocean"];
   continents = ["c1", "c2", "c3"];
@@ -58,12 +52,8 @@ export default async function Utils() {
   params = ["sd", "maxImpact"];
 
   return {
-    kernelSize: n_k,
-    numContinents: n_c,
-    numFacilityTypes: n_f,
     colorSpecification: colorSpecification,
     facilitySpecification: facilitySpecification,
-    continentLocation: continentLocation,
     greennessMap: greennessMap,
     policySpecification: policySpecification,
     objectTypes: objectTypes,
