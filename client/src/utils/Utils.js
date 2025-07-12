@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 export default async function Utils() {
   let objectTypes;
-  let continents;
   let colorSpecification;
   let facilityTypes;
   let pdfTypes;

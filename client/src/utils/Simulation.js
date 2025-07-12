@@ -1,34 +1,24 @@
 export default class Simulation {
   get2DGreennessMap(mapDict) {
-    console.log(mapDict)
+    console.log(mapDict);
     let greennessMap = [];
-    for(let i = 0;i<mapDict.length;i++){
-      greennessMap.push(mapDict[i]['kernel'])
+    for (let i = 0; i < mapDict.length; i++) {
+      greennessMap.push(mapDict[i]["kernel"]);
     }
-    console.log(greennessMap)
-    return greennessMap
+    console.log(greennessMap);
+    return greennessMap;
   }
 
-  validateInput(facilityCordinate, facilityId, setFacilityCoordinate) {
-    
-  }
+  validateInput(facilityCordinate, facilityId, setFacilityCoordinate) {}
 
-  calculateScore(budget, profit, setScore) {
-
-  }
+  calculateScore(budget, profit, setScore) {}
 
   progress(specifications, year) {
-    let facilities = specifications.facilityCordinate
-    for(let i = 0;i<facilities.length;i++){
-
-    }
+    let facilities = specifications.facilityCordinate;
+    for (let i = 0; i < facilities.length; i++) {}
   }
 
-  generatePDFKernel(facility) {
+  generatePDFKernel(facility) {}
 
-  }
-
-  endSimulation() {
-
-  }
+  endSimulation() {}
 }

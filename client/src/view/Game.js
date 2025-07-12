@@ -64,7 +64,7 @@ export default function Game() {
         console.error("Failed to load specifications:", error);
       });
   }, []);
-  console.log(greennessMap)
+  console.log(greennessMap);
 
   useEffect(() => {
     const updateCanvasHeight = () => {
@@ -111,7 +111,7 @@ export default function Game() {
       <div className="canvas-container">
         <MapRender
           canvasRef={canvasRef}
-          map = {greennessMap}
+          map={greennessMap}
           facilityCoordinate={facilityCoordinate}
           onCellClick={handleCellClick}
           canvasHeight={canvasHeight}
