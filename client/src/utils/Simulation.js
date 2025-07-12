@@ -1,31 +1,21 @@
 export default class Simulation {
   getGreennessMap(mapDict) {
-    greennessMap = [];
-    for(let i = 0;i<mapDict.length;i++){
-      greennessMap.push(mapDict[i]['kernel'])
+    let greennessMap = [];
+    for (let i = 0; i < mapDict.length; i++) {
+      greennessMap.push(mapDict[i]["kernel"]);
     }
   }
 
-  validateInput(facilityCordinate, facilityId) {
-    
-  }
+  validateInput(facilityCordinate, facilityId) {}
 
-  calculateScore(budget, profit) {
-    
-  }
+  calculateScore(budget, profit) {}
 
   progress(specifications, year) {
-    facilities = specifications.facilityCordinate
-    for(let i = 0;i<facilities.length;i++){
-
-    }
+    let facilities = specifications.facilityCordinate;
+    for (let i = 0; i < facilities.length; i++) {}
   }
 
-  generatePDFKernel(facility) {
+  generatePDFKernel(facility) {}
 
-  }
-
-  endSimulation() {
-
-  }
+  endSimulation() {}
 }
