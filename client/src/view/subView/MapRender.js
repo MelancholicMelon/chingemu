@@ -67,7 +67,8 @@ export default function MapRender({
     }
 
     // ocean
-    ctx.fillStyle = `rgb(31, 189, 237)`;
+    const color = specifications.colorSpecification.find(item => item.id === "ocean").color;
+    ctx.fillStyle = `rgb(${color.r} ${color.g} ${color.b})`
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
         let ocean = true
