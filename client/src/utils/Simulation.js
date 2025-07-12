@@ -118,17 +118,12 @@ export default class Simulation {
           let val = null;
 
           const fc = facilityCoordinate[i];
-          const fs = facilitySpecification.find((item) => (item.id = fc.id));
+          const fs = facilitySpecification.find((item) => item.id === fc.id);
           const sd = fs.stddtv;
 
-          if (x === 0 && y === 0) {
-            console.log(fc);
-            console.log(fs);
-          }
-
           if (fs.pdf === "normal") {
-            const muX = fc.coordinate[0];
-            const muY = fc.coordinate[1];
+            const muX = fc.coordinate[1];
+            const muY = fc.coordinate[0];
             let exponent = -(
               (x - muX) ** 2 / (2 * (policyMultiplier.sd * sd) ** 2) +
               (y - muY) ** 2 / (2 * (policyMultiplier.sd * sd) ** 2)
@@ -136,9 +131,10 @@ export default class Simulation {
             val =
               policyMultiplier.maxImpact * fs.maxImpact * Math.exp(exponent);
 
-            // if (x === muX && y === muY) {
-            //   console.log(val);
-            // }
+            if (x === muX && y === muY) {
+              console.log(val);
+              console.log(x, y);
+            }
           } else {
             throw new Error("wrong PDF specified");
           }
@@ -151,6 +147,8 @@ export default class Simulation {
 
       pdfKernel.push(row);
     }
+
+    console.log(pdfKernel);
     return pdfKernel;
   }
 
