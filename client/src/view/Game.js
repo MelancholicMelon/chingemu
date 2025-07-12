@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import Utils from "../utils/Utils";
 import MapRender from "./subView/MapRender";
 import Simulation from "../utils/Simulation";
+import "../css/game.css"
+import Facilities from "./Facilities";
 
 export default function Game() {
   const [specifications, setSpecifications] = useState({
@@ -19,22 +21,34 @@ export default function Game() {
   const [budge, setBudget] = useState(10000000);
   const [profit, setProfit] = useState(0);
   const [score, setScore] = useState(0);
-  const [year, setYear] = useState(2025);
+  const [year, setYear] = useState(0);
+  const yearRef = useRef(year);
+  const [selectedFacility, setSelectedFacility] = useState('Wild Life Reserve');
   const [facilityCoordinate, setFacilityCoordinate] = useState([]);
   const [policyActivation, setPolicyActivation] = useState(null);
-  const [gameState, setGameState] = useState(true);
+  const [gameState, setGameState] = useState(false);
   const [greennessMap, setGreennessMap] = useState(null);
 
   const [facilityContinent, setFacilityContinet] = useState({});
 
-  const tickRef = useRef(null); 
+  // temporary state for selected facilities
+  const [selFacility, setSelFacitlity] = useState("");
+
+  // temporary facilities json for testing
+  const facilities = {
+    "tree": {img: "../img/png-clipart-fried-egg-fried-egg-thumbnail.png", cost: 50, name: "tree"},
+    "factory": {img: "../img/png-clipart-fried-egg-fried-egg-thumbnail.png", cost: 100, name: "factory"},
+    "big factory": {img: "../img/png-clipart-fried-egg-fried-egg-thumbnail.png", cost: 150, name: "big factory"}
+  }
+
+  const tickRef = useRef(null);
   const canvasRef = useRef(null);
   const [cellSize, setCellSize] = useState({ width: 0, height: 0 });
   const [canvasHeight, setCanvasHeight] = useState(500);
   const baseUrl = process.env.REACT_APP_API_URL;
 
   const simulation = new Simulation()
-  const TICK_INTERVAL = 1000
+  const TICK_INTERVAL = 500
 
   useEffect(() => {
     Utils()
@@ -81,31 +95,54 @@ export default function Game() {
   }, []);
 
   const handleCellClick = (col, row) => {
-    console.log(col, row)
+    if(gameState){
+      return
+    }
     const success = simulation.validateInput(
+      {x: col, y:row},
+      selectedFacility,
       facilityCoordinate,
-      specifications["facilitySpecification"],
+      specifications.facilitySpecification,
+      greennessMap,
       setFacilityCoordinate
     );
   };
 
   useEffect(() => {
+    yearRef.current = year;
+  }, [year]);
+
+  useEffect(() => {
     if (!gameState) return;
 
-    const runSimulationTick = () => {
-      // Update game state here
-      console.log('Simulation tick', new Date().toLocaleTimeString());
+    let tickCounter = 0;
 
-      // Example: update local resource values here
-      // setResources(prev => ({ ...prev, wood: prev.wood + 1 }));
+    const Tick = () => {
+      console.log("Simulation tick", new Date().toLocaleTimeString());
+
+      simulation.progress(
+        greennessMap,
+        facilityCoordinate,
+        policyActivation,
+        specifications,
+        setGreennessMap
+      );
+
+      setYear(prevYear => prevYear + 1);
+      tickCounter++;
+
+      if (tickCounter >= 10) {
+        setGameState(false);
+      }
     };
 
-    tickRef.current = setInterval(runSimulationTick, TICK_INTERVAL);
+    tickRef.current = setInterval(Tick, TICK_INTERVAL);
 
-    // Cleanup when component unmounts or paused
     return () => clearInterval(tickRef.current);
-  }, [, gameState]);
+  }, [gameState]);
 
+
+  console.log(greennessMap)
   return (
     <div className="game-container">
       <div className="canvas-container">
@@ -122,9 +159,27 @@ export default function Game() {
       </div>
 
       <div className="controls-container">
-        <pre className="debug-panel"></pre>
+        <button onClick={() => setGameState(true)} disabled={gameState}> Resume </button>
+        <pre className="debug-panel">Year: {year+2025}</pre>
         {/* Add more controls here */}
+        {/*Facilities list*/}
+        {Object.values(facilities).map((facility, key) => (
+          <div key={key}>
+            <Facilities
+              img = {facility.img}
+              cost = {facility.cost}
+              name = {facility.name}
+            />
+            </div>
+        ))}
       </div>
     </div>
   );
 }
+
+// Dylan's TODO
+// Add components that can be placed on the map
+// Add policies to toggle
+// Add a timeline slider on the top
+// Add buttons to control the game like pause, continue, reset, etc. 
+// Add current money and cost per facility

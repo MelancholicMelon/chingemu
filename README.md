@@ -56,7 +56,7 @@ colorSpecification = [
 facilitySpecification = [
     {
         "id"         : FacilityTypes,
-        "size"       : int[2] (odd numbers only)  # Size of the facility in (x, y) direction
+        "size"       : int (odd numbers only)  # Size of the facility in (x, y) direction
         "pdf"        : PDFTypes,
         "stddtv"     : int     # standard deviation of the pdf
         "maxImpact"  : int

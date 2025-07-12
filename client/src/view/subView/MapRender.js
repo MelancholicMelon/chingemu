@@ -27,9 +27,7 @@ export default function MapRender({
 
     setCellSize({ width: cellWidth, height: cellHeight });
 
-    ctx.fillStyle = `rgb(31, 189, 237)`;
-    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-
+    // continents
     let kernel;
     for (let i = 0; i < map.length; i++) {
       kernel = map[i].kernel;
@@ -46,15 +44,44 @@ export default function MapRender({
       }
     }
 
+    // facilities
+    console.log(facilityCoordinate)
     for (const obj of facilityCoordinate) {
       const color = specifications.colorSpecification.find(item => item.id === obj.id).color;
+      const size = specifications.facilitySpecification.find(item => item.id === obj.id).size;
       ctx.fillStyle = `rgb(${color.r} ${color.g} ${color.b})`
+      for(let i = 0;i<(size+1)/2;i++){
+        ctx.fillRect(
+          cellWidth  * (obj.coordinate[0] + i-1),
+          cellHeight * (obj.coordinate[1] + (size-1)/2 - i-1),
+          cellWidth  * (size-i*2),
+          cellHeight * (i*2+1)
+        );
+      }
       ctx.fillRect(
         obj.coordinate[0] * cellWidth,
         obj.coordinate[1] * cellHeight,
-        Math.ceil(cellWidth),
-        Math.ceil(cellHeight)
+        cellWidth,
+        cellHeight
       );
+    }
+
+    // ocean
+    const color = specifications.colorSpecification.find(item => item.id === "ocean").color;
+    ctx.fillStyle = `rgb(${color.r} ${color.g} ${color.b})`
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        let ocean = true
+        for (let i = 0; i < map.length; i++) {
+          const value = map[i].kernel[y][x];
+          if (value !== -1) {
+            ocean = false
+          }
+        }
+        if(ocean){
+          ctx.fillRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
+        }
+      }
     }
   }, [map, facilityCoordinate, canvasRef]);
 
