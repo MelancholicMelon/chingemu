@@ -106,7 +106,9 @@
       "cost": 1000000,
       "profit": 200000,
       "timeToLive": 20,
-      "description": "not yet"
+      "description": "not yet",
+      "img" : "/img/pngegg.png"
+      
     },
     {
       "id": "Mega Factory",
@@ -117,7 +119,8 @@
       "cost": 50000000,
       "profit": 1000000,
       "timeToLive": 40,
-      "description": "not yet"
+      "description": "not yet",
+      "img" : "/img/pngegg.png"
     },
     {
       "id": "Transit Center",
@@ -128,7 +131,8 @@
       "cost": 10000000,
       "profit": 500000,
       "timeToLive": 40,
-      "description": "not yet"
+      "description": "not yet",
+      "img" : "/img/pngegg.png"
     },
     {
       "id": "City Developement",
@@ -139,7 +143,8 @@
       "cost": 100000000,
       "profit": 5000000,
       "timeToLive": 1000,
-      "description": "not yet"
+      "description": "not yet",
+      "img" : "/img/pngegg.png"
     },
     {
       "id": "Wild Life Reserve",
@@ -150,7 +155,8 @@
       "cost": 50000000,
       "profit": -100000,
       "timeToLive": 70,
-      "description": "not yet"
+      "description": "not yet",
+      "img" : "/img/pngegg.png"
     },
     {
       "id": "National Park",
@@ -161,7 +167,8 @@
       "cost": 10000000,
       "profit": -50000,
       "timeToLive": 50,
-      "description": "not yet"
+      "description": "not yet",
+      "img" : "/img/pngegg.png"
     },
     {
       "id": "Plant Tree",
@@ -172,7 +179,8 @@
       "cost": 1000000,
       "profit": 0,
       "timeToLive": 1000,
-      "description": "not yet"
+      "description": "not yet",
+      "img" : "/img/pngegg.png"
     }
   ],
   "policySpecification": [
