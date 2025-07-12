@@ -5,6 +5,22 @@ body {
     color: #626F47; 
   }
 
+  /* LEFT/RIGHT PANELS */
+  .login-left {
+    flex: 1;
+    min-width: 400px;
+  }
+  
+  .login-right {
+    flex: 1.2;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    border: 2px dashed #A4B465;
+    box-shadow: 0px 4px 12px rgba(164, 180, 101, 0.2);
+  }
+  
+  /* LOGIN SECTION */
   .login-header {
     text-align: center;
     font-size: 3rem;
@@ -67,7 +83,6 @@ body {
     color: #F0BB78;
   }
 
-  /* Wrapper for left and right panels */
 .login-wrapper {
     display: flex;
     justify-content: center;
@@ -78,23 +93,7 @@ body {
     margin: 0 auto;
   }
   
-  /* Left column with login */
-  .login-left {
-    flex: 1;
-    min-width: 400px;
-  }
-  
-  /* Right column with game info */
-  .login-right {
-    flex: 1.2;
-    background-color: #ffffff;
-    padding: 2rem;
-    border-radius: 12px;
-    border: 2px dashed #A4B465;
-    box-shadow: 0px 4px 12px rgba(164, 180, 101, 0.2);
-  }
-  
-  /* About section title */
+  /* ABOUT SECTION */
   .about-title {
     font-size: 1.8rem;
     color: #F0BB78;
@@ -102,7 +101,6 @@ body {
     text-align: center;
   }
   
-  /* Paragraph text */
   .about-text {
     color: #626F47;
     font-size: 1rem;
@@ -110,9 +108,11 @@ body {
     margin-bottom: 1.2rem;
   }
 
+
+  /* LEADER BOARD SECTION */
   .leaderboard-container {
-    background-color: #f5ecd5; /* light cream */
-    color: #626f47; /* dark olive green */
+    background-color: #f5ecd5;
+    color: #626f47; 
     padding: 20px;
     border-radius: 12px;
     max-width: 600px;
@@ -122,7 +122,7 @@ body {
   }
   
   .leaderboard-title {
-    color: #a4b465; /* lighter olive green */
+    color: #a4b465;
     text-align: center;
     font-weight: 700;
     margin-bottom: 16px;
@@ -130,7 +130,7 @@ body {
   }
   
   .highscore {
-    background-color: #f0bb78; /* warm gold */
+    background-color: #f0bb78;
     padding: 12px 16px;
     border-radius: 10px;
     margin-bottom: 20px;
@@ -148,15 +148,11 @@ body {
   }
   
   .score-item {
-    background-color: #a4b465; /* medium olive green */
-    color: #f5ecd5; /* light cream text */
+    background-color: #a4b465;
+    color: #f5ecd5;
     margin-bottom: 10px;
     padding: 10px 14px;
     border-radius: 8px;
     font-weight: 500;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
-  
-
-  
-  

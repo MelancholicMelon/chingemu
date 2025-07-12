@@ -3,7 +3,8 @@ import React, { useEffect } from "react";
 export default function MapRender({
   canvasRef,
   map,
-  placedObjects,
+  facilityCoordinate,
+  specifications,
   cellSize,
   setCellSize,
   onCellClick,
@@ -24,7 +25,7 @@ export default function MapRender({
     canvasRef.current.width = canvasWidth;
     canvasRef.current.height = canvasHeight;
 
-    // setCellSize({ width: cellWidth, height: cellHeight });
+    setCellSize({ width: cellWidth, height: cellHeight });
 
     ctx.fillStyle = `rgb(31, 189, 237)`;
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
@@ -45,16 +46,17 @@ export default function MapRender({
       }
     }
 
-    // for (const obj of placedObjects) {
-    //   ctx.fillStyle = "red";
-    //   ctx.fillRect(
-    //     obj.x * cellWidth,
-    //     obj.y * cellHeight,
-    //     Math.ceil(cellWidth),
-    //     Math.ceil(cellHeight)
-    //   );
-    // }
-  }, [map, placedObjects, canvasRef]);
+    for (const obj of facilityCoordinate) {
+      const color = specifications.colorSpecification.find(item => item.id === obj.id).color;
+      ctx.fillStyle = `rgb(${color.r} ${color.g} ${color.b})`
+      ctx.fillRect(
+        obj.coordinate[0] * cellWidth,
+        obj.coordinate[1] * cellHeight,
+        Math.ceil(cellWidth),
+        Math.ceil(cellHeight)
+      );
+    }
+  }, [map, facilityCoordinate, canvasRef]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -67,6 +69,7 @@ export default function MapRender({
 
       const col = Math.floor(x / cellSize.width);
       const row = Math.floor(y / cellSize.height);
+
       onCellClick(col, row);
     };
 

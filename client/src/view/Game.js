@@ -22,17 +22,19 @@ export default function Game() {
   const [year, setYear] = useState(2025);
   const [facilityCoordinate, setFacilityCoordinate] = useState([]);
   const [policyActivation, setPolicyActivation] = useState(null);
-  const [gameState, setGameState] = useState(false);
+  const [gameState, setGameState] = useState(true);
   const [greennessMap, setGreennessMap] = useState(null);
 
   const [facilityContinent, setFacilityContinet] = useState({});
 
+  const tickRef = useRef(null); 
   const canvasRef = useRef(null);
   const [cellSize, setCellSize] = useState({ width: 0, height: 0 });
   const [canvasHeight, setCanvasHeight] = useState(500);
   const baseUrl = process.env.REACT_APP_API_URL;
 
-  const simulation = new Simulation();
+  const simulation = new Simulation()
+  const TICK_INTERVAL = 1000
 
   useEffect(() => {
     Utils()
@@ -62,7 +64,6 @@ export default function Game() {
         console.error("Failed to load specifications:", error);
       });
   }, []);
-  console.log(greennessMap);
 
   useEffect(() => {
     const updateCanvasHeight = () => {
@@ -80,12 +81,30 @@ export default function Game() {
   }, []);
 
   const handleCellClick = (col, row) => {
+    console.log(col, row)
     const success = simulation.validateInput(
       facilityCoordinate,
       specifications["facilitySpecification"],
       setFacilityCoordinate
     );
   };
+
+  useEffect(() => {
+    if (!gameState) return;
+
+    const runSimulationTick = () => {
+      // Update game state here
+      console.log('Simulation tick', new Date().toLocaleTimeString());
+
+      // Example: update local resource values here
+      // setResources(prev => ({ ...prev, wood: prev.wood + 1 }));
+    };
+
+    tickRef.current = setInterval(runSimulationTick, TICK_INTERVAL);
+
+    // Cleanup when component unmounts or paused
+    return () => clearInterval(tickRef.current);
+  }, [, gameState]);
 
   return (
     <div className="game-container">
@@ -94,6 +113,9 @@ export default function Game() {
           canvasRef={canvasRef}
           map={greennessMap}
           facilityCoordinate={facilityCoordinate}
+          specifications={specifications}
+          cellSize={cellSize}
+          setCellSize={setCellSize}
           onCellClick={handleCellClick}
           canvasHeight={canvasHeight}
         />
