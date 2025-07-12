@@ -1,0 +1,102 @@
+{
+  "colorSpecification": [
+    {
+      "id": "continent",
+      "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0
+      }
+    },
+    {
+      "id": "facility",
+      "color": {
+        "r": 252,
+        "g": 202,
+        "b": 3
+      }
+    },
+    {
+      "id": "ocean",
+      "color": {
+        "r": 3,
+        "g": 219,
+        "b": 252
+      }
+    }
+  ],
+  "greennessAndLocationMap": [
+    {
+      "id": "world",
+      "loc": "maps/world/continents.json"
+    },
+    {
+      "id": "japan",
+      "loc": "maps/japan/continents.json"
+    },
+    {
+      "id": "northAmerica",
+      "loc": "maps/northAmerica/continents.json"
+    },
+    {
+      "id": "indonesia",
+      "loc": "maps/indonesia/continents.json"
+    },
+    {
+      "id": "shikoku",
+      "loc": "maps/shikoku/continents.json"
+    }
+  ],
+  "facilitySpecification": [
+    {
+      "id": "factory1",
+      "size": 3,
+      "pdf": "normal",
+      "stddtv": 20,
+      "maxImpact": 500,
+      "cost": 10,
+      "profit": 100,
+      "timeToLive": 10,
+      "description": "not yet"
+    },
+    {
+      "id": "factory2",
+      "size": 5,
+      "pdf": "normal",
+      "stddtv": 50,
+      "maxImpact": 100,
+      "cost": 70,
+      "profit": 400,
+      "timeToLive": 10,
+      "description": "not yet"
+    },
+    {
+      "id": "factory3",
+      "size": 3,
+      "pdf": "normal",
+      "stddtv": 20,
+      "maxImpact": 100,
+      "cost": 0,
+      "profit": 1,
+      "timeToLive": 10,
+      "description": "not yet"
+    }
+  ],
+  "policySpecification": [
+    {
+      "id": "p1",
+      "parameter": "maxImpact",
+      "multiplier": -100
+    },
+    {
+      "id": "p2",
+      "parameter": "sd",
+      "multiplier": 3
+    },
+    {
+      "id": "p3",
+      "parameter": "timeToLive",
+      "multiplier": 1.5
+    }
+  ]
+}
