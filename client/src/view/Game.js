@@ -30,8 +30,6 @@ export default function Game() {
   const [greennessMap, setGreennessMap] = useState(null);
   const greennessMapRef = useRef(greennessMap);
 
-  const [facilityContinent, setFacilityContinet] = useState({});
-
   // temporary state for selected facilities
   const [selFacility, setSelFacility] = useState("");
 
@@ -68,10 +66,9 @@ export default function Game() {
   const canvasRef = useRef(null);
   const [cellSize, setCellSize] = useState({ width: 0, height: 0 });
   const [canvasHeight, setCanvasHeight] = useState(500);
-  const baseUrl = process.env.REACT_APP_API_URL;
 
   const simulation = new Simulation()
-  const TICK_INTERVAL = 1000
+  const TICK_INTERVAL = 100
 
   useEffect(() => {
     Utils()
@@ -118,6 +115,7 @@ export default function Game() {
   }, []);
 
   const handleCellClick = (col, row) => {
+    if (gameState) return;
     const success = simulation.validateInput(
       { x: col, y: row },
       selectedFacility,
@@ -135,37 +133,48 @@ export default function Game() {
     greennessMapRef.current = greennessMap;
   }, [greennessMap]);
 
-
   useEffect(() => {
     if (!gameState) return;
 
     let tickCounter = 0;
 
     const runSimulationTick = () => {
-      // Update game state here
-      console.log('Simulation tick', new Date().toLocaleTimeString());
+      console.log("Simulation tick", new Date().toLocaleTimeString());
 
-      simulation.progress(
-        greennessMapRef.current, 
-        facilityCoordinate,
-        policyActivation,
-        specifications,
-        setGreennessMap
-      );
+      setFacilityCoordinate(prev => {
+        const updated = prev
+          .map(fc => ({ ...fc, timeToLive: fc.timeToLive - 1 }))
+          .filter(fc => fc.timeToLive > 0);
+
+        // ✅ Safe logging
+        if (updated.length > 0) {
+          console.log("TimeToLive:", updated[0].timeToLive);
+        }
+
+        // ✅ Use the updated list in simulation
+        simulation.progress(
+          greennessMapRef.current,
+          updated, // ✅ not stale
+          policyActivation,
+          specifications,
+          setGreennessMap
+        );
+
+        return updated;
+      });
 
       setYear(prevYear => prevYear + 1);
       tickCounter++;
 
-      if (tickCounter >= 10) {
+      if (tickCounter >= 100) {
         setGameState(false);
       }
     };
 
     tickRef.current = setInterval(runSimulationTick, TICK_INTERVAL);
-
-    // Cleanup when component unmounts or paused
     return () => clearInterval(tickRef.current);
-  }, [, gameState]);
+  }, [gameState]);
+
 
   return (
     <div className="game-container">
