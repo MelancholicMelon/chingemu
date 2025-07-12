@@ -1,4 +1,5 @@
 {
+  "obejctTypes": ["continent", "facility", "ocean"],
   "colorSpecification": [
     {
       "id": "continent",
@@ -35,7 +36,7 @@
     {
       "id": "Transit Center",
       "color": {
-        "r": 246, 
+        "r": 246,
         "g": 247,
         "b": 148
       }
@@ -43,7 +44,7 @@
     {
       "id": "City Developement",
       "color": {
-        "r": 136,  
+        "r": 136,
         "g": 141,
         "b": 153
       }
@@ -51,7 +52,7 @@
     {
       "id": "Wild Life Reserve",
       "color": {
-        "r": 18,  
+        "r": 18,
         "g": 105,
         "b": 41
       }
@@ -67,7 +68,7 @@
     {
       "id": "Plant Tree",
       "color": {
-        "r": 113,  
+        "r": 113,
         "g": 235,
         "b": 145
       }

@@ -27,7 +27,7 @@ export default async function Utils() {
 
   const s = await allSpecification.json();
 
-  const continentMapPath = s["greennessAndLocationMap"][0]["loc"];
+  const continentMapPath = s["greennessAndLocationMap"][1]["loc"];
 
   const greennessAndLocationMapRes = await fetch(
     `${baseUrl}/continentJson?filePath=${continentMapPath}`,
@@ -39,17 +39,18 @@ export default async function Utils() {
 
   const greennessAndLocationMapJson = await greennessAndLocationMapRes.json();
 
-  greennessMap = greennessAndLocationMapJson[0]["kernel"];
+  greennessMap = greennessAndLocationMapJson;
   facilitySpecification = s["facilitySpecification"];
   policySpecification = s["policySpecification"];
   colorSpecification = s["colorSpecification"];
 
-  objectTypes = ["continent", "facility", "ocean"];
-  continents = ["c1", "c2", "c3"];
-  facilityTypes = ["f1", "f2", "f3"];
-  pdfTypes = ["normal"];
-  policyTypes = ["p1", "p2", "p3"];
-  params = ["sd", "maxImpact"];
+  objectTypes = s["obejctTypes"];
+  facilityTypes = facilitySpecification.map((facility) => facility.id);
+  pdfTypes = [
+    ...new Set(facilitySpecification.map((facility) => facility.pdfTypes)),
+  ];
+  policyTypes = policySpecification.map((policy) => policy.id);
+  params = policySpecification.map((policy) => policy.parameter);
 
   return {
     colorSpecification: colorSpecification,
@@ -57,7 +58,6 @@ export default async function Utils() {
     greennessMap: greennessMap,
     policySpecification: policySpecification,
     objectTypes: objectTypes,
-    continents: continents,
     facilityTypes: facilityTypes,
     pdfTypes: pdfTypes,
     policyTypes: policyTypes,
