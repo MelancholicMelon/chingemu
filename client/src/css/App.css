@@ -1,10 +1,11 @@
 :root {
-    --color-bg-primary: #FFF1CA;       /* soft pale yellow (background) */
-    --color-text-primary: #2D4F2B;     /* dark forest green (text) */
-    --color-border-primary: #708A58;   /* muted olive green (borders/buttons) */
-    --color-highlight: #FFB823;        /* bright amber (highlights) */
+    --color-bg-primary: #FFFBE6;       /* very light cream (background) */
+    --color-text-primary: #00712D;     /* rich dark green (text) */
+    --color-border-primary: #D5ED9F;   /* soft pastel green (borders/buttons) */
+    --color-highlight: #FF9100;        /* bright orange (highlights) */
     --color-white: #ffffff;             /* white */
   }
+  
   
   
   body {
@@ -162,6 +163,7 @@
     padding: 10px 14px;
     border-radius: 8px;
     font-weight: 500;
+    color: #00712D;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
   

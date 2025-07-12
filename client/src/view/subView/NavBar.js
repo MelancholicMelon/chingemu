@@ -15,7 +15,7 @@ export default function NavBar(props) {
   };
 
   return (
-    <nav style={{ padding: "1rem", background: "#708A58" }}>
+    <nav style={{ padding: "1rem", background: "#D5ED9F" }}>
       <Link to="/">Login</Link> |{" "}
       <Link to="/leaderboard">LeaderBoard</Link> |{" "}
       <Link to="/game">Game</Link>
