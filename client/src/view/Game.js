@@ -216,6 +216,9 @@ export default function Game() {
 
   return (
     <div>
+      <button className = "resume" onClick={() => setGameState(true)} disabled={gameState}>
+        Resume
+      </button>
       <div className="game-container">
         <div className="canvas-container">
           <MapRender
@@ -260,9 +263,6 @@ export default function Game() {
           </div>
         </div>
       </div>
-      <button onClick={() => setGameState(true)} disabled={gameState}>
-        Resume
-      </button>
     </div>
   );
 }
