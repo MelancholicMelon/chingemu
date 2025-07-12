@@ -24,7 +24,7 @@ export default function MapRender({
     canvasRef.current.width = canvasWidth;
     canvasRef.current.height = canvasHeight;
 
-    setCellSize({ width: cellWidth, height: cellHeight });
+    // setCellSize({ width: cellWidth, height: cellHeight });
 
     ctx.fillStyle = `rgb(31, 189, 237)`;
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
@@ -45,15 +45,15 @@ export default function MapRender({
       }
     }
 
-    for (const obj of placedObjects) {
-      ctx.fillStyle = "red";
-      ctx.fillRect(
-        obj.x * cellWidth,
-        obj.y * cellHeight,
-        Math.ceil(cellWidth),
-        Math.ceil(cellHeight)
-      );
-    }
+    // for (const obj of placedObjects) {
+    //   ctx.fillStyle = "red";
+    //   ctx.fillRect(
+    //     obj.x * cellWidth,
+    //     obj.y * cellHeight,
+    //     Math.ceil(cellWidth),
+    //     Math.ceil(cellHeight)
+    //   );
+    // }
   }, [map, placedObjects, canvasRef]);
 
   useEffect(() => {

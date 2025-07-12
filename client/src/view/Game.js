@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import Utils from "../utils/Utils";
 import MapRender from "./subView/MapRender";
-import validateInput from "../utils/Simulation";
+import Simulation from "../utils/Simulation";
 
 export default function Game() {
   const [specifications, setSpecifications] = useState({
     colorSpecification: null,
     facilitySpecification: null,
-    greennessMap: null,
     policySpecification: null,
     objectTypes: null,
     continents: null,
@@ -33,13 +32,14 @@ export default function Game() {
   const [canvasHeight, setCanvasHeight] = useState(500);
   const baseUrl = process.env.REACT_APP_API_URL;
 
+  const simulation = new Simulation()
+
   useEffect(() => {
     Utils()
       .then((data) => {
         setSpecifications({
           colorSpecification: data.colorSpecification,
           facilitySpecification: data.facilitySpecification,
-          greennessMap: data.greennessMap,
           policySpecification: data.policySpecification,
           objectTypes: data.objectTypes,
           continents: data.continents,
@@ -62,8 +62,7 @@ export default function Game() {
         console.error("Failed to load specifications:", error);
       });
   }, []);
-
-  console.log(specifications);
+  console.log(greennessMap)
 
   useEffect(() => {
     const updateCanvasHeight = () => {
@@ -81,20 +80,20 @@ export default function Game() {
   }, []);
 
   const handleCellClick = (col, row) => {
-    const success = validateInput(
+    const success = simulation.validateInput(
       facilityCoordinate,
-      specifications["facilitySpecification"]
+      specifications["facilitySpecification"],
+      setFacilityCoordinate
     );
-    if (success) {
-      setFacilityCoordinate((prev) => [...prev, {}]);
-    }
   };
+
 
   return (
     <div className="game-container">
       <div className="canvas-container">
         <MapRender
           canvasRef={canvasRef}
+          map = {greennessMap}
           facilityCoordinate={facilityCoordinate}
           onCellClick={handleCellClick}
           canvasHeight={canvasHeight}
