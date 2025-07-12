@@ -3,17 +3,9 @@
     {
       "id": "continent",
       "color": {
-        "r": 0,
+        "r": 205,
         "g": 255,
-        "b": 0
-      }
-    },
-    {
-      "id": "facility",
-      "color": {
-        "r": 252,
-        "g": 202,
-        "b": 3
+        "b": 255
       }
     },
     {
@@ -22,6 +14,62 @@
         "r": 3,
         "g": 219,
         "b": 252
+      }
+    },
+    {
+      "id": "Factory",
+      "color": {
+        "r": 217,
+        "g": 67,
+        "b": 67
+      }
+    },
+    {
+      "id": "Mega Factory",
+      "color": {
+        "r": 191,
+        "g": 31,
+        "b": 31
+      }
+    },
+    {
+      "id": "Transit Center",
+      "color": {
+        "r": 246, 
+        "g": 247,
+        "b": 148
+      }
+    },
+    {
+      "id": "City Developement",
+      "color": {
+        "r": 136,  
+        "g": 141,
+        "b": 153
+      }
+    },
+    {
+      "id": "Wild Life Reserve",
+      "color": {
+        "r": 18,  
+        "g": 105,
+        "b": 41
+      }
+    },
+    {
+      "id": "National Park",
+      "color": {
+        "r": 20,
+        "g": 87,
+        "b": 38
+      }
+    },
+    {
+      "id": "Plant Tree",
+      "color": {
+        "r": 113,  
+        "g": 235,
+        "b": 145
       }
     }
   ],
@@ -115,7 +163,7 @@
       "description": "not yet"
     },
     {
-      "id": "National Park",
+      "id": "Plant Tree",
       "size": 1,
       "pdf": "normal",
       "stddtv": 1,
