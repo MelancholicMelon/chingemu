@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Utils from "../utils/Utils";
 import MapRender from "./subView/MapRender";
+import "../css/game.css";
 
 //const TICK_INTERVAL = 1000;
 

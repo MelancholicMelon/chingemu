@@ -11,7 +11,7 @@ import ScoreTestPage from "./utils/ScoreTestPage";
 
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
-import "./App.css";
+import "./css/App.css";
 
 export default function App() {
   const [user, setUser] = useState(null);
