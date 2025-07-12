@@ -11,8 +11,6 @@ export default function Facilities(props) {
             className="facility-image"
             src={props.img}
             alt={props.name}
-            width="100"
-            height="100"
           />
         </button>
         <div className="facility-text">
