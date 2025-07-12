@@ -22,6 +22,7 @@ export default function Game() {
   const [profit, setProfit] = useState(0);
   const [score, setScore] = useState(0);
   const [year, setYear] = useState(2025);
+  const yearRef = useRef(year);
   const [selectedFacility, setSelectedFacility] = useState('Wild Life Reserve');
   const [facilityCoordinate, setFacilityCoordinate] = useState([]);
   const [policyActivation, setPolicyActivation] = useState(null);
@@ -138,6 +139,8 @@ export default function Game() {
   useEffect(() => {
     if (!gameState) return;
 
+    let tickCounter = 0;
+
     const runSimulationTick = () => {
       // Update game state here
       console.log('Simulation tick', new Date().toLocaleTimeString());
@@ -195,7 +198,9 @@ export default function Game() {
         </div>
         {/*Policies list*/}
         <div className="policies-container">
-
+          <button onClick={() => setGameState(true)} disabled={gameState}>
+            Resume
+          </button>
         </div>
       </div>
     </div>
