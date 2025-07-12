@@ -162,7 +162,7 @@ paths = {
     "maps/indonesia/": 5,
     "maps/shikoku/": 5
 }
-n = 150
+n = 200
 min_continent_size = n/10
 
 for path, eP in paths.items():
