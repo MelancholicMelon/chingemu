@@ -1,14 +1,17 @@
 export default class Simulation {
-  getGreennessMap(mapDict) {
+  get2DGreennessMap(mapDict) {
+    console.log(mapDict);
     let greennessMap = [];
     for (let i = 0; i < mapDict.length; i++) {
       greennessMap.push(mapDict[i]["kernel"]);
     }
+    console.log(greennessMap);
+    return greennessMap;
   }
 
-  validateInput(facilityCordinate, facilityId) {}
+  validateInput(facilityCordinate, facilityId, setFacilityCoordinate) {}
 
-  calculateScore(budget, profit) {}
+  calculateScore(budget, profit, setScore) {}
 
   progress(specifications, year) {
     let facilities = specifications.facilityCordinate;

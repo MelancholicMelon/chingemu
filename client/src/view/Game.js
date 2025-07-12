@@ -32,6 +32,8 @@ export default function Game() {
   const [canvasHeight, setCanvasHeight] = useState(500);
   const baseUrl = process.env.REACT_APP_API_URL;
 
+  const simulation = new Simulation();
+
   useEffect(() => {
     Utils()
       .then((data) => {
@@ -60,7 +62,6 @@ export default function Game() {
         console.error("Failed to load specifications:", error);
       });
   }, []);
-
   console.log(greennessMap);
 
   useEffect(() => {
@@ -79,10 +80,11 @@ export default function Game() {
   }, []);
 
   const handleCellClick = (col, row) => {
-    // Simulation.validateInput(
-    //   facilityCoordinate,
-    //   specifications["facilitySpecification"]
-    // );
+    const success = simulation.validateInput(
+      facilityCoordinate,
+      specifications["facilitySpecification"],
+      setFacilityCoordinate
+    );
   };
 
   return (
@@ -90,6 +92,7 @@ export default function Game() {
       <div className="canvas-container">
         <MapRender
           canvasRef={canvasRef}
+          map={greennessMap}
           facilityCoordinate={facilityCoordinate}
           onCellClick={handleCellClick}
           canvasHeight={canvasHeight}
