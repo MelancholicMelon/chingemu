@@ -1,5 +1,5 @@
 {
-  "obejctTypes": ["continent", "facility", "ocean"],
+  "objectTypes": ["continent", "facility", "ocean"],
   "colorSpecification": [
     {
       "id": "continent",
