@@ -92,11 +92,10 @@ export default function Game() {
   //   console.log(`${selectedFacility} is selected`)
   // }, [selectedFacility])
 
-  const onClickFacility = (val) => {
-    // console.log("DEBUG: Facility Clicked")
-    const selectedFacility = val.currentTarget.value;
-    setSelectedFacility(selectedFacility);
-  }
+  const onClickFacility = (facilityId) => {
+  console.log("Selected:", facilityId);
+  setSelectedFacility(facilityId);
+};
 
   // // temporary facilities json for testing
   // const facilities = {
@@ -166,16 +165,26 @@ export default function Game() {
   }, []);
 
   const handleCellClick = (col, row) => {
-    if (gameState) return;
-    const success = simulation.validateInput(
-      { x: col, y: row },
-      selectedFacility,
-      facilityCoordinate,
-      specifications.facilitySpecification,
-      greennessMap,
-      setFacilityCoordinate
-    );
-  };
+  if (gameState) return;
+
+  if (!selectedFacility) {
+    alert("Please select a facility before placing it.");
+    return;
+  }
+
+  const success = simulation.validateInput(
+    { x: col, y: row },
+    selectedFacility,
+    facilityCoordinate,
+    specifications.facilitySpecification,
+    greennessMap,
+    setFacilityCoordinate
+  );
+
+  if (!success) {
+    alert("Placement not allowed at this position.");
+  }
+};
 
   useEffect(() => {
     yearRef.current = year;
@@ -258,13 +267,13 @@ export default function Game() {
             {specifications.facilitySpecification &&
             specifications.facilitySpecification.map((facility, key) => {
               //console.log(`Rendering facility: ${facility.id}, img: ${facility.img}`); // debuggusy
-
               return (
                 <div key={key}>
                   <Facilities
                     img={facility.img}
                     cost={facility.cost}
                     name={facility.id}
+                    active={selectedFacility === facility.id}
                     onClick={onClickFacility}
                   />
                 </div>

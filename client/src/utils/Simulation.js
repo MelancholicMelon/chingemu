@@ -17,6 +17,10 @@ export default class Simulation {
   ) {
     const greennessMap = this.get2DGreennessMap(mapDict);
     let availible = false;
+    // console.log("FACILITYSPEC START")
+    // //console.log(facilitySpecification)
+    // console.log(facilityCordinate)
+    // console.log("FACILITYSPEC END")
     for (let i = 0; i < greennessMap.length; i++) {
       let continent = greennessMap[i];
       if (continent[coordinate.y][coordinate.x] > -1) {
@@ -24,6 +28,9 @@ export default class Simulation {
       }
     }
     for (const facility of facilityCordinate) {
+      // console.log("HELLO?!")
+      // console.log("Looking for spec with id (selectedFacility):", selectedFacility);
+      // console.log("Looking for spec with id (nearby facility):", facility.id);
       const x_diff = coordinate.x - facility.coordinate[0];
       const y_diff = coordinate.y - facility.coordinate[1];
       const distance = Math.sqrt(x_diff * x_diff + y_diff * y_diff);
