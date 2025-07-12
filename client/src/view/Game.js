@@ -19,7 +19,7 @@ export default function Game() {
     modifiableParams: null,
   });
 
-  const [budge, setBudget] = useState(10000000);
+  const [budget, setBudget] = useState(10000000);
   const [profit, setProfit] = useState(0);
   const [score, setScore] = useState(0);
   const [year, setYear] = useState(2025);
@@ -67,24 +67,21 @@ export default function Game() {
     setForm((prev) => ({ ...prev, [name]: checked }));
   };
 
-  // Policy state debugging 
-  useEffect(() => {
-    console.log(form);
-  }, [form])
+  // // Policy state debugging 
+  // useEffect(() => {
+  //   console.log(form);
+  // }, [form])
 
   const [facilityContinent, setFacilityContinet] = useState({});
 
-  // temporary state for selected facilities
-  const [selFacility, setSelFacility] = useState("");
-
-  // // temporary useeffect for debugging
-  // useEffect(() => {
-  //   console.log(`${selFacility} is selected`)
-  // }, [selFacility])
+  // temporary useeffect for debugging
+  useEffect(() => {
+    console.log(`${selectedFacility} is selected`)
+  }, [selectedFacility])
 
   const onClickFacility = (val) => {
     const selectedFacility = val.currentTarget.value;
-    setSelFacility(selectedFacility);
+    setSelectedFacility(selectedFacility);
   }
 
   // temporary facilities json for testing
@@ -234,6 +231,11 @@ export default function Game() {
         </div>
 
         <div className="controls-container">
+          {/* Budget */}
+          <div className="metrics-container">
+            <p>Budget: {budget}</p>
+            <p>Profit: {profit}</p>
+          </div>
           {/*Facilities list*/}
           <div className="section-header">Facilities</div>
           <div className="facilities-container">
