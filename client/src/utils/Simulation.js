@@ -40,7 +40,10 @@ export default class Simulation {
   calculateScore(budget, profit, setScore) {}
 
   progress(mapDict, facilityCoordinate, policyActivation, specifications, setGreennessMap) {
-    let map = mapDict
+    const map = mapDict.map(continent => ({
+      ...continent,
+      kernel: continent.kernel.map(row => [...row]),
+    }));
     const mapSize = [mapDict[0]['kernel'].length, mapDict[0]['kernel'][0].length]
     //const PDFKernel = generatePDFKernel(facilityCoordinate, policyActivation, specifications.facilitySpecification, specifications.policySpecification);
     let greennessMap = this.get2DGreennessMap(mapDict);
@@ -48,7 +51,7 @@ export default class Simulation {
       for(let x =0;x<mapSize[0];x++){
         for(let y=0;y< mapSize[1];y++){
           if(mapDict[i]['kernel'][x][y] !== -1){
-            map[i]['kernel'][x][y] = greennessMap[i][x][y]// + PDFKernel[x][y]
+            map[i]['kernel'][x][y] = greennessMap[i][x][y] * (Math.random() * (1.5 - 0.9) + 0.9) //* PDFKernel[x][y]
           }
         }
       }

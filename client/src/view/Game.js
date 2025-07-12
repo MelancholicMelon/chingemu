@@ -28,6 +28,7 @@ export default function Game() {
   const [policyActivation, setPolicyActivation] = useState(null);
   const [gameState, setGameState] = useState(false);
   const [greennessMap, setGreennessMap] = useState(null);
+  const greennessMapRef = useRef(greennessMap);
 
   const [facilityContinent, setFacilityContinet] = useState({});
 
@@ -111,6 +112,10 @@ export default function Game() {
   useEffect(() => {
     yearRef.current = year;
   }, [year]);
+  useEffect(() => {
+    greennessMapRef.current = greennessMap;
+  }, [greennessMap]);
+
 
   useEffect(() => {
     if (!gameState) return;
@@ -121,7 +126,7 @@ export default function Game() {
       console.log("Simulation tick", new Date().toLocaleTimeString());
 
       simulation.progress(
-        greennessMap,
+        greennessMapRef.current, 
         facilityCoordinate,
         policyActivation,
         specifications,
@@ -142,7 +147,6 @@ export default function Game() {
   }, [gameState]);
 
 
-  console.log(greennessMap)
   return (
     <div className="game-container">
       <div className="canvas-container">

@@ -45,7 +45,6 @@ export default function MapRender({
     }
 
     // facilities
-    console.log(facilityCoordinate)
     for (const obj of facilityCoordinate) {
       const color = specifications.colorSpecification.find(item => item.id === obj.id).color;
       const size = specifications.facilitySpecification.find(item => item.id === obj.id).size;
