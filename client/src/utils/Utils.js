@@ -1,22 +1,21 @@
 import { useEffect, useState } from "react";
 
-let n_k;
-let n_c;
-let n_f;
-let objectTypes;
-let continents;
-let colorSpecification;
-let facilityTypes;
-let pdfTypes;
-let policyTypes;
-let params;
-let facilitySpecification;
-let continentLocation;
-let objectLocation;
-let greennessMap;
-let policySpecification;
+export default async function Utils() {
+  let n_k;
+  let n_c;
+  let n_f;
+  let objectTypes;
+  let continents;
+  let colorSpecification;
+  let facilityTypes;
+  let pdfTypes;
+  let policyTypes;
+  let params;
+  let facilitySpecification;
+  let continentLocation;
+  let greennessMap;
+  let policySpecification;
 
-const Utils = async () => {
   const token = localStorage.getItem("token");
   const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -31,15 +30,15 @@ const Utils = async () => {
   }
 
   const s = await allSpecification.json();
+
   const continentMapPath = s["greennessAndLocationMap"][0]["loc"];
 
-  const greennessAndLocationMapRes = await fetch(
-    `${baseUrl}/continentJson?filePath=${continentMapPath}`,
-    { headers }
-  );
+  const greennessAndLocationMapRes = await fetch(`${baseUrl}/continentJson?filePath=${continentMapPath}`, { headers });
   if (!greennessAndLocationMapRes.ok) {
     throw new Error("Resource loading failed.");
   }
+
+  console.log(greennessAndLocationMapRes);
 
   const greennessAndLocationMapJson = await greennessAndLocationMapRes.json();
 
@@ -57,55 +56,21 @@ const Utils = async () => {
   pdfTypes = ["normal"];
   policyTypes = ["p1", "p2", "p3"];
   params = ["sd", "maxImpact"];
-};
 
-// Getters for variables
-export function getKernelSize() {
-  return n_k;
+  return {
+    kernelSize: n_k,
+    numContinents: n_c,
+    numFacilityTypes: n_f,
+    colorSpecification: colorSpecification,
+    facilitySpecification: facilitySpecification,
+    continentLocation: continentLocation,
+    greennessMap: greennessMap,
+    policySpecification: policySpecification,
+    objectTypes: objectTypes,
+    continents: continents,
+    facilityTypes: facilityTypes,
+    pdfTypes: pdfTypes,
+    policyTypes: policyTypes,
+    modifiableParams: params,
+  };
 }
-export function getNumContinents() {
-  return n_c;
-}
-export function getNumFacilityTypes() {
-  return n_f;
-}
-
-export function getColorSpecification() {
-  return colorSpecification;
-}
-export function getFacilitySpecification() {
-  return facilitySpecification;
-}
-export function getContinentLocation() {
-  return continentLocation;
-}
-export function getObjectLocation() {
-  return objectLocation;
-}
-export function getGreennessMap() {
-  return greennessMap;
-}
-export function getPolicySpecification() {
-  return policySpecification;
-}
-
-export function getObjectTypes() {
-  return objectTypes;
-}
-export function getContinents() {
-  return continents;
-}
-export function getFacilityTypes() {
-  return facilityTypes;
-}
-export function getPdfTypes() {
-  return pdfTypes;
-}
-export function getPolicyTypes() {
-  return policyTypes;
-}
-export function getModifiableParams() {
-  return params;
-}
-
-export default Utils;
