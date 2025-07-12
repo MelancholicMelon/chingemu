@@ -22,9 +22,10 @@ export default function Game() {
   const [profit, setProfit] = useState(0);
   const [score, setScore] = useState(0);
   const [year, setYear] = useState(2025);
+  const [selectedFacility, setSelectedFacility] = useState('Wild Life Reserve');
   const [facilityCoordinate, setFacilityCoordinate] = useState([]);
   const [policyActivation, setPolicyActivation] = useState(null);
-  const [gameState, setGameState] = useState(true);
+  const [gameState, setGameState] = useState(false);
   const [greennessMap, setGreennessMap] = useState(null);
 
   const [facilityContinent, setFacilityContinet] = useState({});
@@ -93,10 +94,12 @@ export default function Game() {
   }, []);
 
   const handleCellClick = (col, row) => {
-    console.log(col, row)
     const success = simulation.validateInput(
+      {x: col, y:row},
+      selectedFacility,
       facilityCoordinate,
-      specifications["facilitySpecification"],
+      specifications.facilitySpecification,
+      greennessMap,
       setFacilityCoordinate
     );
   };
