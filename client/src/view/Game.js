@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import Utils from "../utils/Utils";
 import MapRender from "./subView/MapRender";
 import Simulation from "../utils/Simulation";
+import "../css/game.css"
+import Facilities from "./Facilities";
 
 export default function Game() {
   const [specifications, setSpecifications] = useState({
@@ -27,7 +29,17 @@ export default function Game() {
 
   const [facilityContinent, setFacilityContinet] = useState({});
 
-  const tickRef = useRef(null); 
+  // temporary state for selected facilities
+  const [selFacility, setSelFacitlity] = useState("");
+
+  // temporary facilities json for testing
+  const facilities = {
+    "tree": {img: "../img/png-clipart-fried-egg-fried-egg-thumbnail.png", cost: 50, name: "tree"},
+    "factory": {img: "../img/png-clipart-fried-egg-fried-egg-thumbnail.png", cost: 100, name: "factory"},
+    "big factory": {img: "../img/png-clipart-fried-egg-fried-egg-thumbnail.png", cost: 150, name: "big factory"}
+  }
+
+  const tickRef = useRef(null);
   const canvasRef = useRef(null);
   const [cellSize, setCellSize] = useState({ width: 0, height: 0 });
   const [canvasHeight, setCanvasHeight] = useState(500);
@@ -124,7 +136,24 @@ export default function Game() {
       <div className="controls-container">
         <pre className="debug-panel"></pre>
         {/* Add more controls here */}
+        {/*Facilities list*/}
+        {Object.values(facilities).map((facility, key) => (
+          <div key={key}>
+            <Facilities
+              img = {facility.img}
+              cost = {facility.cost}
+              name = {facility.name}
+            />
+            </div>
+        ))}
       </div>
     </div>
   );
 }
+
+// Dylan's TODO
+// Add components that can be placed on the map
+// Add policies to toggle
+// Add a timeline slider on the top
+// Add buttons to control the game like pause, continue, reset, etc. 
+// Add current money and cost per facility
