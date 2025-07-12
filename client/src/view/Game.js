@@ -271,5 +271,4 @@ export default function Game() {
 
 // Dylan's TODO
 // Add buttons to control the game like pause, continue, reset, etc. 
-// Add current money and cost per facility
 // Add a timeline slider on the top
