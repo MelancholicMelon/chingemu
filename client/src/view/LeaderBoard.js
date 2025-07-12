@@ -78,28 +78,28 @@ export default function LeaderBoard() {
   }, []);
 
   return (
-    <div>
-      <h2>LeaderBoard</h2>
+    <section className="leaderboard-container">
+      <h2 className="leaderboard-title">LeaderBoard</h2>
+
       {highScore && (
-        <div>
+        <article className="highscore">
           <strong>Your High Score:</strong> {highScore.score} (Score ID:{" "}
           {highScore.scoreId})
-        </div>
+        </article>
       )}
 
-      <ul>
+      <ul className="scores-list">
         {scores.map((p) => (
-          <li key={p.id}>
+          <li key={p.id} className="score-item">
             User Id: {p.userId}, Score Id: {p.id}, Score: {p.score}
           </li>
         ))}
       </ul>
 
-      {/* Posts section placeholder (keep this as is per your instructions) */}
-      <div>
-        <h3>Posts Section</h3>
+      <section className="posts-section">
+        {/* <h3>Posts Section</h3> */}
         {/* Your posts/forum/chat UI here */}
-      </div>
-    </div>
+      </section>
+    </section>
   );
 }
