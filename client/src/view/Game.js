@@ -80,21 +80,21 @@ export default function Game() {
   }, [selectedFacility])
 
   const onClickFacility = (val) => {
-    const selectedFacility = val.currentTarget.value;
-    setSelectedFacility(selectedFacility);
+    const tempFacility = val.currentTarget.value;
+    setSelectedFacility(tempFacility);
   }
 
   // temporary facilities json for testing
   const facilities = {
     "tree": { img: "/img/pngegg.png", cost: 50, name: "tree" },
     "factory": { img: "/img/pngegg.png", cost: 100, name: "factory" },
-    "big factory": { img: "/img/pngegg.png", cost: 150, name: "big factory" },
-    "tree2": { img: "/img/pngegg.png", cost: 50, name: "tree" },
-    "factory2": { img: "/img/pngegg.png", cost: 100, name: "factory" },
-    "big factory2": { img: "/img/pngegg.png", cost: 150, name: "big factory" },
-    "tree3": { img: "/img/pngegg.png", cost: 50, name: "tree" },
-    "factory3": { img: "/img/pngegg.png", cost: 100, name: "factory" },
-    "big factory3": { img: "/img/pngegg.png", cost: 150, name: "big factory" }
+    "big factory": { img: "/img/pngegg.png", cost: 150, name: "diddy" },
+    "tree2": { img: "/img/pngegg.png", cost: 50, name: "diddylations" },
+    "factory2": { img: "/img/pngegg.png", cost: 100, name: "michael jackson" },
+    "big factory2": { img: "/img/pngegg.png", cost: 150, name: "bob marley" },
+    "tree3": { img: "/img/pngegg.png", cost: 50, name: "test1" },
+    "factory3": { img: "/img/pngegg.png", cost: 100, name: "test2" },
+    "big factory3": { img: "/img/pngegg.png", cost: 150, name: "test3" }
   }
 
   const tickRef = useRef(null);
@@ -237,14 +237,14 @@ export default function Game() {
           <div className="section-header">Facilities</div>
           <div className="facilities-container">
             {Object.values(facilities).map((facility, key) => (
-              <div key={key}>
-                <Facilities
-                  img={facility.img}
-                  cost={facility.cost}
-                  name={facility.name}
-                  onClick={onClickFacility}
-                />
-              </div>
+                <div key={key}>
+                  <Facilities
+                    img={facility.img}
+                    cost={facility.cost}
+                    name={facility.name}
+                    active={selectedFacility === facility.name}
+                    onClick={onClickFacility} />
+                </div>
             ))}
           </div>
           {/*Policies list*/}

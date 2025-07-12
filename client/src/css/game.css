@@ -60,6 +60,10 @@
   box-shadow: 0 4px 10px rgba(255, 145, 0, 0.2);
 }
 
+.facility-container.active {
+  background-color: #D5ED9F;
+}
+
 .image-button {
   background: none;
   border: none;
