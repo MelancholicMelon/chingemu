@@ -22,11 +22,13 @@ export default function Game() {
   const [profit, setProfit] = useState(0);
   const [score, setScore] = useState(0);
   const [year, setYear] = useState(2025);
+  const yearRef = useRef(year);
   const [selectedFacility, setSelectedFacility] = useState('Wild Life Reserve');
   const [facilityCoordinate, setFacilityCoordinate] = useState([]);
   const [policyActivation, setPolicyActivation] = useState(null);
   const [gameState, setGameState] = useState(false);
   const [greennessMap, setGreennessMap] = useState(null);
+  const greennessMapRef = useRef(greennessMap);
 
   const [facilityContinent, setFacilityContinet] = useState({});
 
@@ -127,14 +129,36 @@ export default function Game() {
   };
 
   useEffect(() => {
+    yearRef.current = year;
+  }, [year]);
+  useEffect(() => {
+    greennessMapRef.current = greennessMap;
+  }, [greennessMap]);
+
+
+  useEffect(() => {
     if (!gameState) return;
+
+    let tickCounter = 0;
 
     const runSimulationTick = () => {
       // Update game state here
       console.log('Simulation tick', new Date().toLocaleTimeString());
 
-      // Example: update local resource values here
-      // setResources(prev => ({ ...prev, wood: prev.wood + 1 }));
+      simulation.progress(
+        greennessMapRef.current,
+        facilityCoordinate,
+        policyActivation,
+        specifications,
+        setGreennessMap
+      );
+
+      setYear(prevYear => prevYear + 1);
+      tickCounter++;
+
+      if (tickCounter >= 10) {
+        setGameState(false);
+      }
     };
 
     tickRef.current = setInterval(runSimulationTick, TICK_INTERVAL);
@@ -144,38 +168,43 @@ export default function Game() {
   }, [, gameState]);
 
   return (
-    <div className="game-container">
-      <div className="canvas-container">
-        <MapRender
-          canvasRef={canvasRef}
-          map={greennessMap}
-          facilityCoordinate={facilityCoordinate}
-          specifications={specifications}
-          cellSize={cellSize}
-          setCellSize={setCellSize}
-          onCellClick={handleCellClick}
-          canvasHeight={canvasHeight}
-        />
-      </div>
+    <div>
+      <div className="game-container">
+        <div className="canvas-container">
+          <MapRender
+            canvasRef={canvasRef}
+            map={greennessMap}
+            facilityCoordinate={facilityCoordinate}
+            specifications={specifications}
+            cellSize={cellSize}
+            setCellSize={setCellSize}
+            onCellClick={handleCellClick}
+            canvasHeight={canvasHeight}
+          />
+        </div>
 
-      <div className="controls-container">
-        {/*Facilities list*/}
-        <div className="facilities-container">
-          {Object.values(facilities).map((facility, key) => (
-            <div key={key}>
-              <Facilities
-                img={facility.img}
-                cost={facility.cost}
-                name={facility.name}
-                onClick={onClickFacility}
-              />
-            </div>
-          ))}
-        </div>
-        {/*Policies list*/}
-        <div className="policies-container">
+        <div className="controls-container">
+          {/*Facilities list*/}
+          <div className="facilities-container">
+            {Object.values(facilities).map((facility, key) => (
+              <div key={key}>
+                <Facilities
+                  img={facility.img}
+                  cost={facility.cost}
+                  name={facility.name}
+                  onClick={onClickFacility}
+                />
+              </div>
+            ))}
+          </div>
+          {/*Policies list*/}
+          <div className="policies-container">
+          </div>
         </div>
       </div>
+      <button onClick={() => setGameState(true)} disabled={gameState}>
+        Resume
+      </button>
     </div>
   );
 }
