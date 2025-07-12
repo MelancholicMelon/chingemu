@@ -51,8 +51,8 @@ export default function MapRender({
       ctx.fillStyle = `rgb(${color.r} ${color.g} ${color.b})`
       for(let i = 0;i<(size+1)/2;i++){
         ctx.fillRect(
-          cellWidth  * (obj.coordinate[0] + i-1),
-          cellHeight * (obj.coordinate[1] + (size-1)/2 - i-1),
+          cellWidth  * (obj.coordinate[0] + i - (size-1)/2),
+          cellHeight * (obj.coordinate[1] - i),
           cellWidth  * (size-i*2),
           cellHeight * (i*2+1)
         );

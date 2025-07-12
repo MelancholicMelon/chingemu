@@ -94,23 +94,16 @@ export default function Game() {
     "big factory2": { img: "/img/pngegg.png", cost: 150, name: "big factory" },
     "tree3": { img: "/img/pngegg.png", cost: 50, name: "tree" },
     "factory3": { img: "/img/pngegg.png", cost: 100, name: "factory" },
-    "big factory3": { img: "/img/pngegg.png", cost: 150, name: "big factory" },
-    "tree4": { img: "/img/pngegg.png", cost: 50, name: "tree" },
-    "factory4": { img: "/img/pngegg.png", cost: 100, name: "factory" },
-    "big factory4": { img: "/img/pngegg.png", cost: 150, name: "big factory" },
-    "tree5": { img: "/img/pngegg.png", cost: 50, name: "tree" },
-    "factory5": { img: "/img/pngegg.png", cost: 100, name: "factory" },
-    "big factory5": { img: "/img/pngegg.png", cost: 150, name: "big factory" }
+    "big factory3": { img: "/img/pngegg.png", cost: 150, name: "big factory" }
   }
 
   const tickRef = useRef(null);
   const canvasRef = useRef(null);
   const [cellSize, setCellSize] = useState({ width: 0, height: 0 });
   const [canvasHeight, setCanvasHeight] = useState(500);
-  const baseUrl = process.env.REACT_APP_API_URL;
 
   const simulation = new Simulation()
-  const TICK_INTERVAL = 1000
+  const TICK_INTERVAL = 100
 
   useEffect(() => {
     Utils()
@@ -157,6 +150,7 @@ export default function Game() {
   }, []);
 
   const handleCellClick = (col, row) => {
+    if (gameState) return;
     const success = simulation.validateInput(
       { x: col, y: row },
       selectedFacility,
@@ -174,37 +168,48 @@ export default function Game() {
     greennessMapRef.current = greennessMap;
   }, [greennessMap]);
 
-
   useEffect(() => {
     if (!gameState) return;
 
     let tickCounter = 0;
 
     const runSimulationTick = () => {
-      // Update game state here
-      console.log('Simulation tick', new Date().toLocaleTimeString());
+      console.log("Simulation tick", new Date().toLocaleTimeString());
 
-      simulation.progress(
-        greennessMapRef.current,
-        facilityCoordinate,
-        policyActivation,
-        specifications,
-        setGreennessMap
-      );
+      setFacilityCoordinate(prev => {
+        const updated = prev
+          .map(fc => ({ ...fc, timeToLive: fc.timeToLive - 1 }))
+          .filter(fc => fc.timeToLive > 0);
+
+        // ✅ Safe logging
+        if (updated.length > 0) {
+          console.log("TimeToLive:", updated[0].timeToLive);
+        }
+
+        // ✅ Use the updated list in simulation
+        simulation.progress(
+          greennessMapRef.current,
+          updated, // ✅ not stale
+          policyActivation,
+          specifications,
+          setGreennessMap
+        );
+
+        return updated;
+      });
 
       setYear(prevYear => prevYear + 1);
       tickCounter++;
 
-      if (tickCounter >= 10) {
+      if (tickCounter >= 100) {
         setGameState(false);
       }
     };
 
     tickRef.current = setInterval(runSimulationTick, TICK_INTERVAL);
-
-    // Cleanup when component unmounts or paused
     return () => clearInterval(tickRef.current);
-  }, [, gameState]);
+  }, [gameState]);
+
 
   return (
     <div>
@@ -229,6 +234,7 @@ export default function Game() {
             <p>Profit: {profit}</p>
           </div>
           {/*Facilities list*/}
+          <div className="section-header">Facilities</div>
           <div className="facilities-container">
             {Object.values(facilities).map((facility, key) => (
               <div key={key}>
@@ -242,6 +248,7 @@ export default function Game() {
             ))}
           </div>
           {/*Policies list*/}
+          <div className="section-header">Policies</div>
           <div className="policies-container">
             {policySpecification.map((policy, key) => (
               <div key={key}>

@@ -42,9 +42,13 @@ export default class Simulation {
         {
           id: selectedFacility,
           coordinate: [coordinate.x, coordinate.y],
+          timeToLive: facilitySpecification.find((item) => item.id === selectedFacility).timeToLive
         },
       ];
       setFacilityCoordinate(updated);
+      return true
+    } else {
+      return false
     }
   }
 
@@ -79,7 +83,12 @@ export default class Simulation {
           if (mapDict[i]["kernel"][x][y] !== -1) {
             map[i]["kernel"][x][y] =
               greennessMap[i][x][y] *
-              (Math.random() * (1.05 - 0.9) + 0.9 + PDFKernel[x][y]);
+              (Math.random() * (1.01 - 0.98) + 0.98 + PDFKernel[x][y]);
+            if(map[i]["kernel"][x][y] > 255){
+              map[i]["kernel"][x][y]=255
+            } else if (map[i]["kernel"][x][y]< 1) {
+              map[i]["kernel"][x][y] = 1
+            }
           }
         }
       }
@@ -130,11 +139,6 @@ export default class Simulation {
             );
             val =
               policyMultiplier.maxImpact * fs.maxImpact * Math.exp(exponent);
-
-            if (x === muX && y === muY) {
-              console.log(val);
-              console.log(x, y);
-            }
           } else {
             throw new Error("wrong PDF specified");
           }
@@ -148,7 +152,6 @@ export default class Simulation {
       pdfKernel.push(row);
     }
 
-    console.log(pdfKernel);
     return pdfKernel;
   }
 
