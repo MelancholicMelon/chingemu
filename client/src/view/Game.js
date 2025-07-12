@@ -19,7 +19,7 @@ export default function Game() {
     modifiableParams: null,
   });
 
-  const [budge, setBudget] = useState(10000000);
+  const [budget, setBudget] = useState(10000000);
   const [profit, setProfit] = useState(0);
   const [score, setScore] = useState(0);
   const [year, setYear] = useState(2025);
@@ -95,6 +95,7 @@ export default function Game() {
   const onClickFacility = (val) => {
     console.log("DEBUG: Facility Clicked")
     const selectedFacility = val.currentTarget.value;
+    setSelectedFacility(selectedFacility);
     setSelectedFacility(selectedFacility);
   }
 
@@ -229,6 +230,9 @@ export default function Game() {
 
   return (
     <div>
+      <button className = "resume" onClick={() => setGameState(true)} disabled={gameState}>
+        Resume
+      </button>
       <div className="game-container">
         <div className="canvas-container">
           <MapRender
@@ -244,6 +248,11 @@ export default function Game() {
         </div>
 
         <div className="controls-container">
+          {/* Budget */}
+          <div className="metrics-container">
+            <p>Budget: {budget}</p>
+            <p>Profit: {profit}</p>
+          </div>
           {/*Facilities list*/}
           <div className="section-header">Facilities</div>
           <div className="facilities-container">
@@ -274,14 +283,10 @@ export default function Game() {
           </div>
         </div>
       </div>
-      <button onClick={() => setGameState(true)} disabled={gameState}>
-        Resume
-      </button>
     </div>
   );
 }
 
 // Dylan's TODO
 // Add buttons to control the game like pause, continue, reset, etc. 
-// Add current money and cost per facility
 // Add a timeline slider on the top
