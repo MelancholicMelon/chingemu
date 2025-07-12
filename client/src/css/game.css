@@ -10,12 +10,14 @@
 }
 
 .controls-container {
-  width: 300px;
+  width: 700px;
   display: flex;
   flex-direction: column;
   gap: 10px;
   overflow-y: auto;
+  max-height: 100%;
 }
+
 
 .debug-panel {
   font-size: 0.75rem;
@@ -27,4 +29,48 @@
   border: 1px solid #ccc;
 }
 
+.image-button {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
 
+.policies-container {
+  background-color: #fff3e0; /* light orange */
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.facilities-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 1fr;    /* equal row heights */
+  gap: 16px;
+  padding: 16px;
+  background-color: #e0f7fa;
+  border-radius: 8px;
+  height: 600px;          /* important for 1fr rows */
+}
+
+.facility-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  margin: 0;              /* let grid control spacing */
+}
+
+.facility-image {
+  width: 100%;
+  height: auto;
+  max-width: 100px;       /* optional max */
+  display: block;
+}
+
+.facility-text{
+  font-size: 14px;
+}

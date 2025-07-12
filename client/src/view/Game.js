@@ -21,8 +21,7 @@ export default function Game() {
   const [budge, setBudget] = useState(10000000);
   const [profit, setProfit] = useState(0);
   const [score, setScore] = useState(0);
-  const [year, setYear] = useState(0);
-  const yearRef = useRef(year);
+  const [year, setYear] = useState(2025);
   const [selectedFacility, setSelectedFacility] = useState('Wild Life Reserve');
   const [facilityCoordinate, setFacilityCoordinate] = useState([]);
   const [policyActivation, setPolicyActivation] = useState(null);
@@ -33,13 +32,35 @@ export default function Game() {
   const [facilityContinent, setFacilityContinet] = useState({});
 
   // temporary state for selected facilities
-  const [selFacility, setSelFacitlity] = useState("");
+  const [selFacility, setSelFacility] = useState("");
+
+  // temporary useeffect for debugging
+  useEffect(() => {
+    console.log(`${selFacility} is selected`)
+  }, [selFacility])
+
+  const onClickFacility = (val) => {
+    const selectedFacility = val.currentTarget.value;
+    setSelFacility(selectedFacility);
+  }
 
   // temporary facilities json for testing
   const facilities = {
-    "tree": {img: "../img/png-clipart-fried-egg-fried-egg-thumbnail.png", cost: 50, name: "tree"},
-    "factory": {img: "../img/png-clipart-fried-egg-fried-egg-thumbnail.png", cost: 100, name: "factory"},
-    "big factory": {img: "../img/png-clipart-fried-egg-fried-egg-thumbnail.png", cost: 150, name: "big factory"}
+    "tree": { img: "/img/pngegg.png", cost: 50, name: "tree" },
+    "factory": { img: "/img/pngegg.png", cost: 100, name: "factory" },
+    "big factory": { img: "/img/pngegg.png", cost: 150, name: "big factory" },
+    "tree2": { img: "/img/pngegg.png", cost: 50, name: "tree" },
+    "factory2": { img: "/img/pngegg.png", cost: 100, name: "factory" },
+    "big factory2": { img: "/img/pngegg.png", cost: 150, name: "big factory" },
+    "tree3": { img: "/img/pngegg.png", cost: 50, name: "tree" },
+    "factory3": { img: "/img/pngegg.png", cost: 100, name: "factory" },
+    "big factory3": { img: "/img/pngegg.png", cost: 150, name: "big factory" },
+    "tree4": { img: "/img/pngegg.png", cost: 50, name: "tree" },
+    "factory4": { img: "/img/pngegg.png", cost: 100, name: "factory" },
+    "big factory4": { img: "/img/pngegg.png", cost: 150, name: "big factory" },
+    "tree5": { img: "/img/pngegg.png", cost: 50, name: "tree" },
+    "factory5": { img: "/img/pngegg.png", cost: 100, name: "factory" },
+    "big factory5": { img: "/img/pngegg.png", cost: 150, name: "big factory" }
   }
 
   const tickRef = useRef(null);
@@ -49,7 +70,7 @@ export default function Game() {
   const baseUrl = process.env.REACT_APP_API_URL;
 
   const simulation = new Simulation()
-  const TICK_INTERVAL = 500
+  const TICK_INTERVAL = 1000
 
   useEffect(() => {
     Utils()
@@ -96,11 +117,8 @@ export default function Game() {
   }, []);
 
   const handleCellClick = (col, row) => {
-    if(gameState){
-      return
-    }
     const success = simulation.validateInput(
-      {x: col, y:row},
+      { x: col, y: row },
       selectedFacility,
       facilityCoordinate,
       specifications.facilitySpecification,
@@ -120,10 +138,9 @@ export default function Game() {
   useEffect(() => {
     if (!gameState) return;
 
-    let tickCounter = 0;
-
-    const Tick = () => {
-      console.log("Simulation tick", new Date().toLocaleTimeString());
+    const runSimulationTick = () => {
+      // Update game state here
+      console.log('Simulation tick', new Date().toLocaleTimeString());
 
       simulation.progress(
         greennessMapRef.current, 
@@ -141,11 +158,11 @@ export default function Game() {
       }
     };
 
-    tickRef.current = setInterval(Tick, TICK_INTERVAL);
+    tickRef.current = setInterval(runSimulationTick, TICK_INTERVAL);
 
+    // Cleanup when component unmounts or paused
     return () => clearInterval(tickRef.current);
-  }, [gameState]);
-
+  }, [, gameState]);
 
   return (
     <div className="game-container">
@@ -163,19 +180,23 @@ export default function Game() {
       </div>
 
       <div className="controls-container">
-        <button onClick={() => setGameState(true)} disabled={gameState}> Resume </button>
-        <pre className="debug-panel">Year: {year+2025}</pre>
-        {/* Add more controls here */}
         {/*Facilities list*/}
-        {Object.values(facilities).map((facility, key) => (
-          <div key={key}>
-            <Facilities
-              img = {facility.img}
-              cost = {facility.cost}
-              name = {facility.name}
-            />
+        <div className="facilities-container">
+          {Object.values(facilities).map((facility, key) => (
+            <div key={key}>
+              <Facilities
+                img={facility.img}
+                cost={facility.cost}
+                name={facility.name}
+                onClick={onClickFacility}
+              />
             </div>
-        ))}
+          ))}
+        </div>
+        {/*Policies list*/}
+        <div className="policies-container">
+
+        </div>
       </div>
     </div>
   );
