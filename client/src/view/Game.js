@@ -64,7 +64,6 @@ export default function Game() {
         console.error("Failed to load specifications:", error);
       });
   }, []);
-  console.log(greennessMap);
 
   useEffect(() => {
     const updateCanvasHeight = () => {
@@ -82,6 +81,7 @@ export default function Game() {
   }, []);
 
   const handleCellClick = (col, row) => {
+    console.log(col, row)
     const success = simulation.validateInput(
       facilityCoordinate,
       specifications["facilitySpecification"],
@@ -113,6 +113,9 @@ export default function Game() {
           canvasRef={canvasRef}
           map={greennessMap}
           facilityCoordinate={facilityCoordinate}
+          specifications={specifications}
+          cellSize={cellSize}
+          setCellSize={setCellSize}
           onCellClick={handleCellClick}
           canvasHeight={canvasHeight}
         />

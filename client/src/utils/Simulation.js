@@ -9,7 +9,16 @@ export default class Simulation {
     return greennessMap;
   }
 
-  validateInput(facilityCordinate, facilityId, setFacilityCoordinate) {}
+  validateInput(facilityCordinate, facilityId, setFacilityCoordinate) {
+    // sample facility assignment
+    let a = [
+      {
+        id: "Factory",
+        coordinate: [124, 106]
+      }
+    ];
+    setFacilityCoordinate(a)
+  }
 
   calculateScore(budget, profit, setScore) {}
 
