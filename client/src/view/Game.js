@@ -174,7 +174,6 @@ export default function Game() {
         </div>
         {/*Policies list*/}
         <div className="policies-container">
-
         </div>
       </div>
     </div>
