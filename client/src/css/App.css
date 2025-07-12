@@ -131,7 +131,7 @@
   }
   
   .leaderboard-title {
-    color: var(--color-border-primary);
+    color: var(--color-text-primary);
     text-align: center;
     font-weight: 700;
     margin-bottom: 16px;
