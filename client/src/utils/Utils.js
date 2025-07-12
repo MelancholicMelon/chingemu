@@ -22,7 +22,7 @@ export default async function Utils() {
   const allSpecification = await fetch(`${baseUrl}/specification`, { headers });
 
   if (!allSpecification.ok) {
-    throw new Error("Resource loading failed.");
+    throw new Error(`Failed to fetch specification: ${allSpecification.statusText}`);
   }
 
   const s = await allSpecification.json();
@@ -44,7 +44,7 @@ export default async function Utils() {
   policySpecification = s["policySpecification"];
   colorSpecification = s["colorSpecification"];
 
-  objectTypes = s["obejctTypes"];
+  objectTypes = s["objectTypes"];
   facilityTypes = facilitySpecification.map((facility) => facility.id);
   pdfTypes = [
     ...new Set(facilitySpecification.map((facility) => facility.pdfTypes)),

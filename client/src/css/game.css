@@ -1,7 +1,7 @@
 /* Game Container - Fills the whole screen */
 .game-container {
   display: flex;
-  height: 100vh;
+  height: 80vh;
   width: 100vw;
   margin: 0;
   padding: 0;
@@ -168,3 +168,15 @@
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 113, 45, 0.15);
 }
+
+.resume {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: #00712D;
+  margin-top: 50px;
+  margin-left: 50px;
+}
+
+

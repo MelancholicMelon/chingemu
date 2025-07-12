@@ -24,64 +24,78 @@ export default function Game() {
   const [score, setScore] = useState(0);
   const [year, setYear] = useState(2025);
   const yearRef = useRef(year);
-  const [selectedFacility, setSelectedFacility] = useState('Wild Life Reserve');
+  const [selectedFacility, setSelectedFacility] = useState("");
   const [facilityCoordinate, setFacilityCoordinate] = useState([]);
   const [policyActivation, setPolicyActivation] = useState(null);
   const [gameState, setGameState] = useState(false);
   const [greennessMap, setGreennessMap] = useState(null);
   const greennessMapRef = useRef(greennessMap);
 
-  // Policy state handling
-  const policySpecification = [
-    {
-      "id": "Free Diddy",
-      "parameter": "maxImpact",
-      "multiplier": -100
-    },
-    {
-      "id": "Resurrect the Lorax",
-      "parameter": "sd",
-      "multiplier": 3
-    },
-    {
-      "id": "Imprison Taylor Swift",
-      "parameter": "timeToLive",
-      "multiplier": 1.5
-    },
-    {
-      "id": "Temporary",
-      "parameter": "timeToLive",
-      "multiplier": 1.5
-    }
-  ]
+  // // Policy state handling
+  // const policySpecification = [
+  //   {
+  //     "id": "Free Diddy",
+  //     "parameter": "maxImpact",
+  //     "multiplier": -100
+  //   },
+  //   {
+  //     "id": "Resurrect the Lorax",
+  //     "parameter": "sd",
+  //     "multiplier": 3
+  //   },
+  //   {
+  //     "id": "Imprison Taylor Swift",
+  //     "parameter": "timeToLive",
+  //     "multiplier": 1.5
+  //   },
+  //   {
+  //     "id": "Temporary",
+  //     "parameter": "timeToLive",
+  //     "multiplier": 1.5
+  //   }
+  // ]
 
-  const [form, setForm] = useState(
-    policySpecification.reduce((acc, policy) => {
-      acc[policy.id] = false;
-      return acc;
-    }, {})
-  );
+  // const [form, setForm] = useState(
+  //   policySpecification.reduce((acc, policy) => {
+  //     acc[policy.id] = false;
+  //     return acc;
+  //   }, {})
+  // );
+
+  useEffect(() => {
+  if (specifications.policySpecification) {
+    setPolicyActivation(
+      specifications.policySpecification.reduce((acc, policy) => {
+        acc[policy.id] = false;
+        return acc;
+      }, {})
+    );
+  }
+}, [specifications.policySpecification]);
+
 
   const onClickPolicy = (e) => {
+    console.log("DEBUG: Policy Clicked")
     const { name, checked } = e.target;
-    setForm((prev) => ({ ...prev, [name]: checked }));
+    setPolicyActivation((prev) => ({ ...prev, [name]: checked }));
   };
 
-  // // Policy state debugging 
-  // useEffect(() => {
-  //   console.log(form);
-  // }, [form])
+  // Policy state debugging 
+  useEffect(() => {
+    console.log(policyActivation);
+  }, [policyActivation])
 
   const [facilityContinent, setFacilityContinet] = useState({});
 
-  // temporary useeffect for debugging
-  useEffect(() => {
-    console.log(`${selectedFacility} is selected`)
-  }, [selectedFacility])
+  // // temporary useeffect for debugging
+  // useEffect(() => {
+  //   console.log(`${selectedFacility} is selected`)
+  // }, [selectedFacility])
 
   const onClickFacility = (val) => {
-    const tempFacility = val.currentTarget.value;
-    setSelectedFacility(tempFacility);
+    console.log("DEBUG: Facility Clicked")
+    const selectedFacility = val.currentTarget.value;
+    setSelectedFacility(selectedFacility);
   }
 
   // temporary facilities json for testing
@@ -104,8 +118,7 @@ export default function Game() {
 
   const simulation = new Simulation()
   const TICK_INTERVAL = 100
-
-  useEffect(() => {
+ useEffect(() => {
     Utils()
       .then((data) => {
         setSpecifications({
@@ -121,18 +134,21 @@ export default function Game() {
         });
 
         setGreennessMap(data.greennessMap);
-
+        
         setPolicyActivation(
-          data.policyTypes.map((id) => ({
-            id: id,
-            activate: false,
-          }))
-        );
+        data.policySpecification.reduce((acc, policy) => {
+          console.log("Set policy activation triggered")
+          acc[policy.id] = false;
+          return acc;
+        }, {})
+      );
       })
       .catch((error) => {
-        console.error("Failed to load specifications:", error);
+        // Handle the error here
+        console.error("Failed to fetch utils data:", error);
       });
   }, []);
+  
 
   useEffect(() => {
     const updateCanvasHeight = () => {
@@ -213,6 +229,9 @@ export default function Game() {
 
   return (
     <div>
+      <button className = "resume" onClick={() => setGameState(true)} disabled={gameState}>
+        Resume
+      </button>
       <div className="game-container">
         <div className="canvas-container">
           <MapRender
@@ -250,21 +269,19 @@ export default function Game() {
           {/*Policies list*/}
           <div className="section-header">Policies</div>
           <div className="policies-container">
-            {policySpecification.map((policy, key) => (
+            {specifications.policySpecification &&
+  specifications.policySpecification.map((policy, key) => (
               <div key={key}>
                 <Policy
-                  id={policy.id}
-                  bool={form[policy.id]}
-                  onChange={onClickPolicy}
-                />
+                id={policy.id}
+                bool={policyActivation ? policyActivation[policy.id] : false}
+                onChange={onClickPolicy}
+              />
               </div>
             ))}
           </div>
         </div>
       </div>
-      <button onClick={() => setGameState(true)} disabled={gameState}>
-        Resume
-      </button>
     </div>
   );
 }
