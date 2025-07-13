@@ -1,15 +1,6 @@
 import React from "react";
 
 export default function Facilities(props) {
-  function formatNumber(num) {
-    if (num >= 1_000_000_000)
-      return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, "") + "B";
-    if (num >= 1_000_000)
-      return (num / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
-    if (num >= 1_000) return (num / 1_000).toFixed(1).replace(/\.0$/, "") + "K";
-    return num.toString();
-  }
-
   return (
     <>
       <style>{`
@@ -49,8 +40,8 @@ export default function Facilities(props) {
         onClick={() => props.onClick(props.name)}>
         <div className="facility-text">
           <p>{props.name}</p>
-          <p>cost : {formatNumber(props.cost)}</p>
-          <p>profit: {props.profit} per year</p>
+          <p>cost : {props.formatNumber(props.cost)}</p>
+          <p>profit: {props.formatNumber(props.profit)} per year</p>
           <p>Active for: {props.timeToLive} Years</p>
           <p>placement size: {props.size} Block</p>
         </div>
