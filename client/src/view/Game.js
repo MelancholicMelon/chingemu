@@ -309,7 +309,7 @@ export default function Game() {
           {/* Budget */}
           <div className="metrics-container">
             <p>Money: {budget}</p>
-            <p>Profit: {profit}</p>
+            <p>Yearly Profit: {profit}</p>
             <p>Score: {score}</p>
           </div>
           {/*Facilities list*/}
