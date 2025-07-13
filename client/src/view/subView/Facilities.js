@@ -52,7 +52,7 @@ export default function Facilities(props) {
           <p>cost : {formatNumber(props.cost)}</p>
           <p>profit: {props.profit} per year</p>
           <p>Active for: {props.timeToLive} Years</p>
-          <p>placement size: {props.size} Blocks</p>
+          <p>placement size: {props.size} Block</p>
         </div>
       </div>
     </>
