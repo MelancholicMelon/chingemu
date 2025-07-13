@@ -109,9 +109,12 @@ export default function MapRender({
 
     // Ocean drawing...
     const oceanColor = specifications.colorSpecification.find(item => item.id === "ocean").color;
-    ctx.fillStyle = `rgb(${oceanColor.r} ${oceanColor.g} ${oceanColor.b})`;
+
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
+        const salt = Math.random() * 10 - 5;
+        ctx.fillStyle = `rgb(${oceanColor.r + salt} ${oceanColor.g + salt} ${oceanColor.b + salt})`;
+
         let isLand = map.some(continent => continent.kernel[y][x] !== -1);
         if (!isLand) {
           ctx.fillRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
