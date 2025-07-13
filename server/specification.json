@@ -4,9 +4,9 @@
     {
       "id": "continent",
       "color": {
-        "r": 205,
-        "g": 255,
-        "b": 255
+        "r": 43,
+        "g": 45,
+        "b": 47
       }
     },
     {
@@ -196,19 +196,22 @@
       "id": "Hire 2x more workers",
       "parameter": "maxImpact",
       "multiplier": -200,
-      "cost": 1000000
+      "cost": 1000000,
+      "timeToLive": 10
     },
     {
       "id": "Use Renewable Energy",
       "parameter": "sd",
       "multiplier": 3,
-      "cost": 1000000
+      "cost": 1000000,
+      "timeToLive": 1000
     },
     {
       "id": "Eco Certification Program (Increase tree growth)",
       "parameter": "timeToLive",
       "multiplier": 1.5,
-      "cost": 1000000
+      "cost": 1000000,
+      "timeToLive": 1000
     }
   ]
 }

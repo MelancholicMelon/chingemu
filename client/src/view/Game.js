@@ -34,73 +34,69 @@ export default function Game() {
   const greennessMapRef = useRef(greennessMap);
   const navigate = useNavigate();
 
-  // // Policy state handling
-  // const policySpecification = [
-  //   {
-  //     "id": "Free Diddy",
-  //     "parameter": "maxImpact",
-  //     "multiplier": -100
-  //   },
-  //   {
-  //     "id": "Resurrect the Lorax",
-  //     "parameter": "sd",
-  //     "multiplier": 3
-  //   },
-  //   {
-  //     "id": "Imprison Taylor Swift",
-  //     "parameter": "timeToLive",
-  //     "multiplier": 1.5
-  //   },
-  //   {
-  //     "id": "Temporary",
-  //     "parameter": "timeToLive",
-  //     "multiplier": 1.5
-  //   }
-  // ]
-
-  // const [form, setForm] = useState(
-  //   policySpecification.reduce((acc, policy) => {
-  //     acc[policy.id] = false;
-  //     return acc;
-  //   }, {})
-  // );
+  const tickRef = useRef(null);
+  const canvasRef = useRef(null);
+  const [cellSize, setCellSize] = useState({ width: 0, height: 0 });
+  const [canvasHeight, setCanvasHeight] = useState(500);
 
   useEffect(() => {
     if (specifications.policySpecification) {
       setPolicyActivation(
         specifications.policySpecification.reduce((acc, policy) => {
-          acc[policy.id] = false;
+          // Initialize with active, timeToLive, and the new charged flag
+          acc[policy.id] = { active: false, timeToLive: 0, charged: false };
           return acc;
         }, {})
       );
     }
   }, [specifications.policySpecification]);
 
+  // In Game.js
+
   const onClickPolicy = (e) => {
-    console.log("DEBUG: Policy Clicked");
     const { name, checked } = e.target;
-    setPolicyActivation((prev) => ({ ...prev, [name]: checked }));
-  };
+    const policy = specifications.policySpecification.find(
+      (p) => p.id === name
+    );
+    if (!policy) return;
 
-  // // Policy state debugging
-  // useEffect(() => {
-  //   console.log(policyActivation);
-  // }, [policyActivation])
+    const currentPolicyState = policyActivation[name];
 
-  // // temporary useeffect for debugging
-  // useEffect(() => {
-  //   console.log(`${selectedFacility} is selected`)
-  // }, [selectedFacility])
+  if (checked) {
+    // Only deduct cost if it hasn't been charged for this cycle yet
+    if (!currentPolicyState.charged) {
+      if (budget < policy.cost) {
+        alert("Not enough budget to activate this policy.");
+        e.target.checked = false;
+        return;
+      }
+      // Deduct cost from budget
+      setBudget(prev => prev - policy.cost);
+    }
+
+    // Activate the policy and mark it as charged
+    setPolicyActivation(prev => ({
+      ...prev,
+      [name]: { ...prev[name], active: true, timeToLive: policy.timeToLive, charged: true }
+    }));
+  } else {
+    // If unchecking a policy that was charged AND the game is paused, issue a refund
+    if (currentPolicyState.charged && !gameState) {
+      setBudget(prev => prev + policy.cost);
+    }
+
+    // Deactivate the policy and reset its charged status so it can be re-purchased
+    setPolicyActivation(prev => ({
+      ...prev,
+      [name]: { ...prev[name], active: false, charged: false }
+    }));
+  }
+};
 
   const onClickFacility = (facilityId) => {
     console.log("Selected:", facilityId);
     setSelectedFacility(facilityId);
   };
-
-  const tickRef = useRef(null);
-  const canvasRef = useRef(null);
-  const [cellSize, setCellSize] = useState({ width: 0, height: 0 });
-  const [canvasHeight, setCanvasHeight] = useState(500);
 
   const simulation = new Simulation();
   const TICK_INTERVAL = 100;
@@ -120,17 +116,8 @@ export default function Game() {
         });
 
         setGreennessMap(data.greennessMap);
-
-        setPolicyActivation(
-          data.policySpecification.reduce((acc, policy) => {
-            // console.log("Set policy activation triggered") // Debug
-            acc[policy.id] = false;
-            return acc;
-          }, {})
-        );
       })
       .catch((error) => {
-        // Handle the error here
         console.error("Failed to fetch utils data:", error);
       });
   }, []);
@@ -139,7 +126,7 @@ export default function Game() {
     const updateCanvasHeight = () => {
       const navbarHeight = document.getElementById("navbar")?.offsetHeight || 0;
       const viewportHeight = window.innerHeight;
-      const padding = 20; // some bottom margin
+      const padding = 20;
 
       const height = viewportHeight - navbarHeight - padding;
       setCanvasHeight(height);
@@ -189,13 +176,30 @@ export default function Game() {
 
     const runSimulationTick = () => {
       // console.log("Simulation tick", new Date().toLocaleTimeString());
-      if (year > 2125) {
-        setScore((prev) => simulation.calculateScore(budget, profit, greennessMapRef.current));
+      if (yearRef.current > 2125 - 1.1) {
+        setScore((prev) =>
+          simulation.calculateScore(budget, profit, greennessMapRef.current)
+        );
         simulation.endSimulation(score, budget, greennessMapRef.current);
-        //alert("The simulation has ended, you score is ", score, ". Your remaining budget is ", budget, ".")
         navigate("/leaderboard", { replace: true });
         return;
       }
+      // 1. Calculate the next state for policies
+      let updatedPolicies;
+      setPolicyActivation((prevPolicies) => {
+        const nextPolicies = { ...prevPolicies };
+        for (const key in nextPolicies) {
+          if (nextPolicies[key].active && nextPolicies[key].timeToLive > 0) {
+            nextPolicies[key].timeToLive -= 1;
+            if (nextPolicies[key].timeToLive <= 0) {
+              nextPolicies[key].active = false;
+              nextPolicies[key].charged = false;
+            }
+          }
+        }
+        updatedPolicies = nextPolicies; // Store the result
+        return nextPolicies;
+      });
 
       setFacilityCoordinate((prev) => {
         const updated = prev
@@ -205,7 +209,7 @@ export default function Game() {
         simulation.progress(
           greennessMapRef.current,
           updated,
-          policyActivation,
+          policyActivation, // This now contains the updated active/TTL info
           specifications,
           setGreennessMap
         );
@@ -215,7 +219,9 @@ export default function Game() {
 
       setBudget((prev) => prev + profit);
       setYear((prevYear) => prevYear + 1);
-      setScore((prev) => simulation.calculateScore(budget, profit, greennessMapRef.current));
+      setScore((prev) =>
+        simulation.calculateScore(budget, profit, greennessMapRef.current)
+      );
       tickCounter++;
 
       if (tickCounter >= tickPerRun) {
@@ -226,8 +232,6 @@ export default function Game() {
     tickRef.current = setInterval(runSimulationTick, TICK_INTERVAL);
     return () => clearInterval(tickRef.current);
   }, [gameState]);
-
-  const resetGame = () => {};
 
   return (
     <div>
@@ -285,7 +289,6 @@ export default function Game() {
           <div className="facilities-container">
             {specifications.facilitySpecification &&
               specifications.facilitySpecification.map((facility, key) => {
-                //console.log(`Rendering facility: ${facility.id}, img: ${facility.img}`); // debuggusy
                 return (
                   <div key={key}>
                     <Facilities
@@ -310,10 +313,22 @@ export default function Game() {
                 <div key={key}>
                   <Policy
                     id={policy.id}
+                    // The 'checked' status is now based on the 'active' property
                     bool={
-                      policyActivation ? policyActivation[policy.id] : false
+                      policyActivation
+                        ? policyActivation[policy.id]?.active
+                        : false
                     }
                     onChange={onClickPolicy}
+                    // Add cost and timeToLive to the component if you want to display them
+                    cost={policy.cost}
+                    timeToLive={policy.timeToLive}
+                    // Optional: disable the policy checkbox if it's already active
+                    disabled={
+                      policyActivation
+                        ? policyActivation[policy.id]?.active
+                        : false
+                    }
                   />
                 </div>
               ))}
@@ -323,7 +338,3 @@ export default function Game() {
     </div>
   );
 }
-
-// Dylan's TODO
-// Add buttons to control the game like pause, continue, reset, etc.
-// Add a timeline slider on the top

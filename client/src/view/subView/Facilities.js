@@ -50,9 +50,9 @@ export default function Facilities(props) {
         <div className="facility-text">
           <p>{props.name}</p>
           <p>cost : {formatNumber(props.cost)}</p>
-          <p>profit: {props.profit}</p>
-          <p>timeToLive: {props.timeToLive}</p>
-          <p>placement size: {props.size}</p>
+          <p>profit: {props.profit} per year</p>
+          <p>Active for: {props.timeToLive} Years</p>
+          <p>placement size: {props.size} Blocks</p>
         </div>
       </div>
     </>
