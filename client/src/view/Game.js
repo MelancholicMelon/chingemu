@@ -34,36 +34,10 @@ export default function Game() {
   const greennessMapRef = useRef(greennessMap);
   const navigate = useNavigate();
 
-  // // Policy state handling
-  // const policySpecification = [
-  //   {
-  //     "id": "Free Diddy",
-  //     "parameter": "maxImpact",
-  //     "multiplier": -100
-  //   },
-  //   {
-  //     "id": "Resurrect the Lorax",
-  //     "parameter": "sd",
-  //     "multiplier": 3
-  //   },
-  //   {
-  //     "id": "Imprison Taylor Swift",
-  //     "parameter": "timeToLive",
-  //     "multiplier": 1.5
-  //   },
-  //   {
-  //     "id": "Temporary",
-  //     "parameter": "timeToLive",
-  //     "multiplier": 1.5
-  //   }
-  // ]
-
-  // const [form, setForm] = useState(
-  //   policySpecification.reduce((acc, policy) => {
-  //     acc[policy.id] = false;
-  //     return acc;
-  //   }, {})
-  // );
+  const tickRef = useRef(null);
+  const canvasRef = useRef(null);
+  const [cellSize, setCellSize] = useState({ width: 0, height: 0 });
+  const [canvasHeight, setCanvasHeight] = useState(500);
 
   useEffect(() => {
     if (specifications.policySpecification) {
@@ -82,25 +56,10 @@ export default function Game() {
     setPolicyActivation((prev) => ({ ...prev, [name]: checked }));
   };
 
-  // // Policy state debugging
-  // useEffect(() => {
-  //   console.log(policyActivation);
-  // }, [policyActivation])
-
-  // // temporary useeffect for debugging
-  // useEffect(() => {
-  //   console.log(`${selectedFacility} is selected`)
-  // }, [selectedFacility])
-
   const onClickFacility = (facilityId) => {
     console.log("Selected:", facilityId);
     setSelectedFacility(facilityId);
   };
-
-  const tickRef = useRef(null);
-  const canvasRef = useRef(null);
-  const [cellSize, setCellSize] = useState({ width: 0, height: 0 });
-  const [canvasHeight, setCanvasHeight] = useState(500);
 
   const simulation = new Simulation();
   const TICK_INTERVAL = 100;
@@ -120,17 +79,14 @@ export default function Game() {
         });
 
         setGreennessMap(data.greennessMap);
-
         setPolicyActivation(
           data.policySpecification.reduce((acc, policy) => {
-            // console.log("Set policy activation triggered") // Debug
             acc[policy.id] = false;
             return acc;
           }, {})
         );
       })
       .catch((error) => {
-        // Handle the error here
         console.error("Failed to fetch utils data:", error);
       });
   }, []);
@@ -139,7 +95,7 @@ export default function Game() {
     const updateCanvasHeight = () => {
       const navbarHeight = document.getElementById("navbar")?.offsetHeight || 0;
       const viewportHeight = window.innerHeight;
-      const padding = 20; // some bottom margin
+      const padding = 20;
 
       const height = viewportHeight - navbarHeight - padding;
       setCanvasHeight(height);
@@ -188,11 +144,9 @@ export default function Game() {
     let tickPerRun = 10;
 
     const runSimulationTick = () => {
-      // console.log("Simulation tick", new Date().toLocaleTimeString());
       if (year > 2125) {
         setScore((prev) => simulation.calculateScore(budget, profit, greennessMapRef.current));
         simulation.endSimulation(score, budget, greennessMapRef.current);
-        //alert("The simulation has ended, you score is ", score, ". Your remaining budget is ", budget, ".")
         navigate("/leaderboard", { replace: true });
         return;
       }
@@ -226,8 +180,6 @@ export default function Game() {
     tickRef.current = setInterval(runSimulationTick, TICK_INTERVAL);
     return () => clearInterval(tickRef.current);
   }, [gameState]);
-
-  const resetGame = () => {};
 
   return (
     <div>
@@ -285,7 +237,6 @@ export default function Game() {
           <div className="facilities-container">
             {specifications.facilitySpecification &&
               specifications.facilitySpecification.map((facility, key) => {
-                //console.log(`Rendering facility: ${facility.id}, img: ${facility.img}`); // debuggusy
                 return (
                   <div key={key}>
                     <Facilities
@@ -323,7 +274,3 @@ export default function Game() {
     </div>
   );
 }
-
-// Dylan's TODO
-// Add buttons to control the game like pause, continue, reset, etc.
-// Add a timeline slider on the top

@@ -79,8 +79,8 @@ export default class Simulation {
     for(let i = 0;i<mapDict.length;i++){
       const greennessContinent = mapDict[i].kernel;
       let avg = 0;
-      for (let i = 0; i < greennessContinent.length; i++) { // Iterate through rows
-        for (let j = 0; j < greennessContinent[i].length; j++) { // Iterate through columns
+      for (let i = 0; i < greennessContinent.length; i++) { 
+        for (let j = 0; j < greennessContinent[i].length; j++) { 
           avg += greennessContinent[i][j];
         }
       }
