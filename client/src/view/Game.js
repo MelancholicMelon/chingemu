@@ -231,14 +231,6 @@ export default function Game() {
 
   return (
     <div>
-      <div
-        className="resume"
-        style={{
-          visibility: "hidden",
-          pointerEvents: "none",
-        }}>
-        Resume
-      </div>
       <div className="game-container">
         <div className="canvas-container">
           <div className="map-header">
@@ -281,6 +273,7 @@ export default function Game() {
             disabled={gameState}>
             Resume
           </button>
+          <Timeline currentYear={year} startYear={2025} endYear={2125} />
           {/* Budget */}
           <div className="metrics-container">
             <p>Money: {budget}</p>
