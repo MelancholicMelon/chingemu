@@ -21,6 +21,7 @@ export default function Game() {
     modifiableParams: null,
   });
 
+  const [hoveredFacility, setHoveredFacility] = useState(null);
   const [budget, setBudget] = useState(1000000000);
   const [profit, setProfit] = useState(0);
   const [score, setScore] = useState(0);
@@ -162,6 +163,17 @@ export default function Game() {
     }
   }, [canvasRef.current]);
 
+  const handleFacilityHover = (facility, position) => {
+    if (facility) {
+      // Find the full facility details from specifications
+      const facilityDetails = specifications.facilitySpecification.find(
+        spec => spec.id === facility.id
+      );
+      setHoveredFacility({ facility: facilityDetails, position: position });
+    } else {
+      setHoveredFacility(null);
+    }
+  };
   const handleCellClick = (col, row) => {
     if (gameState) return;
 
@@ -211,7 +223,7 @@ export default function Game() {
       }
       // 1. Calculate the next state for policies
       let updatedPolicies;
-      setPolicyActivation((prevPolicies) => {
+      setPolicyActivation(prevPolicies => {
         const nextPolicies = { ...prevPolicies };
         for (const key in nextPolicies) {
           if (nextPolicies[key].active && nextPolicies[key].timeToLive > 0) {
@@ -222,26 +234,28 @@ export default function Game() {
             }
           }
         }
-        updatedPolicies = nextPolicies; // Store the result
+        updatedPolicies = nextPolicies; // Store the result for step 3
         return nextPolicies;
       });
 
-      setFacilityCoordinate((prev) => {
-        const updated = prev
-          .map((fc) => ({ ...fc, timeToLive: fc.timeToLive - 1 }))
-          .filter((fc) => fc.timeToLive > 0);
+      // 2. Calculate the next state for facilities
+      const updatedFacilities = facilityCoordinate
+        .map((fc) => ({ ...fc, timeToLive: fc.timeToLive - 1 }))
+        .filter((fc) => fc.timeToLive > 0);
 
-        simulation.progress(
-          greennessMapRef.current,
-          updated,
-          policyActivation, // This now contains the updated active/TTL info
-          specifications,
-          setGreennessMap
-        );
+      // 3. Run the simulation with the NEWLY calculated states
+      simulation.progress(
+        greennessMapRef.current,
+        updatedFacilities,
+        updatedPolicies, // Use the variable that holds the new state
+        specifications,
+        setGreennessMap
+      );
+      
+      // 4. Set the new state for facilities
+      setFacilityCoordinate(updatedFacilities);
 
-        return updated;
-      });
-
+      // 5. Update budget, year, etc.
       setBudget((prev) => prev + profit);
       setYear((prevYear) => prevYear + 1);
       setScore((prev) =>
@@ -260,6 +274,20 @@ export default function Game() {
 
   return (
     <div>
+      {hoveredFacility && (
+      <div
+        className="facility-popup"
+        style={{
+          position: 'fixed', // Use 'fixed' to position relative to the viewport
+          left: `${hoveredFacility.position.x + 15}px`, // Offset from cursor
+          top: `${hoveredFacility.position.y + 15}px`,
+        }}
+      >
+        <h4>{hoveredFacility.facility.id}</h4>
+        <p>Cost: {hoveredFacility.facility.cost.toLocaleString()}</p>
+        <p>Profit: {hoveredFacility.facility.profit.toLocaleString()}</p>
+      </div>
+    )}
       <div className="game-container">
         <div className="canvas-container">
           <div className="map-header">
@@ -271,6 +299,7 @@ export default function Game() {
                   canvasRef={canvasRef}
                   map={greennessMap}
                   facilityCoordinate={facilityCoordinate}
+                  onFacilityHover={handleFacilityHover}
                   specifications={specifications}
                   cellSize={cellSize}
                   setCellSize={setCellSize}
@@ -304,7 +333,7 @@ export default function Game() {
           {/* Budget */}
           <div className="metrics-container">
             <p>Money: {budget}</p>
-            <p>Profit: {profit}</p>
+            <p>Yearly Profit: {profit}</p>
             <p>Score: {score}</p>
           </div>
           {/*Facilities list*/}
