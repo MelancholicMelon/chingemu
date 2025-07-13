@@ -66,51 +66,52 @@ export default function Game() {
   // );
 
   useEffect(() => {
-  if (specifications.policySpecification) {
-    setPolicyActivation(
-      specifications.policySpecification.reduce((acc, policy) => {
-        // Initialize each policy as inactive with a timeToLive of 0
-        acc[policy.id] = { active: false, timeToLive: 0 };
-        return acc;
-      }, {})
-    );
-  }
-}, [specifications.policySpecification]);
-
-
-// In Game.js
-
-const onClickPolicy = (e) => {
-  const { name, checked } = e.target;
-
-  // Find the policy from the specifications to get its cost and timeToLive
-  const policy = specifications.policySpecification.find(p => p.id === name);
-  if (!policy) return;
-
-  // If the user is trying to ACTIVATE the policy
-  if (checked) {
-    if (budget < policy.cost) {
-      alert("Not enough budget to activate this policy.");
-      e.target.checked = false; // Revert the checkbox
-      return;
+    if (specifications.policySpecification) {
+      setPolicyActivation(
+        specifications.policySpecification.reduce((acc, policy) => {
+          // Initialize each policy as inactive with a timeToLive of 0
+          acc[policy.id] = { active: false, timeToLive: 0 };
+          return acc;
+        }, {})
+      );
     }
-    
-    // Deduct cost from budget
-    setBudget(prev => prev - policy.cost);
-    
-    // Activate the policy and set its timeToLive
-    setPolicyActivation(prev => ({
-      ...prev,
-      [name]: { active: true, timeToLive: policy.timeToLive }
-    }));
-  } else {
-    // If you want to allow deactivating policies manually
-    setPolicyActivation(prev => ({
-      ...prev,
-      [name]: { ...prev[name], active: false }
-    }));
-  }
-};
+  }, [specifications.policySpecification]);
+
+  // In Game.js
+
+  const onClickPolicy = (e) => {
+    const { name, checked } = e.target;
+
+    // Find the policy from the specifications to get its cost and timeToLive
+    const policy = specifications.policySpecification.find(
+      (p) => p.id === name
+    );
+    if (!policy) return;
+
+    // If the user is trying to ACTIVATE the policy
+    if (checked) {
+      if (budget < policy.cost) {
+        alert("Not enough budget to activate this policy.");
+        e.target.checked = false; // Revert the checkbox
+        return;
+      }
+
+      // Deduct cost from budget
+      setBudget((prev) => prev - policy.cost);
+
+      // Activate the policy and set its timeToLive
+      setPolicyActivation((prev) => ({
+        ...prev,
+        [name]: { active: true, timeToLive: policy.timeToLive },
+      }));
+    } else {
+      // If you want to allow deactivating policies manually
+      setPolicyActivation((prev) => ({
+        ...prev,
+        [name]: { ...prev[name], active: false },
+      }));
+    }
+  };
 
   // const onClickPolicy = (e) => {
   //   console.log("DEBUG: Policy Clicked");
@@ -217,8 +218,10 @@ const onClickPolicy = (e) => {
 
     const runSimulationTick = () => {
       // console.log("Simulation tick", new Date().toLocaleTimeString());
-      if (year > 2125) {
-        setScore((prev) => simulation.calculateScore(budget, profit, greennessMapRef.current));
+      if (yearRef.current > 2125 - 1) {
+        setScore((prev) =>
+          simulation.calculateScore(budget, profit, greennessMapRef.current)
+        );
         simulation.endSimulation(score, budget, greennessMapRef.current);
         //alert("The simulation has ended, you score is ", score, ". Your remaining budget is ", budget, ".")
         navigate("/leaderboard", { replace: true });
@@ -226,7 +229,7 @@ const onClickPolicy = (e) => {
       }
       // 1. Calculate the next state for policies
       let updatedPolicies;
-      setPolicyActivation(prevPolicies => {
+      setPolicyActivation((prevPolicies) => {
         const nextPolicies = { ...prevPolicies };
         for (const key in nextPolicies) {
           if (nextPolicies[key].active && nextPolicies[key].timeToLive > 0) {
@@ -241,24 +244,26 @@ const onClickPolicy = (e) => {
       });
 
       setFacilityCoordinate((prev) => {
-    const updated = prev
-      .map((fc) => ({ ...fc, timeToLive: fc.timeToLive - 1 }))
-      .filter((fc) => fc.timeToLive > 0);
+        const updated = prev
+          .map((fc) => ({ ...fc, timeToLive: fc.timeToLive - 1 }))
+          .filter((fc) => fc.timeToLive > 0);
 
-    simulation.progress(
-      greennessMapRef.current,
-      updated,
-      policyActivation, // This now contains the updated active/TTL info
-      specifications,
-      setGreennessMap
-    );
+        simulation.progress(
+          greennessMapRef.current,
+          updated,
+          policyActivation, // This now contains the updated active/TTL info
+          specifications,
+          setGreennessMap
+        );
 
-    return updated;
+        return updated;
       });
 
       setBudget((prev) => prev + profit);
       setYear((prevYear) => prevYear + 1);
-      setScore((prev) => simulation.calculateScore(budget, profit, greennessMapRef.current));
+      setScore((prev) =>
+        simulation.calculateScore(budget, profit, greennessMapRef.current)
+      );
       tickCounter++;
 
       if (tickCounter >= tickPerRun) {
@@ -355,14 +360,20 @@ const onClickPolicy = (e) => {
                     id={policy.id}
                     // The 'checked' status is now based on the 'active' property
                     bool={
-                      policyActivation ? policyActivation[policy.id]?.active : false
+                      policyActivation
+                        ? policyActivation[policy.id]?.active
+                        : false
                     }
                     onChange={onClickPolicy}
                     // Add cost and timeToLive to the component if you want to display them
                     cost={policy.cost}
                     timeToLive={policy.timeToLive}
                     // Optional: disable the policy checkbox if it's already active
-                    disabled={policyActivation ? policyActivation[policy.id]?.active : false}
+                    disabled={
+                      policyActivation
+                        ? policyActivation[policy.id]?.active
+                        : false
+                    }
                   />
                 </div>
               ))}
