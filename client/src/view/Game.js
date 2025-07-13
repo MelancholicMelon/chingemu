@@ -243,9 +243,15 @@ export default function Game() {
 
   return (
     <div>
-      <button className="resume" onClick={() => setGameState(true)} disabled={true}>
-        Reset
-      </button>
+      <div
+        className="resume"
+        style={{
+          visibility: "hidden",
+          pointerEvents: "none",
+        }}
+      >
+        Resume
+      </div>
       <div className="game-container">
         <div className="canvas-container">
           <MapRender
