@@ -1,16 +1,26 @@
-import React from "react"
-export default function Policy(props) {
-    return (
-        <div className="policy-item">
-            <label>
-                <input
-                    type="checkbox"
-                    name={props.id}
-                    checked={props.bool}
-                    onChange={props.onChange}
-                />
-                {props.id}
-            </label>
-        </div>
-    );
+import React from "react";
+
+export default function Policy({ id, bool, onChange, cost, timeToLive, disabled }) {
+  return (
+    <div className={`policy-item${bool ? " active" : ""}`}>
+      <label className="policy-label">
+        <input
+          type="checkbox"
+          name={id}
+          checked={bool}
+          onChange={onChange}
+          disabled={disabled}
+        />
+        <span className="policy-name">{id}</span>
+      </label>
+      <div className="policy-details">
+        <p>
+          Cost: <span>{cost}</span>
+        </p>
+        <p>
+          Duration: <span>{timeToLive} Years</span>
+        </p>
+      </div>
+    </div>
+  );
 }
