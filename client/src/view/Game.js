@@ -292,7 +292,6 @@ export default function Game() {
                       img={facility.img}
                       cost={facility.cost}
                       name={facility.id}
-                      maxImpact={facility.maxImpact}
                       timeToLive={facility.timeToLive}
                       profit={facility.profit}
                       size={facility.size}
