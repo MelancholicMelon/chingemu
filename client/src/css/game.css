@@ -5,8 +5,8 @@
   width: 100vw;
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #FFFBE6;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fffbe6;
   overflow: hidden; /* Prevent scrollbars */
 }
 
@@ -36,63 +36,10 @@
   overflow-y: auto; /* Allow scrolling if needed */
 }
 
-/* Map Canvas Wrapper - Constrain size */
-.map-canvas-wrapper {
-  position: relative;
-  background: linear-gradient(135deg, #ffffff, #f8f9fa);
-  border: 3px solid #00712D;
-  border-radius: 20px;
-  padding: 10px; /* Reduced padding */
-  box-shadow: 0 8px 24px rgba(0, 113, 45, 0.2);
-  overflow: hidden;
-  width: 100%;
-  max-width: 100%; /* Ensure it doesn't exceed container */
-  height: auto;
-  max-height: 70vh; /* Constrain height */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.map-canvas-wrapper::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, transparent 49%, rgba(213, 237, 159, 0.1) 50%, transparent 51%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Map Canvas - Ensure proper sizing */
-.map-canvas {
-  position: relative;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: inset 0 2px 8px rgba(0, 113, 45, 0.1);
-  background: #f0f8ff;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
-  max-height: 100%;
-}
-
-/* Map Canvas - Canvas element itself */
-.map-canvas canvas {
-  width: 100% !important;
-  height: auto !important;
-  max-width: 100%;
-  max-height: 60vh; /* Constrain canvas height */
-  object-fit: contain;
-}
-
 /* Map Header - Reduce size */
 .map-header {
   background: linear-gradient(135deg, #ffffff, #f8f9fa);
-  border: 2px solid #D5ED9F;
+  border: 2px solid #d5ed9f;
   border-radius: 16px;
   padding: 8px 16px; /* Reduced padding */
   box-shadow: 0 4px 12px rgba(0, 113, 45, 0.15);
@@ -104,9 +51,9 @@
 .map-title {
   font-size: 20px; /* Reduced font size */
   font-weight: bold;
-  color: #00712D;
+  color: #00712d;
   margin: 0;
-  text-shadow: 1px 1px 0 #D5ED9F;
+  text-shadow: 1px 1px 0 #d5ed9f;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -121,7 +68,7 @@
 /* Map Instructions - Reduce size */
 .map-instructions {
   background: rgba(255, 145, 0, 0.1);
-  border: 2px solid #FF9100;
+  border: 2px solid #ff9100;
   border-radius: 12px;
   padding: 8px 12px; /* Reduced padding */
   margin-top: 8px;
@@ -133,7 +80,7 @@
 .map-instructions p {
   margin: 0;
   font-size: 13px; /* Reduced font size */
-  color: #FF9100;
+  color: #ff9100;
   font-weight: 600;
 }
 
@@ -145,7 +92,7 @@
 
 /* Resume Button - Pretty styling */
 .resume {
-  background: linear-gradient(135deg, #FF9100, #FFB347);
+  background: linear-gradient(135deg, #ff9100, #ffb347);
   color: white;
   border: none;
   border-radius: 12px;
@@ -164,7 +111,7 @@
 }
 
 .resume:hover:not(:disabled) {
-  background: linear-gradient(135deg, #FFB347, #FF9100);
+  background: linear-gradient(135deg, #ffb347, #ff9100);
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(255, 145, 0, 0.4);
 }
@@ -179,7 +126,7 @@
 /* Metrics Container - Pretty card layout */
 .metrics-container {
   background: linear-gradient(135deg, #ffffff, #f8f9fa);
-  border: 2px solid #D5ED9F;
+  border: 2px solid #d5ed9f;
   border-radius: 16px;
   padding: 16px;
   box-shadow: 0 6px 16px rgba(0, 113, 45, 0.15);
@@ -193,14 +140,14 @@
   margin: 0;
   font-size: 16px;
   font-weight: 600;
-  color: #00712D;
+  color: #00712d;
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
   background: rgba(213, 237, 159, 0.2);
   border-radius: 8px;
-  border-left: 4px solid #00712D;
+  border-left: 4px solid #00712d;
   transition: all 0.3s ease;
 }
 
@@ -233,7 +180,7 @@
   gap: 8px;
   padding: 12px;
   background-color: #ffffff;
-  border: 2px solid #D5ED9F;
+  border: 2px solid #d5ed9f;
   border-radius: 16px;
   box-shadow: 0 4px 8px rgba(0, 113, 45, 0.15);
 }
@@ -244,7 +191,7 @@
   flex-direction: row;
   align-items: center;
   background-color: #ffffff;
-  border: 1px solid #D5ED9F;
+  border: 1px solid #d5ed9f;
   border-radius: 12px;
   padding: 6px;
   cursor: pointer;
@@ -254,12 +201,12 @@
 }
 
 .facility-container:hover {
-  background-color: #D5ED9F;
+  background-color: #d5ed9f;
   box-shadow: 0 4px 10px rgba(255, 145, 0, 0.2);
 }
 
 .facility-container.active {
-  background-color: #D5ED9F;
+  background-color: #d5ed9f;
 }
 
 .image-button {
@@ -287,7 +234,7 @@
 .facility-text {
   text-align: left;
   font-size: 14px;
-  color: #00712D;
+  color: #00712d;
   margin: 0;
   flex: 1;
   display: flex;
@@ -310,7 +257,7 @@
   gap: 6px;
   padding: 8px;
   background-color: #ffffff;
-  border: 2px solid #00712D;
+  border: 2px solid #00712d;
   border-radius: 16px;
   box-shadow: 0 4px 8px rgba(0, 113, 45, 0.15);
   min-height: 120px;
@@ -323,28 +270,28 @@
   align-items: center;
   gap: 6px;
   padding: 8px;
-  background-color: #FFFBE6;
-  border: 1px solid #D5ED9F;
+  background-color: #fffbe6;
+  border: 1px solid #d5ed9f;
   border-radius: 8px;
   box-shadow: inset 0 1px 2px rgba(0, 113, 45, 0.05);
   transition: background-color 0.2s ease;
 }
 
 .policy-item:hover {
-  background-color: #D5ED9F;
+  background-color: #d5ed9f;
 }
 
 .policy-item input[type="checkbox"] {
   width: 14px;
   height: 14px;
   cursor: pointer;
-  accent-color: #FF9100;
+  accent-color: #ff9100;
   flex-shrink: 0;
 }
 
 .policy-item label {
   font-size: 12px;
-  color: #00712D;
+  color: #00712d;
   cursor: pointer;
   flex: 1;
   line-height: 1.3;
@@ -353,11 +300,11 @@
 .section-header {
   font-size: 20px;
   font-weight: 600;
-  color: #00712D;
+  color: #00712d;
   text-align: center;
   margin-bottom: 6px;
   margin-top: 8px;
-  text-shadow: 1px 1px 0 #D5ED9F;
+  text-shadow: 1px 1px 0 #d5ed9f;
 }
 
 /* Loading State */
@@ -368,7 +315,7 @@
   justify-content: center;
   padding: 40px;
   background: linear-gradient(135deg, #ffffff, #f8f9fa);
-  border: 2px solid #D5ED9F;
+  border: 2px solid #d5ed9f;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 113, 45, 0.15);
 }
@@ -376,21 +323,25 @@
 .map-loading-spinner {
   width: 40px;
   height: 40px;
-  border: 4px solid #D5ED9F;
-  border-top: 4px solid #00712D;
+  border: 4px solid #d5ed9f;
+  border-top: 4px solid #00712d;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 16px;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .map-loading-text {
   font-size: 16px;
-  color: #00712D;
+  color: #00712d;
   font-weight: 600;
   text-align: center;
 }
@@ -400,7 +351,7 @@
   .canvas-container {
     flex: 1 1 55%;
   }
-  
+
   .controls-container {
     flex: 1 1 45%;
   }
@@ -412,17 +363,17 @@
     height: auto;
     min-height: 100vh;
   }
-  
+
   .canvas-container {
     flex: none;
     height: 60vh;
   }
-  
+
   .controls-container {
     flex: none;
     height: auto;
   }
-  
+
   .map-canvas-wrapper {
     max-height: 50vh;
   }

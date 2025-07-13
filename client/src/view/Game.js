@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import Utils from "../utils/Utils";
 import MapRender from "./subView/MapRender";
 import Simulation from "../utils/Simulation";
-import "../css/game.css"
+import "../css/game.css";
 import Facilities from "./Facilities";
-import Policy from "./subView/Policy"
-import Timeline from "./Timeline"
+import Policy from "./subView/Policy";
+import Timeline from "./Timeline";
 
 export default function Game() {
   const [specifications, setSpecifications] = useState({
@@ -76,14 +76,13 @@ export default function Game() {
     }
   }, [specifications.policySpecification]);
 
-
   const onClickPolicy = (e) => {
-    console.log("DEBUG: Policy Clicked")
+    console.log("DEBUG: Policy Clicked");
     const { name, checked } = e.target;
     setPolicyActivation((prev) => ({ ...prev, [name]: checked }));
   };
 
-  // // Policy state debugging 
+  // // Policy state debugging
   // useEffect(() => {
   //   console.log(policyActivation);
   // }, [policyActivation])
@@ -103,8 +102,8 @@ export default function Game() {
   const [cellSize, setCellSize] = useState({ width: 0, height: 0 });
   const [canvasHeight, setCanvasHeight] = useState(500);
 
-  const simulation = new Simulation()
-  const TICK_INTERVAL = 100
+  const simulation = new Simulation();
+  const TICK_INTERVAL = 100;
   useEffect(() => {
     Utils()
       .then((data) => {
@@ -135,7 +134,6 @@ export default function Game() {
         console.error("Failed to fetch utils data:", error);
       });
   }, []);
-
 
   useEffect(() => {
     const updateCanvasHeight = () => {
@@ -191,7 +189,7 @@ export default function Game() {
 
     const runSimulationTick = () => {
       // console.log("Simulation tick", new Date().toLocaleTimeString());
-      if(year > 2125){
+      if (year > 2125) {
         setScore(simulation.calculateScore());
         simulation.endSimulation(score, budget, 10);
         //alert("The simulation has ended, you score is ", score, ". Your remaining budget is ", budget, ".")
@@ -199,10 +197,10 @@ export default function Game() {
         return;
       }
 
-      setFacilityCoordinate(prev => {
+      setFacilityCoordinate((prev) => {
         const updated = prev
-          .map(fc => ({ ...fc, timeToLive: fc.timeToLive - 1 }))
-          .filter(fc => fc.timeToLive > 0);
+          .map((fc) => ({ ...fc, timeToLive: fc.timeToLive - 1 }))
+          .filter((fc) => fc.timeToLive > 0);
 
         simulation.progress(
           greennessMapRef.current,
@@ -215,11 +213,9 @@ export default function Game() {
         return updated;
       });
 
-      setBudget(prev => prev + profit);
-      setYear(prevYear => prevYear + 1);
-      setScore(simulation.calculateScore(
-
-      ))
+      setBudget((prev) => prev + profit);
+      setYear((prevYear) => prevYear + 1);
+      setScore(simulation.calculateScore());
       tickCounter++;
 
       if (tickCounter >= tickPerRun) {
@@ -231,10 +227,7 @@ export default function Game() {
     return () => clearInterval(tickRef.current);
   }, [gameState]);
 
-  const resetGame = () => {
-
-  }
-
+  const resetGame = () => {};
 
   return (
     <div>
@@ -243,8 +236,7 @@ export default function Game() {
         style={{
           visibility: "hidden",
           pointerEvents: "none",
-        }}
-      >
+        }}>
         Resume
       </div>
       <div className="game-container">
@@ -252,9 +244,9 @@ export default function Game() {
           <div className="map-header">
             <h2 className="map-title">Japan Map</h2>
           </div>
-          <div className="map-canvas-wrapper">
+          <div>
             {greennessMap ? (
-              <div className="map-canvas">
+              <div>
                 <MapRender
                   canvasRef={canvasRef}
                   map={greennessMap}
@@ -277,15 +269,16 @@ export default function Game() {
             <p>
               {gameState
                 ? "Simulation is running! Watch the changes unfold."
-                : `Click on the map to place your selected facility: ${selectedFacility}`
-              }
+                : `Click on the map to place your selected facility: ${selectedFacility}`}
             </p>
           </div>
         </div>
 
         <div className="controls-container">
-          <Timeline currentYear={year} startYear={2025} endYear={2125} />
-          <button className="resume" onClick={() => setGameState(true)} disabled={gameState}>
+          <button
+            className="resume"
+            onClick={() => setGameState(true)}
+            disabled={gameState}>
             Resume
           </button>
           {/* Budget */}
@@ -306,6 +299,10 @@ export default function Game() {
                       img={facility.img}
                       cost={facility.cost}
                       name={facility.id}
+                      maxImpact={facility.maxImpact}
+                      timeToLive={facility.timeToLive}
+                      profit={facility.profit}
+                      size={facility.size}
                       active={selectedFacility === facility.id}
                       onClick={onClickFacility}
                     />
@@ -321,7 +318,9 @@ export default function Game() {
                 <div key={key}>
                   <Policy
                     id={policy.id}
-                    bool={policyActivation ? policyActivation[policy.id] : false}
+                    bool={
+                      policyActivation ? policyActivation[policy.id] : false
+                    }
                     onChange={onClickPolicy}
                   />
                 </div>
@@ -334,5 +333,5 @@ export default function Game() {
 }
 
 // Dylan's TODO
-// Add buttons to control the game like pause, continue, reset, etc. 
+// Add buttons to control the game like pause, continue, reset, etc.
 // Add a timeline slider on the top
