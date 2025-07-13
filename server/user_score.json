@@ -92,6 +92,11 @@
       "userId": 1751822797286,
       "finalBudget": 500,
       "finalAvgGreenness": 80
+    },
+    {
+      "id": 3,
+      "title": "12345678",
+      "userId": 0
     }
   ]
 }

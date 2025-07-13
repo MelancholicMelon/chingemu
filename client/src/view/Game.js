@@ -133,21 +133,21 @@ export default function Game() {
         });
 
         setGreennessMap(data.greennessMap);
-        
+
         setPolicyActivation(
-        data.policySpecification.reduce((acc, policy) => {
-          // console.log("Set policy activation triggered") // Debug
-          acc[policy.id] = false;
-          return acc;
-        }, {})
-      );
+          data.policySpecification.reduce((acc, policy) => {
+            // console.log("Set policy activation triggered") // Debug
+            acc[policy.id] = false;
+            return acc;
+          }, {})
+        );
       })
       .catch((error) => {
         // Handle the error here
         console.error("Failed to fetch utils data:", error);
       });
   }, []);
-  
+
 
   useEffect(() => {
     const updateCanvasHeight = () => {
@@ -202,7 +202,7 @@ export default function Game() {
 
     const runSimulationTick = () => {
       // console.log("Simulation tick", new Date().toLocaleTimeString());
-      if(year > 2035){
+      if (year > 2035) {
         setScore(simulation.calculateScore());
         simulation.endSimulation(score, budget, 10);
         navigate("/leaderboard", { replace: true });
@@ -212,10 +212,10 @@ export default function Game() {
         const updated = prev
           .map(fc => ({ ...fc, timeToLive: fc.timeToLive - 1 }))
           .filter(fc => fc.timeToLive > 0);
-          
+
         simulation.progress(
           greennessMapRef.current,
-          updated, 
+          updated,
           policyActivation,
           specifications,
           setGreennessMap
@@ -243,8 +243,8 @@ export default function Game() {
 
   return (
     <div>
-      <button className = "resume" onClick={() => setGameState(true)} disabled={true}>
-        Resume
+      <button className="resume" onClick={() => setGameState(true)} disabled={true}>
+        Reset
       </button>
       <div className="game-container">
         <div className="canvas-container">
@@ -261,7 +261,7 @@ export default function Game() {
         </div>
 
         <div className="controls-container">
-          <button className = "resume" onClick={() => setGameState(true)} disabled={gameState}>
+          <button className="resume" onClick={() => setGameState(true)} disabled={gameState}>
             Resume
           </button>
           {/* Budget */}
@@ -274,34 +274,34 @@ export default function Game() {
           <div className="section-header">Facilities</div>
           <div className="facilities-container">
             {specifications.facilitySpecification &&
-            specifications.facilitySpecification.map((facility, key) => {
-              //console.log(`Rendering facility: ${facility.id}, img: ${facility.img}`); // debuggusy
-              return (
-                <div key={key}>
-                  <Facilities
-                    img={facility.img}
-                    cost={facility.cost}
-                    name={facility.id}
-                    active={selectedFacility === facility.id}
-                    onClick={onClickFacility}
-                  />
-                </div>
-              );
-            })}
+              specifications.facilitySpecification.map((facility, key) => {
+                //console.log(`Rendering facility: ${facility.id}, img: ${facility.img}`); // debuggusy
+                return (
+                  <div key={key}>
+                    <Facilities
+                      img={facility.img}
+                      cost={facility.cost}
+                      name={facility.id}
+                      active={selectedFacility === facility.id}
+                      onClick={onClickFacility}
+                    />
+                  </div>
+                );
+              })}
           </div>
           {/*Policies list*/}
           <div className="section-header">Policies</div>
           <div className="policies-container">
             {specifications.policySpecification &&
-  specifications.policySpecification.map((policy, key) => (
-              <div key={key}>
-                <Policy
-                  id={policy.id}
-                  bool={policyActivation ? policyActivation[policy.id] : false}
-                  onChange={onClickPolicy}
-                />
-              </div>
-            ))}
+              specifications.policySpecification.map((policy, key) => (
+                <div key={key}>
+                  <Policy
+                    id={policy.id}
+                    bool={policyActivation ? policyActivation[policy.id] : false}
+                    onChange={onClickPolicy}
+                  />
+                </div>
+              ))}
           </div>
         </div>
       </div>
