@@ -202,10 +202,12 @@ export default function Game() {
 
     const runSimulationTick = () => {
       // console.log("Simulation tick", new Date().toLocaleTimeString());
-      if(year > 2035){
+      if(year > 2125){
         setScore(simulation.calculateScore());
         simulation.endSimulation(score, budget, 10);
+        //alert("The simulation has ended, you score is ", score, ". Your remaining budget is ", budget, ".")
         navigate("/leaderboard", { replace: true });
+        return;
       }
 
       setFacilityCoordinate(prev => {
@@ -231,7 +233,7 @@ export default function Game() {
       ))
       tickCounter++;
 
-      if (tickCounter >= 20) {
+      if (tickCounter >= 10) {
         setGameState(false);
       }
     };
@@ -267,7 +269,7 @@ export default function Game() {
           {/* Budget */}
           <div className="metrics-container">
             <p>Budget: {budget}</p>
-            <p>Profit: {profit}</p>
+            <p>Yearly Profit: {profit}</p>
             <p>Year: {year}</p>
           </div>
           {/*Facilities list*/}

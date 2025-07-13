@@ -94,6 +94,14 @@
     {
       "id": "shikoku",
       "loc": "maps/shikoku/continents.json"
+    },
+    {
+      "id": "tam_bold",
+      "loc": "maps/tam_bold/continents.json"
+    },
+    {
+      "id": "dylan_bold",
+      "loc": "maps/dylan_bold/continents.json"
     }
   ],
   "facilitySpecification": [
