@@ -34,58 +34,33 @@ export default function Game() {
   const greennessMapRef = useRef(greennessMap);
   const navigate = useNavigate();
 
-  // // Policy state handling
-  // const policySpecification = [
-  //   {
-  //     "id": "Free Diddy",
-  //     "parameter": "maxImpact",
-  //     "multiplier": -100
-  //   },
-  //   {
-  //     "id": "Resurrect the Lorax",
-  //     "parameter": "sd",
-  //     "multiplier": 3
-  //   },
-  //   {
-  //     "id": "Imprison Taylor Swift",
-  //     "parameter": "timeToLive",
-  //     "multiplier": 1.5
-  //   },
-  //   {
-  //     "id": "Temporary",
-  //     "parameter": "timeToLive",
-  //     "multiplier": 1.5
-  //   }
-  // ]
-
-  // const [form, setForm] = useState(
-  //   policySpecification.reduce((acc, policy) => {
-  //     acc[policy.id] = false;
-  //     return acc;
-  //   }, {})
-  // );
+  const tickRef = useRef(null);
+  const canvasRef = useRef(null);
+  const [cellSize, setCellSize] = useState({ width: 0, height: 0 });
+  const [canvasHeight, setCanvasHeight] = useState(500);
 
   useEffect(() => {
-  if (specifications.policySpecification) {
-    setPolicyActivation(
-      specifications.policySpecification.reduce((acc, policy) => {
-        // Initialize with active, timeToLive, and the new charged flag
-        acc[policy.id] = { active: false, timeToLive: 0, charged: false };
-        return acc;
-      }, {})
+    if (specifications.policySpecification) {
+      setPolicyActivation(
+        specifications.policySpecification.reduce((acc, policy) => {
+          // Initialize with active, timeToLive, and the new charged flag
+          acc[policy.id] = { active: false, timeToLive: 0, charged: false };
+          return acc;
+        }, {})
+      );
+    }
+  }, [specifications.policySpecification]);
+
+  // In Game.js
+
+  const onClickPolicy = (e) => {
+    const { name, checked } = e.target;
+    const policy = specifications.policySpecification.find(
+      (p) => p.id === name
     );
-  }
-}, [specifications.policySpecification]);
+    if (!policy) return;
 
-
-// In Game.js
-
-const onClickPolicy = (e) => {
-  const { name, checked } = e.target;
-  const policy = specifications.policySpecification.find(p => p.id === name);
-  if (!policy) return;
-
-  const currentPolicyState = policyActivation[name];
+    const currentPolicyState = policyActivation[name];
 
   if (checked) {
     // Only deduct cost if it hasn't been charged for this cycle yet
@@ -123,11 +98,6 @@ const onClickPolicy = (e) => {
     setSelectedFacility(facilityId);
   };
 
-  const tickRef = useRef(null);
-  const canvasRef = useRef(null);
-  const [cellSize, setCellSize] = useState({ width: 0, height: 0 });
-  const [canvasHeight, setCanvasHeight] = useState(500);
-
   const simulation = new Simulation();
   const TICK_INTERVAL = 100;
   useEffect(() => {
@@ -148,7 +118,6 @@ const onClickPolicy = (e) => {
         setGreennessMap(data.greennessMap);
       })
       .catch((error) => {
-        // Handle the error here
         console.error("Failed to fetch utils data:", error);
       });
   }, []);
@@ -157,7 +126,7 @@ const onClickPolicy = (e) => {
     const updateCanvasHeight = () => {
       const navbarHeight = document.getElementById("navbar")?.offsetHeight || 0;
       const viewportHeight = window.innerHeight;
-      const padding = 20; // some bottom margin
+      const padding = 20;
 
       const height = viewportHeight - navbarHeight - padding;
       setCanvasHeight(height);
@@ -207,16 +176,17 @@ const onClickPolicy = (e) => {
 
     const runSimulationTick = () => {
       // console.log("Simulation tick", new Date().toLocaleTimeString());
-      if (year > 2125) {
-        setScore((prev) => simulation.calculateScore(budget, profit, greennessMapRef.current));
+      if (yearRef.current > 2125 - 1) {
+        setScore((prev) =>
+          simulation.calculateScore(budget, profit, greennessMapRef.current)
+        );
         simulation.endSimulation(score, budget, greennessMapRef.current);
-        //alert("The simulation has ended, you score is ", score, ". Your remaining budget is ", budget, ".")
         navigate("/leaderboard", { replace: true });
         return;
       }
       // 1. Calculate the next state for policies
       let updatedPolicies;
-      setPolicyActivation(prevPolicies => {
+      setPolicyActivation((prevPolicies) => {
         const nextPolicies = { ...prevPolicies };
         for (const key in nextPolicies) {
           if (nextPolicies[key].active && nextPolicies[key].timeToLive > 0) {
@@ -232,24 +202,26 @@ const onClickPolicy = (e) => {
       });
 
       setFacilityCoordinate((prev) => {
-    const updated = prev
-      .map((fc) => ({ ...fc, timeToLive: fc.timeToLive - 1 }))
-      .filter((fc) => fc.timeToLive > 0);
+        const updated = prev
+          .map((fc) => ({ ...fc, timeToLive: fc.timeToLive - 1 }))
+          .filter((fc) => fc.timeToLive > 0);
 
-    simulation.progress(
-      greennessMapRef.current,
-      updated,
-      policyActivation, // This now contains the updated active/TTL info
-      specifications,
-      setGreennessMap
-    );
+        simulation.progress(
+          greennessMapRef.current,
+          updated,
+          policyActivation, // This now contains the updated active/TTL info
+          specifications,
+          setGreennessMap
+        );
 
-    return updated;
+        return updated;
       });
 
       setBudget((prev) => prev + profit);
       setYear((prevYear) => prevYear + 1);
-      setScore((prev) => simulation.calculateScore(budget, profit, greennessMapRef.current));
+      setScore((prev) =>
+        simulation.calculateScore(budget, profit, greennessMapRef.current)
+      );
       tickCounter++;
 
       if (tickCounter >= tickPerRun) {
@@ -260,8 +232,6 @@ const onClickPolicy = (e) => {
     tickRef.current = setInterval(runSimulationTick, TICK_INTERVAL);
     return () => clearInterval(tickRef.current);
   }, [gameState]);
-
-  const resetGame = () => {};
 
   return (
     <div>
@@ -319,7 +289,6 @@ const onClickPolicy = (e) => {
           <div className="facilities-container">
             {specifications.facilitySpecification &&
               specifications.facilitySpecification.map((facility, key) => {
-                //console.log(`Rendering facility: ${facility.id}, img: ${facility.img}`); // debuggusy
                 return (
                   <div key={key}>
                     <Facilities
@@ -346,14 +315,20 @@ const onClickPolicy = (e) => {
                     id={policy.id}
                     // The 'checked' status is now based on the 'active' property
                     bool={
-                      policyActivation ? policyActivation[policy.id]?.active : false
+                      policyActivation
+                        ? policyActivation[policy.id]?.active
+                        : false
                     }
                     onChange={onClickPolicy}
                     // Add cost and timeToLive to the component if you want to display them
                     cost={policy.cost}
                     timeToLive={policy.timeToLive}
                     // Optional: disable the policy checkbox if it's already active
-                    disabled={policyActivation ? policyActivation[policy.id]?.active : false}
+                    disabled={
+                      policyActivation
+                        ? policyActivation[policy.id]?.active
+                        : false
+                    }
                   />
                 </div>
               ))}
@@ -363,7 +338,3 @@ const onClickPolicy = (e) => {
     </div>
   );
 }
-
-// Dylan's TODO
-// Add buttons to control the game like pause, continue, reset, etc.
-// Add a timeline slider on the top
