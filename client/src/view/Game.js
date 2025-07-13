@@ -147,8 +147,33 @@ export default function Game() {
 
     updateCanvasHeight();
     window.addEventListener("resize", updateCanvasHeight);
+    // fix map wrapper height and width 
+    // const mapWrapper = document.getElementsByClassName('map-wrapper')[0];
+    // if (mapWrapper && canvasRef.current) {
+    //   // Get the width and height of the mapWrapper element
+    //   console.log("my balls")
+    //   const width = mapWrapper.clientWidth;
+    //   const height = mapWrapper.clientHeight;
+
+    //   // Set the canvas size accordingly
+    //   canvasRef.current.width = width;
+    //   canvasRef.current.height = height;
+    // }
     return () => window.removeEventListener("resize", updateCanvasHeight);
   }, []);
+
+  useEffect(() => {
+    if (canvasRef.current) {
+      const canvasWidth = canvasRef.current.width;
+      const canvasHeight = canvasRef.current.height;
+      
+      const mapWrapper = document.getElementsByClassName('map-wrapper')[0];
+      if (mapWrapper) {
+        mapWrapper.style.width = `${canvasWidth}px`;
+        mapWrapper.style.height = `${canvasHeight}px`;
+      }
+    }
+  }, [canvasRef.current]);
 
   const handleCellClick = (col, row) => {
     if (gameState) return;
@@ -226,8 +251,6 @@ export default function Game() {
     tickRef.current = setInterval(runSimulationTick, TICK_INTERVAL);
     return () => clearInterval(tickRef.current);
   }, [gameState]);
-
-  const resetGame = () => { };
 
   return (
     <div>
