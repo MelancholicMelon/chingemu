@@ -191,7 +191,7 @@ export default function Game() {
 
     const runSimulationTick = () => {
       // console.log("Simulation tick", new Date().toLocaleTimeString());
-      if(year > 2125){
+      if (year > 2125) {
         setScore(simulation.calculateScore());
         simulation.endSimulation(score, budget, 10);
         //alert("The simulation has ended, you score is ", score, ". Your remaining budget is ", budget, ".")
@@ -238,15 +238,6 @@ export default function Game() {
 
   return (
     <div>
-      <div
-        className="resume"
-        style={{
-          visibility: "hidden",
-          pointerEvents: "none",
-        }}
-      >
-        Resume
-      </div>
       <div className="game-container">
         <div className="canvas-container">
           <div className="map-header">
@@ -284,10 +275,10 @@ export default function Game() {
         </div>
 
         <div className="controls-container">
-          <Timeline currentYear={year} startYear={2025} endYear={2125} />
           <button className="resume" onClick={() => setGameState(true)} disabled={gameState}>
             Resume
           </button>
+          <Timeline currentYear={year} startYear={2025} endYear={2125} />
           {/* Budget */}
           <div className="metrics-container">
             <p>Money: {budget}</p>
