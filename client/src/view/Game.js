@@ -4,9 +4,9 @@ import Utils from "../utils/Utils";
 import MapRender from "./subView/MapRender";
 import Simulation from "../utils/Simulation";
 import "../css/game.css";
-import Facilities from "./Facilities";
+import Facilities from "./subView/Facilities";
 import Policy from "./subView/Policy";
-import Timeline from "./Timeline";
+import Timeline from "./subView/Timeline";
 
 export default function Game() {
   const [specifications, setSpecifications] = useState({
