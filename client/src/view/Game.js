@@ -227,7 +227,7 @@ export default function Game() {
     return () => clearInterval(tickRef.current);
   }, [gameState]);
 
-  const resetGame = () => {};
+  const resetGame = () => { };
 
   return (
     <div>
@@ -236,7 +236,6 @@ export default function Game() {
           <div className="map-header">
             <h2 className="map-title">Japan Map</h2>
           </div>
-          <div>
             {greennessMap ? (
               <div className="map-wrapper">
                 <MapRender
@@ -256,7 +255,6 @@ export default function Game() {
                 <p className="map-loading-text">Loading World Map...</p>
               </div>
             )}
-          </div>
           <div className="map-instructions">
             <p>
               {gameState
