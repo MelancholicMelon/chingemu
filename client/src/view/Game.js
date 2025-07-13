@@ -88,7 +88,7 @@ const onClickPolicy = (e) => {
   const currentPolicyState = policyActivation[name];
 
   if (checked) {
-    // Only deduct the cost if it hasn't been charged for this cycle yet
+    // Only deduct cost if it hasn't been charged for this cycle yet
     if (!currentPolicyState.charged) {
       if (budget < policy.cost) {
         alert("Not enough budget to activate this policy.");
@@ -99,16 +99,21 @@ const onClickPolicy = (e) => {
       setBudget(prev => prev - policy.cost);
     }
 
-    // Activate the policy and mark it as charged for this cycle
+    // Activate the policy and mark it as charged
     setPolicyActivation(prev => ({
       ...prev,
       [name]: { ...prev[name], active: true, timeToLive: policy.timeToLive, charged: true }
     }));
   } else {
-    // If unchecked, just deactivate it. The cost for this "turn" is already committed.
+    // If unchecking a policy that was charged AND the game is paused, issue a refund
+    if (currentPolicyState.charged && !gameState) {
+      setBudget(prev => prev + policy.cost);
+    }
+
+    // Deactivate the policy and reset its charged status so it can be re-purchased
     setPolicyActivation(prev => ({
       ...prev,
-      [name]: { ...prev[name], active: false }
+      [name]: { ...prev[name], active: false, charged: false }
     }));
   }
 };
