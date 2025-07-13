@@ -4,7 +4,7 @@ import MapRender from "./subView/MapRender";
 import Simulation from "../utils/Simulation";
 import "../css/game.css"
 import Facilities from "./Facilities";
-import Policy from "./Policy"
+import Policy from "./subView/Policy"
 
 export default function Game() {
   const [specifications, setSpecifications] = useState({
@@ -19,12 +19,12 @@ export default function Game() {
     modifiableParams: null,
   });
 
-  const [budget, setBudget] = useState(10000000);
+  const [budget, setBudget] = useState(1000000000);
   const [profit, setProfit] = useState(0);
   const [score, setScore] = useState(0);
   const [year, setYear] = useState(2025);
   const yearRef = useRef(year);
-  const [selectedFacility, setSelectedFacility] = useState("");
+  const [selectedFacility, setSelectedFacility] = useState("Factory");
   const [facilityCoordinate, setFacilityCoordinate] = useState([]);
   const [policyActivation, setPolicyActivation] = useState(null);
   const [gameState, setGameState] = useState(false);
@@ -63,15 +63,15 @@ export default function Game() {
   // );
 
   useEffect(() => {
-  if (specifications.policySpecification) {
-    setPolicyActivation(
-      specifications.policySpecification.reduce((acc, policy) => {
-        acc[policy.id] = false;
-        return acc;
-      }, {})
-    );
-  }
-}, [specifications.policySpecification]);
+    if (specifications.policySpecification) {
+      setPolicyActivation(
+        specifications.policySpecification.reduce((acc, policy) => {
+          acc[policy.id] = false;
+          return acc;
+        }, {})
+      );
+    }
+  }, [specifications.policySpecification]);
 
 
   const onClickPolicy = (e) => {
@@ -85,17 +85,15 @@ export default function Game() {
   //   console.log(policyActivation);
   // }, [policyActivation])
 
-  const [facilityContinent, setFacilityContinet] = useState({});
-
   // // temporary useeffect for debugging
   // useEffect(() => {
   //   console.log(`${selectedFacility} is selected`)
   // }, [selectedFacility])
 
   const onClickFacility = (facilityId) => {
-  console.log("Selected:", facilityId);
-  setSelectedFacility(facilityId);
-};
+    console.log("Selected:", facilityId);
+    setSelectedFacility(facilityId);
+  };
 
   // // temporary facilities json for testing
   // const facilities = {
@@ -117,7 +115,7 @@ export default function Game() {
 
   const simulation = new Simulation()
   const TICK_INTERVAL = 100
- useEffect(() => {
+  useEffect(() => {
     Utils()
       .then((data) => {
         setSpecifications({
@@ -165,26 +163,28 @@ export default function Game() {
   }, []);
 
   const handleCellClick = (col, row) => {
-  if (gameState) return;
+    if (gameState) return;
 
-  if (!selectedFacility) {
-    alert("Please select a facility before placing it.");
-    return;
-  }
+    if (!selectedFacility) {
+      alert("Please select a facility before placing it.");
+      return;
+    }
 
-  const success = simulation.validateInput(
-    { x: col, y: row },
-    selectedFacility,
-    facilityCoordinate,
-    specifications.facilitySpecification,
-    greennessMap,
-    setFacilityCoordinate
-  );
+    const success = simulation.validateInput(
+      { x: col, y: row },
+      selectedFacility,
+      facilityCoordinate,
+      specifications.facilitySpecification,
+      greennessMap,
+      setFacilityCoordinate,
+      setProfit,
+      setBudget
+    );
 
-  if (!success) {
-    alert("Placement not allowed at this position.");
-  }
-};
+    if (!success) {
+      alert("Placement not allowed at this position.");
+    }
+  };
 
   useEffect(() => {
     yearRef.current = year;
@@ -199,19 +199,13 @@ export default function Game() {
     let tickCounter = 0;
 
     const runSimulationTick = () => {
-      console.log("Simulation tick", new Date().toLocaleTimeString());
+      // console.log("Simulation tick", new Date().toLocaleTimeString());
 
       setFacilityCoordinate(prev => {
         const updated = prev
           .map(fc => ({ ...fc, timeToLive: fc.timeToLive - 1 }))
           .filter(fc => fc.timeToLive > 0);
-
-        // ✅ Safe logging
-        if (updated.length > 0) {
-          console.log("TimeToLive:", updated[0].timeToLive);
-        }
-
-        // ✅ Use the updated list in simulation
+          
         simulation.progress(
           greennessMapRef.current,
           updated, // ✅ not stale
@@ -223,10 +217,12 @@ export default function Game() {
         return updated;
       });
 
+      setBudget(prev => prev + profit);
+
       setYear(prevYear => prevYear + 1);
       tickCounter++;
 
-      if (tickCounter >= 100) {
+      if (tickCounter >= 10) {
         setGameState(false);
       }
     };
@@ -256,6 +252,9 @@ export default function Game() {
         </div>
 
         <div className="controls-container">
+          <button className = "resume" onClick={() => setGameState(true)} disabled={gameState}>
+            Resume
+          </button>
           {/* Budget */}
           <div className="metrics-container">
             <p>Budget: {budget}</p>
@@ -287,10 +286,10 @@ export default function Game() {
   specifications.policySpecification.map((policy, key) => (
               <div key={key}>
                 <Policy
-                id={policy.id}
-                bool={policyActivation ? policyActivation[policy.id] : false}
-                onChange={onClickPolicy}
-              />
+                  id={policy.id}
+                  bool={policyActivation ? policyActivation[policy.id] : false}
+                  onChange={onClickPolicy}
+                />
               </div>
             ))}
           </div>

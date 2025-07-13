@@ -13,7 +13,9 @@ export default class Simulation {
     facilityCordinate,
     facilitySpecification,
     mapDict,
-    setFacilityCoordinate
+    setFacilityCoordinate,
+    setProfit,
+    setBudget
   ) {
     const greennessMap = this.get2DGreennessMap(mapDict);
     let availible = false;
@@ -55,6 +57,14 @@ export default class Simulation {
         },
       ];
       setFacilityCoordinate(updated);
+
+      let totalProfit = 0;
+      for (const fc of updated) {
+        const profit = facilitySpecification.find(item => item.id === fc.id)?.profit || 0;
+        totalProfit += profit;
+      }
+      setProfit(totalProfit)
+      setBudget(prev => prev-facilitySpecification.find(item => item.id == selectedFacility).cost)
       return true;
     } else {
       return false;
@@ -164,5 +174,7 @@ export default class Simulation {
     return pdfKernel;
   }
 
-  endSimulation() {}
+  endSimulation() {
+
+  }
 }
