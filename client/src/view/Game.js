@@ -34,6 +34,11 @@ export default function Game() {
   const [greennessMap, setGreennessMap] = useState(null);
   const greennessMapRef = useRef(greennessMap);
   const navigate = useNavigate();
+  //Update every tick
+  const facilityCoordinateRef = useRef(facilityCoordinate);
+  useEffect(() => {
+    facilityCoordinateRef.current = facilityCoordinate;
+  }, [facilityCoordinate]);
 
   const tickRef = useRef(null);
   const canvasRef = useRef(null);
@@ -250,9 +255,9 @@ export default function Game() {
       });
 
       // 2. Calculate the next state for facilities
-      const updatedFacilities = facilityCoordinate
-        .map((fc) => ({ ...fc, timeToLive: fc.timeToLive - 1 }))
-        .filter((fc) => fc.timeToLive > 0);
+      const updatedFacilities = facilityCoordinateRef.current
+    .map((fc) => ({ ...fc, timeToLive: fc.timeToLive - 1 }))
+    .filter((fc) => fc.timeToLive > 0);
 
       // 3. Run the simulation with the NEWLY calculated states
       simulation.progress(

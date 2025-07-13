@@ -113,7 +113,7 @@
       "maxImpact": -0.1,
       "cost": 1000000,
       "profit": 200000,
-      "timeToLive": 20,
+      "timeToLive": 10,
       "description": "not yet",
       "img" : "/img/pngegg.png"
       

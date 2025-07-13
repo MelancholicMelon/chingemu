@@ -176,7 +176,7 @@ export default class Simulation {
 
           const fc = facilityCoordinate[i];
           const fs = facilitySpecification.find((item) => item.id === fc.id);
-          const sd = fs.stddtv;
+          const sd = fs.stddev;
 
           if (fs.pdf === "normal") {
             const muX = fc.coordinate[1];

@@ -4,7 +4,7 @@
       "id": 0,
       "username": "admin",
       "password": "admin",
-      "highScoreId": 1752426149616
+      "highScoreId": 1752433202181
     },
     {
       "id": 1751815731846,
@@ -179,6 +179,27 @@
       "userId": 0,
       "finalBudget": 2305200000,
       "finalAvgGreenness": "0.2389"
+    },
+    {
+      "id": 1752433137409,
+      "score": 293084004,
+      "userId": 0,
+      "finalBudget": 1416800000,
+      "finalAvgGreenness": "0.2606"
+    },
+    {
+      "id": 1752433202181,
+      "score": 365357676,
+      "userId": 0,
+      "finalBudget": 1730600000,
+      "finalAvgGreenness": "0.2838"
+    },
+    {
+      "id": 1752433202306,
+      "score": 365357676,
+      "userId": 0,
+      "finalBudget": 1730600000,
+      "finalAvgGreenness": "0.2834"
     }
   ]
 }
