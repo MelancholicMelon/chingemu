@@ -238,7 +238,7 @@ export default function Game() {
           </div>
           <div>
             {greennessMap ? (
-              <div>
+              <div className="map-wrapper">
                 <MapRender
                   canvasRef={canvasRef}
                   map={greennessMap}

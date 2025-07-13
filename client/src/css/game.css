@@ -1,4 +1,8 @@
-/* Game Container - Fills the whole screen */
+/* ======================
+   Game Layout Containers
+   ====================== */
+
+/* Main game container */
 .game-container {
   display: flex;
   height: 80vh;
@@ -9,7 +13,7 @@
   background-color: #FFFBE6;
 }
 
-/* Canvas Container - Takes space as needed by MapRender */
+/* Canvas container */
 .canvas-container {
   flex: 0 0 auto;
   display: flex;
@@ -20,7 +24,7 @@
   gap: 15px;
 }
 
-/* Controls Container - Uses all remaining space */
+/* Controls container */
 .controls-container {
   flex: 1;
   display: flex;
@@ -31,7 +35,44 @@
   margin-top: 20px;
 }
 
-/* Resume Button - Pretty styling */
+/* =====================
+   Canvas & Map Styling
+   ===================== */
+
+   .map-wrapper {
+    width: fit-content;
+    height: fit-content;
+    border: none;
+    padding: 0;
+    margin: 0;
+    background: none;
+    box-shadow: none;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Remove visual overlays that interfere with pointer accuracy */
+  .map-wrapper::before {
+    content: none;
+  }
+  
+  /* Canvas must match exact pixel dimensions from JS */
+  .map-wrapper canvas {
+    display: block;
+    width: auto;
+    height: auto;
+    image-rendering: pixelated;
+    padding: 0;
+    margin: 0;
+    border: none;
+    box-shadow: none;
+  }
+
+/* =====================
+   Resume Button Styling
+   ===================== */
+
 .resume {
   background: linear-gradient(135deg, #FF9100, #FFB347);
   color: white;
@@ -64,7 +105,10 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Metrics Container - Pretty card layout */
+/* =========================
+   Score/Budget/Profit Panel
+   ========================= */
+
 .metrics-container {
   background: linear-gradient(135deg, #ffffff, #f8f9fa);
   border: 2px solid #D5ED9F;
@@ -97,7 +141,6 @@
   transform: translateX(5px);
 }
 
-/* Add icons using pseudo-elements */
 .metrics-container p:nth-child(1)::before {
   content: "💰";
   font-size: 20px;
@@ -113,20 +156,23 @@
   font-size: 20px;
 }
 
-/* Facilities Container - 3x3 grid, red replaced with soft pastel green */
+/* ======================
+   Facilities Grid Layout
+   ====================== */
+
 .facilities-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
   gap: 8px;
   padding: 12px;
-  background-color: #D5ED9F;
-  border: 2px solid #00712D;
+  background-color: #ffffff;
+  border: 2px solid #D5ED9F;
   border-radius: 16px;
   box-shadow: 0 4px 8px rgba(0, 113, 45, 0.15);
 }
 
-/* Individual Facility Component */
+/* Individual facility item */
 .facility-container {
   display: flex;
   flex-direction: row;
@@ -190,7 +236,10 @@
   line-height: 1.2;
 }
 
-/* Policies Container - 2x2 grid, softened blue -> white with green border */
+/* ==========================
+   Policies Grid and Styling
+   ========================== */
+
 .policies-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -205,7 +254,6 @@
   max-height: 18vh;
 }
 
-/* Policy Item - Contains checkbox and label */
 .policy-item {
   display: flex;
   align-items: center;
@@ -238,6 +286,10 @@
   line-height: 1.3;
 }
 
+/* ===================
+   Shared Text Styling
+   =================== */
+
 .section-header {
   font-size: 20px;
   font-weight: 600;
@@ -247,13 +299,3 @@
   margin-top: 8px;
   text-shadow: 1px 1px 0 #D5ED9F;
 }
-
-.facilities-container,
-.policies-container {
-  background-color: #ffffff;
-  border: 2px solid #D5ED9F;
-  border-radius: 16px;
-  padding: 16px;
-  box-shadow: 0 4px 8px rgba(0, 113, 45, 0.15);
-}
-
