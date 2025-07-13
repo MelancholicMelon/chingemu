@@ -1,0 +1,188 @@
+/* Timeline Container */
+.timeline-container {
+  background: linear-gradient(135deg, #ffffff, #f8f9fa);
+  border: 2px solid #D5ED9F;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 6px 16px rgba(0, 113, 45, 0.15);
+  margin-bottom: 12px; /* Reduced from 15px for better flow */
+  position: relative;
+}
+  
+  /* Timeline Header */
+  .timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  
+  .timeline-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #00712D;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .timeline-title::before {
+    content: "⏱️";
+    font-size: 18px;
+  }
+  
+  .timeline-current-year {
+    font-size: 18px;
+    font-weight: bold;
+    color: #FF9100;
+    background: rgba(255, 145, 0, 0.1);
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 2px solid #FF9100;
+  }
+  
+  /* Timeline Track */
+  .timeline-track {
+    position: relative;
+    height: 40px;
+    background: #f0f0f0;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  
+  .timeline-progress {
+    height: 100%;
+    background: linear-gradient(90deg, #D5ED9F, #00712D);
+    transition: width 0.5s ease-in-out;
+    border-radius: 20px;
+    position: relative;
+  }
+  
+  .timeline-progress::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 2s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  
+  /* Timeline Markers */
+  .timeline-markers {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+  }
+  
+  .timeline-marker {
+    position: absolute;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+  }
+  
+  .timeline-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ccc;
+    border: 2px solid #fff;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .timeline-marker.passed .timeline-dot {
+    background: #00712D;
+    border-color: #D5ED9F;
+  }
+  
+  .timeline-marker.current .timeline-dot {
+    background: #FF9100;
+    border-color: #fff;
+    width: 16px;
+    height: 16px;
+    box-shadow: 0 0 0 4px rgba(255, 145, 0, 0.3);
+    animation: pulse 1.5s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 4px rgba(255, 145, 0, 0.3); }
+    50% { box-shadow: 0 0 0 8px rgba(255, 145, 0, 0.1); }
+    100% { box-shadow: 0 0 0 4px rgba(255, 145, 0, 0.3); }
+  }
+  
+  .timeline-year {
+    font-size: 10px;
+    font-weight: 600;
+    color: #666;
+    margin-top: 25px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    transition: all 0.3s ease;
+  }
+  
+  .timeline-marker.active .timeline-year {
+    color: #00712D;
+    background: rgba(213, 237, 159, 0.9);
+    border-color: #00712D;
+  }
+  
+  .timeline-marker.current .timeline-year {
+    color: #FF9100;
+    background: rgba(255, 145, 0, 0.1);
+    border-color: #FF9100;
+    font-weight: bold;
+  }
+  
+  /* Timeline Footer */
+  .timeline-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    color: #00712D;
+    font-weight: 600;
+    padding: 4px 12px;
+    background: rgba(213, 237, 159, 0.2);
+    border-radius: 8px;
+    border-left: 4px solid #00712D;
+  }
+  
+  .timeline-footer::before {
+    content: "⏰";
+    margin-right: 8px;
+    font-size: 16px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .timeline-year {
+      font-size: 8px;
+      padding: 1px 4px;
+    }
+    
+    .timeline-dot {
+      width: 10px;
+      height: 10px;
+    }
+    
+    .timeline-marker.current .timeline-dot {
+      width: 14px;
+      height: 14px;
+    }
+  }

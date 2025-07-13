@@ -6,6 +6,7 @@ import Simulation from "../utils/Simulation";
 import "../css/game.css"
 import Facilities from "./Facilities";
 import Policy from "./subView/Policy"
+import Timeline from "./Timeline"
 
 export default function Game() {
   const [specifications, setSpecifications] = useState({
@@ -186,10 +187,11 @@ export default function Game() {
     if (!gameState) return;
 
     let tickCounter = 0;
+    let tickPerRun = 10;
 
     const runSimulationTick = () => {
       // console.log("Simulation tick", new Date().toLocaleTimeString());
-      if (year > 2035) {
+      if (year > 2125) {
         setScore(simulation.calculateScore());
         simulation.endSimulation(score, budget, 10);
         navigate("/leaderboard", { replace: true });
@@ -218,7 +220,7 @@ export default function Game() {
       ))
       tickCounter++;
 
-      if (tickCounter >= 20) {
+      if (tickCounter >= tickPerRun) {
         setGameState(false);
       }
     };
@@ -245,19 +247,42 @@ export default function Game() {
       </div>
       <div className="game-container">
         <div className="canvas-container">
-          <MapRender
-            canvasRef={canvasRef}
-            map={greennessMap}
-            facilityCoordinate={facilityCoordinate}
-            specifications={specifications}
-            cellSize={cellSize}
-            setCellSize={setCellSize}
-            onCellClick={handleCellClick}
-            canvasHeight={canvasHeight}
-          />
+          <div className="map-header">
+            <h2 className="map-title">Japan Map</h2>
+          </div>
+          <div className="map-canvas-wrapper">
+            {greennessMap ? (
+              <div className="map-canvas">
+                <MapRender
+                  canvasRef={canvasRef}
+                  map={greennessMap}
+                  facilityCoordinate={facilityCoordinate}
+                  specifications={specifications}
+                  cellSize={cellSize}
+                  setCellSize={setCellSize}
+                  onCellClick={handleCellClick}
+                  canvasHeight={canvasHeight}
+                />
+              </div>
+            ) : (
+              <div className="map-loading">
+                <div className="map-loading-spinner"></div>
+                <p className="map-loading-text">Loading World Map...</p>
+              </div>
+            )}
+          </div>
+          <div className="map-instructions">
+            <p>
+              {gameState
+                ? "Simulation is running! Watch the changes unfold."
+                : `Click on the map to place your selected facility: ${selectedFacility}`
+              }
+            </p>
+          </div>
         </div>
 
         <div className="controls-container">
+          <Timeline currentYear={year} startYear={2025} endYear={2125} />
           <button className="resume" onClick={() => setGameState(true)} disabled={gameState}>
             Resume
           </button>
@@ -265,7 +290,7 @@ export default function Game() {
           <div className="metrics-container">
             <p>Money: {budget}</p>
             <p>Profit: {profit}</p>
-            <p>Year: {year}</p>
+            <p>Score: {score}</p>
           </div>
           {/*Facilities list*/}
           <div className="section-header">Facilities</div>
