@@ -126,17 +126,25 @@ export default class Simulation {
   ) {
     let pdfKernel = [];
 
-    const activatePolicy = Object.keys(policyActivation).filter(
-      (key) => policyActivation[key] === true
-    );
+    const activatePolicyIds = Object.keys(policyActivation).filter(
+    (key) => policyActivation[key]?.active === true
+  );
 
     const prms = policySpecification.map((f) => f.parameter);
 
-    const policyMultiplier = Object.fromEntries(prms.map((key) => [key, 1]));
-    for (var i = 0; i < activatePolicy.length; i++) {
-      let prm = activatePolicy[i].params;
-      policyMultiplier[prm] += activatePolicy[i].multiplier;
+  const policyMultiplier = Object.fromEntries(prms.map((key) => [key, 1]));
+
+  // Loop through the IDs of active policies
+  for (var i = 0; i < activatePolicyIds.length; i++) {
+    const policyId = activatePolicyIds[i];
+    // Find the full policy object from the specification
+    const policy = policySpecification.find(p => p.id === policyId);
+
+    if (policy) {
+      let prm = policy.parameter;
+      policyMultiplier[prm] += policy.multiplier;
     }
+  }
 
     for (var x = 0; x < mapSize[0]; x++) {
       const row = [];
