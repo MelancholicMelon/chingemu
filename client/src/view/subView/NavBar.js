@@ -21,7 +21,7 @@ export default function NavBar(props) {
         {!isLoggedIn && <Link to="/">Login</Link>}
         {isLoggedIn && (
           <>
-            <Link to="/leaderboard">LeaderBoard</Link>
+            <Link to="/leaderboard">Leaderboard</Link>
             <Link to="/game">Game</Link>
           </>
         )}
