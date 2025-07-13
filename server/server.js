@@ -97,11 +97,36 @@ app.get("/scores/leaderboard", (req, res) => {
   const start = parseInt(req.query.start) || 1;
   const end = parseInt(req.query.end) || 10;
 
-  const db = readDB();
-  const sortedScores = [...db.scores].sort((a, b) => b.score - a.score);
+  try {
+    const db = JSON.parse(fs.readFileSync("user_score.json", "utf-8"));
 
-  const sliced = sortedScores.slice(start - 1, end);
-  res.json(sliced);
+    // Create map from userId to username
+    const userMap = Object.fromEntries(db.users.map((u) => [u.id, u.username]));
+
+    // Filter out scores that are not numbers
+    const validScores = db.scores.filter((s) => !isNaN(s.score));
+
+    // Sort scores descending
+    const sortedScores = [...validScores].sort((a, b) => b.score - a.score);
+
+    // Slice based on start/end
+    const sliced = sortedScores.slice(start - 1, end);
+
+    // Replace userId with username
+    const leaderboard = sliced.map((s) => ({
+      ...s,
+      username: userMap[s.userId] || "Unknown",
+    }));
+
+    // Optionally remove userId
+    leaderboard.forEach((s) => delete s.userId);
+
+    res.json(leaderboard);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error reading file", error: error.message });
+  }
 });
 
 app.listen(PORT, () => {
@@ -144,7 +169,7 @@ app.get("/scores/add", (req, res) => {
   const score = req.headers.score;
   const finalBudget = req.headers.finalBudget;
   const finalAvgGreenness = req.headers.finalAvgGreenness;
-  console.log(score, finalBudget, finalAvgGreenness)
+  console.log(score, finalBudget, finalAvgGreenness);
   if (!token) return res.status(401).json({ message: "No token provided" });
   jwt.verify(token, SECRET, (err, user) => {
     if (err) return res.status(403).json({ message: "Invalid token" });
@@ -160,7 +185,13 @@ app.get("/scores/add", (req, res) => {
       }
       return i;
     };
-    db.scores.push({ id: scoreid(), score: score, userId: user.id, finalBudget: finalBudget, finalAvgGreenness: finalAvgGreenness });
+    db.scores.push({
+      id: scoreid(),
+      score: score,
+      userId: user.id,
+      finalBudget: finalBudget,
+      finalAvgGreenness: finalAvgGreenness,
+    });
     fs.writeFileSync("user_score.json", JSON.stringify(db, null, 2));
     res.json(db.scores.filter((s) => s.userId === user.id));
   });
@@ -203,8 +234,6 @@ const jwt = require("jsonwebtoken");
 const SECRET = process.env.REACT_APP_SECRET;
 
 app.use(bodyParser.json());
-
-// User Management: Login, Signup, Delete Account
 
 app.post("/login", (req, res) => {
   const { username, password } = req.body;

@@ -78,37 +78,36 @@ export default function LeaderBoard() {
   }, []);
 
   return (
-      <section className="leaderboard-container">
-        <h2 className="leaderboard-title">LeaderBoard</h2>
-    
-        {highScore && (
-          <article className="highscore">
-            <strong>Your High Score:</strong> {highScore.score}
-          </article>
-        )}
-    
-        <table className="leaderboard-table">
-          <thead>
-            <tr>
-              <th>User ID</th>
-              <th>Score</th>
+    <section className="leaderboard-container">
+      <h2 className="leaderboard-title">LeaderBoard</h2>
+
+      {highScore && (
+        <article className="highscore">
+          <strong>Your High Score:</strong> {highScore.score}
+        </article>
+      )}
+
+      <table className="leaderboard-table">
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {scores.map((p) => (
+            <tr key={p.id}>
+              <td>{p.username}</td>
+              <td>{p.score}</td>
             </tr>
-          </thead>
-          <tbody>
-            {scores.map((p) => (
-              <tr key={p.id}>
-                <td>{p.userId}</td>
-                <td>{p.score}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-    
-        <section className="posts-section">
-          {/* <h3>Posts Section</h3> */}
-          {/* Your posts/forum/chat UI here */}
-        </section>
+          ))}
+        </tbody>
+      </table>
+
+      <section className="posts-section">
+        {/* <h3>Posts Section</h3> */}
+        {/* Your posts/forum/chat UI here */}
       </section>
-    );
-    
+    </section>
+  );
 }
