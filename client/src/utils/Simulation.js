@@ -71,8 +71,24 @@ export default class Simulation {
     }
   }
 
-  calculateScore(budget, profit, setScore) {
-    return 12345678
+  calculateScore(budget, profit, mapDict) {
+    let score = 0;
+    const a_b = 1;
+    const a_p = 1;
+    let a_g = 1;
+    for(let i = 0;i<mapDict.length;i++){
+      const greennessContinent = mapDict[i].kernel;
+      let avg = 0;
+      for (let i = 0; i < greennessContinent.length; i++) { // Iterate through rows
+        for (let j = 0; j < greennessContinent[i].length; j++) { // Iterate through columns
+          avg += greennessContinent[i][j];
+        }
+      }
+      avg = (avg + greennessContinent.length*greennessContinent[0].length) / mapDict[i].size / 255;
+      if(avg < a_g){ a_g = avg }
+    }
+    score = Math.ceil((budget * a_b + profit * a_p) * a_g);
+    return score
   }
 
   progress(
@@ -186,7 +202,6 @@ export default class Simulation {
 
   endSimulation(score, budget, greenness) {
     const token = localStorage.getItem("token");
-    console.log(typeof score, typeof budget, typeof greenness)
     fetch("http://localhost:3001/scores/add", {
       headers: {
           Authorization: "Bearer " + token,

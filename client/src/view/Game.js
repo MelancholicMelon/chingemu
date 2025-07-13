@@ -218,8 +218,8 @@ const onClickPolicy = (e) => {
     const runSimulationTick = () => {
       // console.log("Simulation tick", new Date().toLocaleTimeString());
       if (year > 2125) {
-        setScore(simulation.calculateScore());
-        simulation.endSimulation(score, budget, 10);
+        setScore((prev) => simulation.calculateScore(budget, profit, greennessMapRef.current));
+        simulation.endSimulation(score, budget, greennessMapRef.current);
         //alert("The simulation has ended, you score is ", score, ". Your remaining budget is ", budget, ".")
         navigate("/leaderboard", { replace: true });
         return;
@@ -258,7 +258,7 @@ const onClickPolicy = (e) => {
 
       setBudget((prev) => prev + profit);
       setYear((prevYear) => prevYear + 1);
-      setScore(simulation.calculateScore());
+      setScore((prev) => simulation.calculateScore(budget, profit, greennessMapRef.current));
       tickCounter++;
 
       if (tickCounter >= tickPerRun) {
@@ -335,7 +335,6 @@ const onClickPolicy = (e) => {
                       img={facility.img}
                       cost={facility.cost}
                       name={facility.id}
-                      maxImpact={facility.maxImpact}
                       timeToLive={facility.timeToLive}
                       profit={facility.profit}
                       size={facility.size}
