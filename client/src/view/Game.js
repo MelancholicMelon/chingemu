@@ -263,7 +263,7 @@ export default function Game() {
           </button>
           {/* Budget */}
           <div className="metrics-container">
-            <p>Budget: {budget}</p>
+            <p>Money: {budget}</p>
             <p>Profit: {profit}</p>
             <p>Year: {year}</p>
           </div>
