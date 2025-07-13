@@ -8,7 +8,7 @@ export default class Simulation {
   validateInput(
     coordinate,
     selectedFacility,
-    facilityCoordinate,
+    facilityCordinate,
     facilitySpecification,
     mapDict,
     setFacilityCoordinate,
@@ -16,73 +16,87 @@ export default class Simulation {
     setBudget
   ) {
     const greennessMap = this.get2DGreennessMap(mapDict);
-    if (!greennessMap.length || !greennessMap[0][coordinate.y]) return false;
-
-    let isLand = greennessMap.some(
-      (continent) => continent[coordinate.y][coordinate.x] > -1
-    );
-    if (!isLand) return false;
-
-    for (const facility of facilityCoordinate) {
+    let availible = false;
+    // console.log("FACILITYSPEC START")
+    // //console.log(facilitySpecification)
+    // console.log(facilityCordinate)
+    // console.log("FACILITYSPEC END")
+    for (let i = 0; i < greennessMap.length; i++) {
+      let continent = greennessMap[i];
+      if (continent[coordinate.y][coordinate.x] > -1) {
+        availible = true;
+      }
+    }
+    for (const facility of facilityCordinate) {
+      // console.log("HELLO?!")
+      // console.log("Looking for spec with id (selectedFacility):", selectedFacility);
+      // console.log("Looking for spec with id (nearby facility):", facility.id);
       const x_diff = coordinate.x - facility.coordinate[0];
       const y_diff = coordinate.y - facility.coordinate[1];
       const distance = Math.sqrt(x_diff * x_diff + y_diff * y_diff);
-      const newFacilitySpec = facilitySpecification.find(
-        (item) => item.id === selectedFacility
-      );
-      const existingFacilitySpec = facilitySpecification.find(
-        (item) => item.id === facility.id
-      );
-      const limit = (newFacilitySpec.size + existingFacilitySpec.size) / 2;
-
-      if (distance < limit) return false;
+      const limit =
+        (facilitySpecification.find((item) => item.id === selectedFacility)
+          .size +
+          facilitySpecification.find((item) => item.id === facility.id).size) /
+        2;
+      if (distance < limit - 1) {
+        availible = false;
+      }
     }
+    if (availible) {
+      const updated = [
+        ...facilityCordinate,
+        {
+          id: selectedFacility,
+          coordinate: [coordinate.x, coordinate.y],
+          timeToLive: facilitySpecification.find(
+            (item) => item.id === selectedFacility
+          ).timeToLive,
+        },
+      ];
+      setFacilityCoordinate(updated);
 
-    const newFacilityDetails = facilitySpecification.find(
-      (item) => item.id === selectedFacility
-    );
-    if (newFacilityDetails.cost > setBudget((prev) => prev)) return false; // Check budget before setting state
-
-    const updated = [
-      ...facilityCoordinate,
-      {
-        id: selectedFacility,
-        coordinate: [coordinate.x, coordinate.y],
-        timeToLive: newFacilityDetails.timeToLive,
-      },
-    ];
-    setFacilityCoordinate(updated);
-
-    const totalProfit = updated.reduce((sum, fc) => {
-      const spec = facilitySpecification.find((item) => item.id === fc.id);
-      return sum + (spec?.profit || 0);
-    }, 0);
-    setProfit(totalProfit);
-
-    setBudget((prev) => prev - newFacilityDetails.cost);
-    return true;
+      let totalProfit = 0;
+      for (const fc of updated) {
+        const profit =
+          facilitySpecification.find((item) => item.id === fc.id)?.profit || 0;
+        totalProfit += profit;
+      }
+      setProfit(totalProfit);
+      setBudget(
+        (prev) =>
+          prev -
+          facilitySpecification.find((item) => item.id == selectedFacility).cost
+      );
+      return true;
+    } else {
+      return false;
+    }
   }
 
   calculateScore(budget, profit, mapDict) {
-    if (!mapDict) return 0;
-    let lowestAvgGreenness = 1.0;
-
-    for (const continent of mapDict) {
-      const greennessKernel = continent.kernel;
-      let landCellCount = 0;
-      let greennessSum = 0;
-      for (const row of greennessKernel) {
-        for (const value of row) {
-          if (value !== -1) {
-            greennessSum += value;
-            landCellCount++;
-          }
+    let score = 0;
+    const a_b = 1;
+    const a_p = 1;
+    let a_g = 1;
+    for (let i = 0; i < mapDict.length; i++) {
+      const greennessContinent = mapDict[i].kernel;
+      let avg = 0;
+      for (let i = 0; i < greennessContinent.length; i++) {
+        for (let j = 0; j < greennessContinent[i].length; j++) {
+          avg += greennessContinent[i][j];
         }
       }
-      const avg = landCellCount > 0 ? greennessSum / landCellCount / 255 : 0;
-      if (avg < lowestAvgGreenness) lowestAvgGreenness = avg;
+      avg =
+        (avg + greennessContinent.length * greennessContinent[0].length) /
+        mapDict[i].size /
+        255;
+      if (avg < a_g) {
+        a_g = avg;
+      }
     }
-    return Math.ceil((budget + profit) * lowestAvgGreenness);
+    score = Math.ceil((budget * a_b + profit * a_p) * a_g);
+    return score;
   }
 
   progress(
@@ -92,34 +106,37 @@ export default class Simulation {
     specifications,
     setGreennessMap
   ) {
-    if (
-      !mapDict ||
-      !specifications.facilitySpecification ||
-      !specifications.policySpecification
-    )
-      return;
-
     const map = mapDict.map((continent) => ({
       ...continent,
       kernel: continent.kernel.map((row) => [...row]),
     }));
 
+    const mapSize = [
+      mapDict[0]["kernel"].length,
+      mapDict[0]["kernel"][0].length,
+    ];
+
     const PDFKernel = this.generatePDFKernel(
       facilityCoordinate,
       policyActivation,
       specifications.facilitySpecification,
-      specifications.policySpecification
+      specifications.policySpecification,
+      mapSize
     );
 
     let greennessMap = this.get2DGreennessMap(mapDict);
     for (let i = 0; i < mapDict.length; i++) {
-      for (let r = 0; r < mapDict[i].kernel.length; r++) {
-        for (let c = 0; c < mapDict[i].kernel[r].length; c++) {
-          if (mapDict[i].kernel[r][c] !== -1) {
-            let newValue = greennessMap[i][r][c] * (0.995 + PDFKernel[r][c]);
-            if (newValue > 255) newValue = 255;
-            if (newValue < 1) newValue = 1;
-            map[i].kernel[r][c] = newValue;
+      for (let x = 0; x < mapSize[0]; x++) {
+        for (let y = 0; y < mapSize[1]; y++) {
+          if (mapDict[i]["kernel"][x][y] !== -1) {
+            map[i]["kernel"][x][y] =
+              greennessMap[i][x][y] *
+              (Math.random() * (1.01 - 0.98) + 0.98 + PDFKernel[x][y]);
+            if (map[i]["kernel"][x][y] > 255) {
+              map[i]["kernel"][x][y] = 255;
+            } else if (map[i]["kernel"][x][y] < 1) {
+              map[i]["kernel"][x][y] = 1;
+            }
           }
         }
       }

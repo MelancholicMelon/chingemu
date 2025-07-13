@@ -13,8 +13,13 @@ export default function MapRender({
 }) {
   const handleMouseMove = (e) => {
     // Guard clause for missing data
-    if (!canvasRef.current || !onFacilityHover || !specifications.facilitySpecification) return;
-    
+    if (
+      !canvasRef.current ||
+      !onFacilityHover ||
+      !specifications.facilitySpecification
+    )
+      return;
+
     const canvas = canvasRef.current;
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -23,8 +28,10 @@ export default function MapRender({
 
     for (let i = facilityCoordinate.length - 1; i >= 0; i--) {
       const facility = facilityCoordinate[i];
-      const facilitySpec = specifications.facilitySpecification.find(item => item.id === facility.id);
-      
+      const facilitySpec = specifications.facilitySpecification.find(
+        (item) => item.id === facility.id
+      );
+
       // Guard clause in case a spec is not found
       if (!facilitySpec) continue;
 
@@ -36,8 +43,10 @@ export default function MapRender({
       const facilityHeight = size * cellSize.height;
 
       if (
-        x >= facilityX && x <= facilityX + facilityWidth &&
-        y >= facilityY && y <= facilityY + facilityHeight
+        x >= facilityX &&
+        x <= facilityX + facilityWidth &&
+        y >= facilityY &&
+        y <= facilityY + facilityHeight
       ) {
         facilityFound = facility;
         break;
@@ -57,8 +66,14 @@ export default function MapRender({
   };
 
   useEffect(() => {
-    if (!canvasRef.current || !map || !specifications.facilitySpecification || !specifications.colorSpecification) return;
-    
+    if (
+      !canvasRef.current ||
+      !map ||
+      !specifications.facilitySpecification ||
+      !specifications.colorSpecification
+    )
+      return;
+
     const ctx = canvasRef.current.getContext("2d");
     const rows = map[0].kernel.length;
     const cols = map[0].kernel[0].length;
@@ -90,34 +105,36 @@ export default function MapRender({
 
     // Facility
     for (const obj of facilityCoordinate) {
-      const color = specifications.colorSpecification.find(item => item.id === obj.id).color;
-      const size = specifications.facilitySpecification.find(item => item.id === obj.id).size;
-      ctx.fillStyle = `rgb(${color.r} ${color.g} ${color.b})`
-      for(let i = 0;i<(size+1)/2;i++){
+      const color = specifications.colorSpecification.find(
+        (item) => item.id === obj.id
+      ).color;
+      const size = specifications.facilitySpecification.find(
+        (item) => item.id === obj.id
+      ).size;
+      ctx.fillStyle = `rgb(${color.r} ${color.g} ${color.b})`;
+      for (let i = 0; i < (size + 1) / 2; i++) {
         ctx.fillRect(
-          cellWidth  * (obj.coordinate[0] + i - (size-1)/2),
+          cellWidth * (obj.coordinate[0] + i - (size - 1) / 2),
           cellHeight * (obj.coordinate[1] - i),
-          cellWidth  * (size-i*2),
-          cellHeight * (i*2+1)
+          cellWidth * (size - i * 2),
+          cellHeight * (i * 2 + 1)
         );
       }
-      ctx.fillRect(
-        obj.coordinate[0] * cellWidth,
-        obj.coordinate[1] * cellHeight,
-        cellWidth,
-        cellHeight
-      );
     }
 
-    // Ocean 
-    const oceanColor = specifications.colorSpecification.find(item => item.id === "ocean").color;
+    // Ocean
+    const oceanColor = specifications.colorSpecification.find(
+      (item) => item.id === "ocean"
+    ).color;
 
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
         const salt = Math.random() * 10 - 5;
-        ctx.fillStyle = `rgb(${oceanColor.r + salt} ${oceanColor.g + salt} ${oceanColor.b + salt})`;
+        ctx.fillStyle = `rgb(${oceanColor.r + salt} ${oceanColor.g + salt} ${
+          oceanColor.b + salt
+        })`;
 
-        let isLand = map.some(continent => continent.kernel[y][x] !== -1);
+        let isLand = map.some((continent) => continent.kernel[y][x] !== -1);
         if (!isLand) {
           ctx.fillRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
         }
@@ -129,7 +146,7 @@ export default function MapRender({
     const canvas = canvasRef.current;
     if (!canvas || !map) return;
     const handleClick = (event) => {
-      if(!cellSize.width) return; // Prevent click if cell size not set
+      if (!cellSize.width) return; // Prevent click if cell size not set
       const rect = canvas.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;

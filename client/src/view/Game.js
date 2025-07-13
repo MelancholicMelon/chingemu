@@ -208,10 +208,6 @@ export default function Game() {
       setProfit,
       setBudget
     );
-
-    if (!success) {
-      alert("Placement not allowed at this position.");
-    }
   };
 
   useEffect(() => {
