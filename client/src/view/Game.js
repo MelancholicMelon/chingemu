@@ -40,6 +40,8 @@ export default function Game() {
   const [cellSize, setCellSize] = useState({ width: 0, height: 0 });
   const [canvasHeight, setCanvasHeight] = useState(500);
 
+  const policyActivationRef = useRef(policyActivation);
+
   useEffect(() => {
     if (specifications.policySpecification) {
       setPolicyActivation(
@@ -236,7 +238,6 @@ export default function Game() {
         return;
       }
       // 1. Calculate the next state for policies
-      let updatedPolicies;
       setPolicyActivation((prevPolicies) => {
         const nextPolicies = { ...prevPolicies };
         for (const key in nextPolicies) {
@@ -248,7 +249,7 @@ export default function Game() {
             }
           }
         }
-        updatedPolicies = nextPolicies; // Store the result for step 3
+        policyActivationRef.current = nextPolicies; // Store the result for step 3
         return nextPolicies;
       });
 
@@ -261,7 +262,7 @@ export default function Game() {
       simulation.progress(
         greennessMapRef.current,
         updatedFacilities,
-        updatedPolicies, // Use the variable that holds the new state
+        policyActivationRef.current, // Use the variable that holds the new state
         specifications,
         setGreennessMap
       );
