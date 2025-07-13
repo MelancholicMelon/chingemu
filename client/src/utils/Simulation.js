@@ -49,13 +49,15 @@ export default class Simulation {
         {
           id: selectedFacility,
           coordinate: [coordinate.x, coordinate.y],
-          timeToLive: facilitySpecification.find((item) => item.id === selectedFacility).timeToLive
+          timeToLive: facilitySpecification.find(
+            (item) => item.id === selectedFacility
+          ).timeToLive,
         },
       ];
       setFacilityCoordinate(updated);
-      return true
+      return true;
     } else {
-      return false
+      return false;
     }
   }
 
@@ -91,10 +93,10 @@ export default class Simulation {
             map[i]["kernel"][x][y] =
               greennessMap[i][x][y] *
               (Math.random() * (1.01 - 0.98) + 0.98 + PDFKernel[x][y]);
-            if(map[i]["kernel"][x][y] > 255){
-              map[i]["kernel"][x][y]=255
-            } else if (map[i]["kernel"][x][y]< 1) {
-              map[i]["kernel"][x][y] = 1
+            if (map[i]["kernel"][x][y] > 255) {
+              map[i]["kernel"][x][y] = 255;
+            } else if (map[i]["kernel"][x][y] < 1) {
+              map[i]["kernel"][x][y] = 1;
             }
           }
         }
@@ -112,9 +114,9 @@ export default class Simulation {
   ) {
     let pdfKernel = [];
 
-    const activatePolicy = policyActivation
-      .filter((p) => p.activate === true)
-      .map((p) => p.id);
+    const activatePolicy = Object.keys(policyActivation).filter(
+      (key) => policyActivation[key] === true
+    );
 
     const prms = policySpecification.map((f) => f.parameter);
 
