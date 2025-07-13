@@ -69,8 +69,8 @@ export default function Game() {
   if (specifications.policySpecification) {
     setPolicyActivation(
       specifications.policySpecification.reduce((acc, policy) => {
-        // Initialize each policy as inactive with a timeToLive of 0
-        acc[policy.id] = { active: false, timeToLive: 0 };
+        // Initialize with active, timeToLive, and the new charged flag
+        acc[policy.id] = { active: false, timeToLive: 0, charged: false };
         return acc;
       }, {})
     );
@@ -82,51 +82,36 @@ export default function Game() {
 
 const onClickPolicy = (e) => {
   const { name, checked } = e.target;
-
-  // Find the policy from the specifications to get its cost and timeToLive
   const policy = specifications.policySpecification.find(p => p.id === name);
   if (!policy) return;
 
-  // If the user is trying to ACTIVATE the policy
+  const currentPolicyState = policyActivation[name];
+
   if (checked) {
-    if (budget < policy.cost) {
-      alert("Not enough budget to activate this policy.");
-      e.target.checked = false; // Revert the checkbox
-      return;
+    // Only deduct the cost if it hasn't been charged for this cycle yet
+    if (!currentPolicyState.charged) {
+      if (budget < policy.cost) {
+        alert("Not enough budget to activate this policy.");
+        e.target.checked = false;
+        return;
+      }
+      // Deduct cost from budget
+      setBudget(prev => prev - policy.cost);
     }
-    
-    // Deduct cost from budget
-    setBudget(prev => prev - policy.cost);
-    
-    // Activate the policy and set its timeToLive
+
+    // Activate the policy and mark it as charged for this cycle
     setPolicyActivation(prev => ({
       ...prev,
-      [name]: { active: true, timeToLive: policy.timeToLive }
+      [name]: { ...prev[name], active: true, timeToLive: policy.timeToLive, charged: true }
     }));
   } else {
-    // If you want to allow deactivating policies manually
+    // If unchecked, just deactivate it. The cost for this "turn" is already committed.
     setPolicyActivation(prev => ({
       ...prev,
       [name]: { ...prev[name], active: false }
     }));
   }
 };
-
-  // const onClickPolicy = (e) => {
-  //   console.log("DEBUG: Policy Clicked");
-  //   const { name, checked } = e.target;
-  //   setPolicyActivation((prev) => ({ ...prev, [name]: checked }));
-  // };
-
-  // // Policy state debugging
-  // useEffect(() => {
-  //   console.log(policyActivation);
-  // }, [policyActivation])
-
-  // // temporary useeffect for debugging
-  // useEffect(() => {
-  //   console.log(`${selectedFacility} is selected`)
-  // }, [selectedFacility])
 
   const onClickFacility = (facilityId) => {
     console.log("Selected:", facilityId);
@@ -233,6 +218,7 @@ const onClickPolicy = (e) => {
             nextPolicies[key].timeToLive -= 1;
             if (nextPolicies[key].timeToLive <= 0) {
               nextPolicies[key].active = false;
+              nextPolicies[key].charged = false;
             }
           }
         }
