@@ -208,4 +208,85 @@
     color: #333;
     font-weight: bold;
   }
-  
+
+  /* ========================
+   NAVIGATION BAR STYLING
+   ======================== */
+
+.navbar {
+  background-color: var(--color-border-primary);
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  border-bottom: 3px solid var(--color-highlight);
+  box-shadow: 0 4px 8px rgba(0, 113, 45, 0.15);
+  font-weight: 600;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.navbar-links a {
+  text-decoration: none;
+  color: var(--color-text-primary);
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-links a:hover {
+  background-color: rgba(255, 145, 0, 0.2);
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.navbar-right span {
+  color: var(--color-text-primary);
+}
+
+.navbar-button {
+  padding: 6px 12px;
+  background-color: var(--color-highlight);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-button:hover {
+  background-color: #e67900;
+}
+
+.register-button {
+  display: inline-block;
+  padding: 0.75rem 1.25rem;
+  background-color: var(--color-highlight);
+  color: var(--color-white);
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-decoration: none; /* if it's a link */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.register-button:hover {
+  background-color: #e67900;
+  transform: scale(1.03);
+}
