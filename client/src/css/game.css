@@ -39,25 +39,59 @@
    Canvas & Map Styling
    ===================== */
 
-   .map-wrapper {
+   .canvas-container {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 25px 20px;
+    gap: 20px;
+    background: linear-gradient(135deg, #f0f9ff, #d9f0ff);
+    border: 3px solid #00712D;
+    border-radius: 18px;
+    box-shadow: 0 8px 20px rgba(0, 113, 45, 0.15);
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  
+  .map-header {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  
+  .map-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #00591a;
+    text-shadow: 2px 2px 4px rgba(213, 237, 159, 0.8);
+    letter-spacing: 1px;
+    margin: 0;
+  }
+  
+  .map-wrapper {
     width: fit-content;
     height: fit-content;
-    border: none;
-    padding: 0;
-    margin: 0;
-    background: none;
-    box-shadow: none;
+    background: #ffffff;
+    border: 4px solid #00712D;
+    border-radius: 20px;
+    padding: 12px;
+    box-shadow: 0 10px 30px rgba(0, 113, 45, 0.2);
     display: inline-block;
     position: relative;
     overflow: hidden;
+    transition: box-shadow 0.3s ease;
   }
   
-  /* Remove visual overlays that interfere with pointer accuracy */
+  .map-wrapper:hover {
+    box-shadow: 0 15px 40px rgba(0, 113, 45, 0.35);
+  }
+  
   .map-wrapper::before {
     content: none;
   }
   
-  /* Canvas must match exact pixel dimensions from JS */
   .map-wrapper canvas {
     display: block;
     width: auto;
@@ -67,7 +101,61 @@
     margin: 0;
     border: none;
     box-shadow: none;
+    border-radius: 12px;
   }
+  
+  /* Loading State */
+  
+  .map-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 280px;
+    width: 100%;
+    max-width: 720px;
+    background-color: #f0f8ff;
+    border: 3px dashed #a0d080;
+    border-radius: 16px;
+    box-shadow: inset 0 6px 12px rgba(0, 113, 45, 0.05);
+    user-select: none;
+  }
+  
+  .map-loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 5px solid #FF9100;
+    border-top: 5px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 14px;
+  }
+  
+  .map-loading-text {
+    font-size: 16px;
+    color: #00712D;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-align: center;
+  }
+  
+  /* Instructions below map */
+  
+  .map-instructions {
+    font-size: 15px;
+    color: #004d00;
+    margin-top: 18px;
+    font-weight: 600;
+    text-align: center;
+    background: rgba(213, 237, 159, 0.25);
+    border-radius: 12px;
+    padding: 10px 16px;
+    width: 100%;
+    max-width: 720px;
+    box-shadow: 0 4px 10px rgba(0, 113, 45, 0.1);
+    user-select: none;
+  }
+  
 
 /* =====================
    Resume Button Styling
