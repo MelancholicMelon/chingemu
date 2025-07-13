@@ -91,20 +91,25 @@ export default function MapRender({
       }
     }
 
-    // Facilities drawing...
+    //
     for (const obj of facilityCoordinate) {
-        const facilitySpec = specifications.facilitySpecification.find(item => item.id === obj.id);
-        const color = specifications.colorSpecification.find(item => item.id === obj.id).color;
-        const size = facilitySpec.size;
-        const [col, row] = obj.coordinate;
-
-        ctx.fillStyle = `rgb(${color.r} ${color.g} ${color.b})`;
+      const color = specifications.colorSpecification.find(item => item.id === obj.id).color;
+      const size = specifications.facilitySpecification.find(item => item.id === obj.id).size;
+      ctx.fillStyle = `rgb(${color.r} ${color.g} ${color.b})`
+      for(let i = 0;i<(size+1)/2;i++){
         ctx.fillRect(
-          (col - Math.floor((size-1)/2)) * cellWidth,
-          (row - Math.floor((size-1)/2)) * cellHeight,
-          size * cellWidth,
-          size * cellHeight
+          cellWidth  * (obj.coordinate[0] + i - (size-1)/2),
+          cellHeight * (obj.coordinate[1] - i),
+          cellWidth  * (size-i*2),
+          cellHeight * (i*2+1)
         );
+      }
+      ctx.fillRect(
+        obj.coordinate[0] * cellWidth,
+        obj.coordinate[1] * cellHeight,
+        cellWidth,
+        cellHeight
+      );
     }
 
     // Ocean drawing...
