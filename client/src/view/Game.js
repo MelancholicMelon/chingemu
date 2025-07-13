@@ -190,8 +190,8 @@ export default function Game() {
     const runSimulationTick = () => {
       // console.log("Simulation tick", new Date().toLocaleTimeString());
       if (year > 2125) {
-        setScore(simulation.calculateScore());
-        simulation.endSimulation(score, budget, 10);
+        setScore((prev) => simulation.calculateScore(budget, profit, greennessMapRef.current));
+        simulation.endSimulation(score, budget, greennessMapRef.current);
         //alert("The simulation has ended, you score is ", score, ". Your remaining budget is ", budget, ".")
         navigate("/leaderboard", { replace: true });
         return;
@@ -215,7 +215,7 @@ export default function Game() {
 
       setBudget((prev) => prev + profit);
       setYear((prevYear) => prevYear + 1);
-      setScore(simulation.calculateScore());
+      setScore((prev) => simulation.calculateScore(budget, profit, greennessMapRef.current));
       tickCounter++;
 
       if (tickCounter >= tickPerRun) {
