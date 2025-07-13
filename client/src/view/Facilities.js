@@ -52,7 +52,6 @@ export default function Facilities(props) {
           <p>cost : {formatNumber(props.cost)}</p>
           <p>profit: {props.profit}</p>
           <p>timeToLive: {props.timeToLive}</p>
-          <p>maxImpact: {props.maxImpact}</p>
           <p>placement size: {props.size}</p>
         </div>
       </div>
