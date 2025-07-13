@@ -195,17 +195,20 @@
     {
       "id": "Hire 2x more workers",
       "parameter": "maxImpact",
-      "multiplier": -200
+      "multiplier": -200,
+      "cost": 1000000
     },
     {
       "id": "Use Renewable Energy",
       "parameter": "sd",
-      "multiplier": 3
+      "multiplier": 3,
+      "cost": 1000000
     },
     {
       "id": "Eco Certification Program (Increase tree growth)",
       "parameter": "timeToLive",
-      "multiplier": 1.5
+      "multiplier": 1.5,
+      "cost": 1000000
     }
   ]
 }

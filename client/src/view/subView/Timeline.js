@@ -1,5 +1,5 @@
 import React from 'react';
-import "../css/timeline.css"
+import "../../css/timeline.css"
 
 const Timeline = ({ currentYear, startYear = 2025, endYear = 2035 }) => {
   const totalYears = endYear - startYear;
