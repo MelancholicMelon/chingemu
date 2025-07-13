@@ -57,7 +57,6 @@ export default function MapRender({
   };
 
   useEffect(() => {
-    // Guard clause for all required data
     if (!canvasRef.current || !map || !specifications.facilitySpecification || !specifications.colorSpecification) return;
     
     const ctx = canvasRef.current.getContext("2d");
@@ -69,7 +68,7 @@ export default function MapRender({
     canvasRef.current.width = cellWidth * cols;
     setCellSize({ width: cellWidth, height: cellHeight });
 
-    // Continents drawing
+    // Continents
     for (let i = 0; i < map.length; i++) {
       const kernel = map[i].kernel;
       for (let y = 0; y < rows; y++) {
@@ -89,26 +88,28 @@ export default function MapRender({
       }
     }
 
-    // Facilities drawing
+    // Facility
     for (const obj of facilityCoordinate) {
-      const facilitySpec = specifications.facilitySpecification.find(item => item.id === obj.id);
-      const colorSpec = specifications.colorSpecification.find(item => item.id === obj.id);
-      
-      if (!facilitySpec || !colorSpec) continue; // Safety check
-
-      const size = facilitySpec.size;
-      const color = colorSpec.color;
-      const [col, row] = obj.coordinate;
-      ctx.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
+      const color = specifications.colorSpecification.find(item => item.id === obj.id).color;
+      const size = specifications.facilitySpecification.find(item => item.id === obj.id).size;
+      ctx.fillStyle = `rgb(${color.r} ${color.g} ${color.b})`
+      for(let i = 0;i<(size+1)/2;i++){
+        ctx.fillRect(
+          cellWidth  * (obj.coordinate[0] + i - (size-1)/2),
+          cellHeight * (obj.coordinate[1] - i),
+          cellWidth  * (size-i*2),
+          cellHeight * (i*2+1)
+        );
+      }
       ctx.fillRect(
-        (col - Math.floor((size - 1) / 2)) * cellWidth,
-        (row - Math.floor((size - 1) / 2)) * cellHeight,
-        size * cellWidth,
-        size * cellHeight
+        obj.coordinate[0] * cellWidth,
+        obj.coordinate[1] * cellHeight,
+        cellWidth,
+        cellHeight
       );
     }
 
-    // Ocean drawing...
+    // Ocean 
     const oceanColor = specifications.colorSpecification.find(item => item.id === "ocean").color;
 
     for (let y = 0; y < rows; y++) {
