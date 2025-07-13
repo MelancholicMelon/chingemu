@@ -193,17 +193,17 @@
   ],
   "policySpecification": [
     {
-      "id": "Free Diddy",
+      "id": "Hire 2x more workers",
       "parameter": "maxImpact",
-      "multiplier": -100
+      "multiplier": -200
     },
     {
-      "id": "Resurrect the Lorax",
+      "id": "Use Renewable Energy",
       "parameter": "sd",
       "multiplier": 3
     },
     {
-      "id": "Imprison Taylor Swift",
+      "id": "Eco Certification Program (Increase tree growth)",
       "parameter": "timeToLive",
       "multiplier": 1.5
     }

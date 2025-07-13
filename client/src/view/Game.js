@@ -97,19 +97,6 @@ export default function Game() {
     setSelectedFacility(facilityId);
   };
 
-  // // temporary facilities json for testing
-  // const facilities = {
-  //   "tree": { img: "/img/pngegg.png", cost: 50, name: "tree" },
-  //   "factory": { img: "/img/pngegg.png", cost: 100, name: "factory" },
-  //   "big factory": { img: "/img/pngegg.png", cost: 150, name: "big factory" },
-  //   "tree2": { img: "/img/pngegg.png", cost: 50, name: "tree" },
-  //   "factory2": { img: "/img/pngegg.png", cost: 100, name: "factory" },
-  //   "big factory2": { img: "/img/pngegg.png", cost: 150, name: "big factory" },
-  //   "tree3": { img: "/img/pngegg.png", cost: 50, name: "tree" },
-  //   "factory3": { img: "/img/pngegg.png", cost: 100, name: "factory" },
-  //   "big factory3": { img: "/img/pngegg.png", cost: 150, name: "big factory" }
-  // }
-
   const tickRef = useRef(null);
   const canvasRef = useRef(null);
   const [cellSize, setCellSize] = useState({ width: 0, height: 0 });
@@ -133,21 +120,21 @@ export default function Game() {
         });
 
         setGreennessMap(data.greennessMap);
-        
+
         setPolicyActivation(
-        data.policySpecification.reduce((acc, policy) => {
-          // console.log("Set policy activation triggered") // Debug
-          acc[policy.id] = false;
-          return acc;
-        }, {})
-      );
+          data.policySpecification.reduce((acc, policy) => {
+            // console.log("Set policy activation triggered") // Debug
+            acc[policy.id] = false;
+            return acc;
+          }, {})
+        );
       })
       .catch((error) => {
         // Handle the error here
         console.error("Failed to fetch utils data:", error);
       });
   }, []);
-  
+
 
   useEffect(() => {
     const updateCanvasHeight = () => {
@@ -214,10 +201,10 @@ export default function Game() {
         const updated = prev
           .map(fc => ({ ...fc, timeToLive: fc.timeToLive - 1 }))
           .filter(fc => fc.timeToLive > 0);
-          
+
         simulation.progress(
           greennessMapRef.current,
-          updated, 
+          updated,
           policyActivation,
           specifications,
           setGreennessMap
@@ -242,12 +229,22 @@ export default function Game() {
     return () => clearInterval(tickRef.current);
   }, [gameState]);
 
+  const resetGame = () => {
+
+  }
+
 
   return (
     <div>
-      <button className = "resume" onClick={() => setGameState(true)} disabled={true}>
+      <div
+        className="resume"
+        style={{
+          visibility: "hidden",
+          pointerEvents: "none",
+        }}
+      >
         Resume
-      </button>
+      </div>
       <div className="game-container">
         <div className="canvas-container">
           <MapRender
@@ -263,7 +260,7 @@ export default function Game() {
         </div>
 
         <div className="controls-container">
-          <button className = "resume" onClick={() => setGameState(true)} disabled={gameState}>
+          <button className="resume" onClick={() => setGameState(true)} disabled={gameState}>
             Resume
           </button>
           {/* Budget */}
@@ -276,34 +273,34 @@ export default function Game() {
           <div className="section-header">Facilities</div>
           <div className="facilities-container">
             {specifications.facilitySpecification &&
-            specifications.facilitySpecification.map((facility, key) => {
-              //console.log(`Rendering facility: ${facility.id}, img: ${facility.img}`); // debuggusy
-              return (
-                <div key={key}>
-                  <Facilities
-                    img={facility.img}
-                    cost={facility.cost}
-                    name={facility.id}
-                    active={selectedFacility === facility.id}
-                    onClick={onClickFacility}
-                  />
-                </div>
-              );
-            })}
+              specifications.facilitySpecification.map((facility, key) => {
+                //console.log(`Rendering facility: ${facility.id}, img: ${facility.img}`); // debuggusy
+                return (
+                  <div key={key}>
+                    <Facilities
+                      img={facility.img}
+                      cost={facility.cost}
+                      name={facility.id}
+                      active={selectedFacility === facility.id}
+                      onClick={onClickFacility}
+                    />
+                  </div>
+                );
+              })}
           </div>
           {/*Policies list*/}
           <div className="section-header">Policies</div>
           <div className="policies-container">
             {specifications.policySpecification &&
-  specifications.policySpecification.map((policy, key) => (
-              <div key={key}>
-                <Policy
-                  id={policy.id}
-                  bool={policyActivation ? policyActivation[policy.id] : false}
-                  onChange={onClickPolicy}
-                />
-              </div>
-            ))}
+              specifications.policySpecification.map((policy, key) => (
+                <div key={key}>
+                  <Policy
+                    id={policy.id}
+                    bool={policyActivation ? policyActivation[policy.id] : false}
+                    onChange={onClickPolicy}
+                  />
+                </div>
+              ))}
           </div>
         </div>
       </div>

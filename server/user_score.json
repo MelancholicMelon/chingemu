@@ -22,6 +22,11 @@
       "username": "testuser1",
       "password": "1234",
       "highScoreId": 1751823066369
+    },
+    {
+      "id": 1752388427535,
+      "username": "bomboclat",
+      "password": "bunda"
     }
   ],
   "scores": [
