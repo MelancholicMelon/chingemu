@@ -39,11 +39,6 @@ export default function Facilities(props) {
       className={`facility-container ${props.active ? "active" : ""}`}
       onClick={() => props.onClick(props.name)}
     >
-      <img
-        className="facility-image"
-        src={props.img}
-        alt={props.name}
-      />
       <div className="facility-text">
         <p>{props.name}</p>
         <p>{props.cost}</p>

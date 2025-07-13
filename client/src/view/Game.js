@@ -97,19 +97,6 @@ export default function Game() {
     setSelectedFacility(facilityId);
   };
 
-  // // temporary facilities json for testing
-  // const facilities = {
-  //   "tree": { img: "/img/pngegg.png", cost: 50, name: "tree" },
-  //   "factory": { img: "/img/pngegg.png", cost: 100, name: "factory" },
-  //   "big factory": { img: "/img/pngegg.png", cost: 150, name: "big factory" },
-  //   "tree2": { img: "/img/pngegg.png", cost: 50, name: "tree" },
-  //   "factory2": { img: "/img/pngegg.png", cost: 100, name: "factory" },
-  //   "big factory2": { img: "/img/pngegg.png", cost: 150, name: "big factory" },
-  //   "tree3": { img: "/img/pngegg.png", cost: 50, name: "tree" },
-  //   "factory3": { img: "/img/pngegg.png", cost: 100, name: "factory" },
-  //   "big factory3": { img: "/img/pngegg.png", cost: 150, name: "big factory" }
-  // }
-
   const tickRef = useRef(null);
   const canvasRef = useRef(null);
   const [cellSize, setCellSize] = useState({ width: 0, height: 0 });
@@ -239,6 +226,10 @@ export default function Game() {
     tickRef.current = setInterval(runSimulationTick, TICK_INTERVAL);
     return () => clearInterval(tickRef.current);
   }, [gameState]);
+
+  const resetGame = () => {
+
+  }
 
 
   return (
