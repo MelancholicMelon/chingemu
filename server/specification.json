@@ -187,17 +187,20 @@
     {
       "id": "Free Diddy",
       "parameter": "maxImpact",
-      "multiplier": -100
+      "multiplier": -100,
+      "cost": 1000000
     },
     {
       "id": "Resurrect the Lorax",
       "parameter": "sd",
-      "multiplier": 3
+      "multiplier": 3,
+      "cost": 1000000
     },
     {
       "id": "Imprison Taylor Swift",
       "parameter": "timeToLive",
-      "multiplier": 1.5
+      "multiplier": 1.5,
+      "cost": 1000000
     }
   ]
 }
