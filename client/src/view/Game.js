@@ -62,36 +62,36 @@ export default function Game() {
 
     const currentPolicyState = policyActivation[name];
 
-    if (checked) {
-      // Only deduct the cost if it hasn't been charged for this cycle yet
-      if (!currentPolicyState.charged) {
-        if (budget < policy.cost) {
-          alert("Not enough budget to activate this policy.");
-          e.target.checked = false;
-          return;
-        }
-        // Deduct cost from budget
-        setBudget((prev) => prev - policy.cost);
+  if (checked) {
+    // Only deduct cost if it hasn't been charged for this cycle yet
+    if (!currentPolicyState.charged) {
+      if (budget < policy.cost) {
+        alert("Not enough budget to activate this policy.");
+        e.target.checked = false;
+        return;
       }
-
-      // Activate the policy and mark it as charged for this cycle
-      setPolicyActivation((prev) => ({
-        ...prev,
-        [name]: {
-          ...prev[name],
-          active: true,
-          timeToLive: policy.timeToLive,
-          charged: true,
-        },
-      }));
-    } else {
-      // If unchecked, just deactivate it. The cost for this "turn" is already committed.
-      setPolicyActivation((prev) => ({
-        ...prev,
-        [name]: { ...prev[name], active: false },
-      }));
+      // Deduct cost from budget
+      setBudget(prev => prev - policy.cost);
     }
-  };
+
+    // Activate the policy and mark it as charged
+    setPolicyActivation(prev => ({
+      ...prev,
+      [name]: { ...prev[name], active: true, timeToLive: policy.timeToLive, charged: true }
+    }));
+  } else {
+    // If unchecking a policy that was charged AND the game is paused, issue a refund
+    if (currentPolicyState.charged && !gameState) {
+      setBudget(prev => prev + policy.cost);
+    }
+
+    // Deactivate the policy and reset its charged status so it can be re-purchased
+    setPolicyActivation(prev => ({
+      ...prev,
+      [name]: { ...prev[name], active: false, charged: false }
+    }));
+  }
+};
 
   const onClickFacility = (facilityId) => {
     console.log("Selected:", facilityId);
