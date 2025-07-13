@@ -90,7 +90,7 @@ export default function LeaderBoard() {
       <table className="leaderboard-table">
         <thead>
           <tr>
-            <th>User ID</th>
+            <th>User Name</th>
             <th>Score</th>
           </tr>
         </thead>
