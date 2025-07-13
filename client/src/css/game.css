@@ -239,6 +239,10 @@
   color: #4CAF50;
 }
 
+.facility-container, .facility-text, .facility-text p {
+  text-align: left !important;
+}
+
 .image-button {
   background: none;
   border: none;
