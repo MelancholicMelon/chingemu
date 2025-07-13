@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import Utils from "../utils/Utils";
 import MapRender from "./subView/MapRender";
 import Simulation from "../utils/Simulation";
-import "../css/game.css"
-import Facilities from "./Facilities";
-import Policy from "./subView/Policy"
+import "../css/game.css";
+import Facilities from "./subView/Facilities";
+import Policy from "./subView/Policy";
+import Timeline from "./subView/Timeline";
 
 export default function Game() {
   const [specifications, setSpecifications] = useState({
@@ -75,14 +76,13 @@ export default function Game() {
     }
   }, [specifications.policySpecification]);
 
-
   const onClickPolicy = (e) => {
-    console.log("DEBUG: Policy Clicked")
+    console.log("DEBUG: Policy Clicked");
     const { name, checked } = e.target;
     setPolicyActivation((prev) => ({ ...prev, [name]: checked }));
   };
 
-  // // Policy state debugging 
+  // // Policy state debugging
   // useEffect(() => {
   //   console.log(policyActivation);
   // }, [policyActivation])
@@ -97,26 +97,13 @@ export default function Game() {
     setSelectedFacility(facilityId);
   };
 
-  // // temporary facilities json for testing
-  // const facilities = {
-  //   "tree": { img: "/img/pngegg.png", cost: 50, name: "tree" },
-  //   "factory": { img: "/img/pngegg.png", cost: 100, name: "factory" },
-  //   "big factory": { img: "/img/pngegg.png", cost: 150, name: "big factory" },
-  //   "tree2": { img: "/img/pngegg.png", cost: 50, name: "tree" },
-  //   "factory2": { img: "/img/pngegg.png", cost: 100, name: "factory" },
-  //   "big factory2": { img: "/img/pngegg.png", cost: 150, name: "big factory" },
-  //   "tree3": { img: "/img/pngegg.png", cost: 50, name: "tree" },
-  //   "factory3": { img: "/img/pngegg.png", cost: 100, name: "factory" },
-  //   "big factory3": { img: "/img/pngegg.png", cost: 150, name: "big factory" }
-  // }
-
   const tickRef = useRef(null);
   const canvasRef = useRef(null);
   const [cellSize, setCellSize] = useState({ width: 0, height: 0 });
   const [canvasHeight, setCanvasHeight] = useState(500);
 
-  const simulation = new Simulation()
-  const TICK_INTERVAL = 100
+  const simulation = new Simulation();
+  const TICK_INTERVAL = 100;
   useEffect(() => {
     Utils()
       .then((data) => {
@@ -133,21 +120,20 @@ export default function Game() {
         });
 
         setGreennessMap(data.greennessMap);
-        
+
         setPolicyActivation(
-        data.policySpecification.reduce((acc, policy) => {
-          // console.log("Set policy activation triggered") // Debug
-          acc[policy.id] = false;
-          return acc;
-        }, {})
-      );
+          data.policySpecification.reduce((acc, policy) => {
+            // console.log("Set policy activation triggered") // Debug
+            acc[policy.id] = false;
+            return acc;
+          }, {})
+        );
       })
       .catch((error) => {
         // Handle the error here
         console.error("Failed to fetch utils data:", error);
       });
   }, []);
-  
 
   useEffect(() => {
     const updateCanvasHeight = () => {
@@ -199,23 +185,26 @@ export default function Game() {
     if (!gameState) return;
 
     let tickCounter = 0;
+    let tickPerRun = 10;
 
     const runSimulationTick = () => {
       // console.log("Simulation tick", new Date().toLocaleTimeString());
-      if(year > 2035){
+      if (year > 2125) {
         setScore(simulation.calculateScore());
         simulation.endSimulation(score, budget, 10);
+        //alert("The simulation has ended, you score is ", score, ". Your remaining budget is ", budget, ".")
         navigate("/leaderboard", { replace: true });
+        return;
       }
 
-      setFacilityCoordinate(prev => {
+      setFacilityCoordinate((prev) => {
         const updated = prev
-          .map(fc => ({ ...fc, timeToLive: fc.timeToLive - 1 }))
-          .filter(fc => fc.timeToLive > 0);
-          
+          .map((fc) => ({ ...fc, timeToLive: fc.timeToLive - 1 }))
+          .filter((fc) => fc.timeToLive > 0);
+
         simulation.progress(
           greennessMapRef.current,
-          updated, 
+          updated,
           policyActivation,
           specifications,
           setGreennessMap
@@ -224,14 +213,12 @@ export default function Game() {
         return updated;
       });
 
-      setBudget(prev => prev + profit);
-      setYear(prevYear => prevYear + 1);
-      setScore(simulation.calculateScore(
-
-      ))
+      setBudget((prev) => prev + profit);
+      setYear((prevYear) => prevYear + 1);
+      setScore(simulation.calculateScore());
       tickCounter++;
 
-      if (tickCounter >= 20) {
+      if (tickCounter >= tickPerRun) {
         setGameState(false);
       }
     };
@@ -240,74 +227,97 @@ export default function Game() {
     return () => clearInterval(tickRef.current);
   }, [gameState]);
 
+  const resetGame = () => {};
 
   return (
     <div>
-          <div
-      className="resume"
-      style={{
-        visibility: "hidden",
-        pointerEvents: "none",
-      }}
-    >
-      Resume
-    </div>
       <div className="game-container">
         <div className="canvas-container">
-          <MapRender
-            canvasRef={canvasRef}
-            map={greennessMap}
-            facilityCoordinate={facilityCoordinate}
-            specifications={specifications}
-            cellSize={cellSize}
-            setCellSize={setCellSize}
-            onCellClick={handleCellClick}
-            canvasHeight={canvasHeight}
-          />
+          <div className="map-header">
+            <h2 className="map-title">Japan Map</h2>
+          </div>
+          <div>
+            {greennessMap ? (
+              <div>
+                <MapRender
+                  canvasRef={canvasRef}
+                  map={greennessMap}
+                  facilityCoordinate={facilityCoordinate}
+                  specifications={specifications}
+                  cellSize={cellSize}
+                  setCellSize={setCellSize}
+                  onCellClick={handleCellClick}
+                  canvasHeight={canvasHeight}
+                />
+              </div>
+            ) : (
+              <div className="map-loading">
+                <div className="map-loading-spinner"></div>
+                <p className="map-loading-text">Loading World Map...</p>
+              </div>
+            )}
+          </div>
+          <div className="map-instructions">
+            <p>
+              {gameState
+                ? "Simulation is running! Watch the changes unfold."
+                : `Click on the map to place your selected facility: ${selectedFacility}`}
+            </p>
+          </div>
         </div>
 
         <div className="controls-container">
-          <button className = "resume" onClick={() => setGameState(true)} disabled={gameState}>
+          <button
+            className="resume"
+            onClick={() => setGameState(true)}
+            disabled={gameState}>
             Resume
           </button>
+          <Timeline currentYear={year} startYear={2025} endYear={2125} />
           {/* Budget */}
           <div className="metrics-container">
-            <p>Budget: {budget}</p>
+            <p>Money: {budget}</p>
             <p>Profit: {profit}</p>
-            <p>Year: {year}</p>
+            <p>Score: {score}</p>
           </div>
           {/*Facilities list*/}
           <div className="section-header">Facilities</div>
           <div className="facilities-container">
             {specifications.facilitySpecification &&
-            specifications.facilitySpecification.map((facility, key) => {
-              //console.log(`Rendering facility: ${facility.id}, img: ${facility.img}`); // debuggusy
-              return (
-                <div key={key}>
-                  <Facilities
-                    img={facility.img}
-                    cost={facility.cost}
-                    name={facility.id}
-                    active={selectedFacility === facility.id}
-                    onClick={onClickFacility}
-                  />
-                </div>
-              );
-            })}
+              specifications.facilitySpecification.map((facility, key) => {
+                //console.log(`Rendering facility: ${facility.id}, img: ${facility.img}`); // debuggusy
+                return (
+                  <div key={key}>
+                    <Facilities
+                      img={facility.img}
+                      cost={facility.cost}
+                      name={facility.id}
+                      maxImpact={facility.maxImpact}
+                      timeToLive={facility.timeToLive}
+                      profit={facility.profit}
+                      size={facility.size}
+                      active={selectedFacility === facility.id}
+                      onClick={onClickFacility}
+                    />
+                  </div>
+                );
+              })}
           </div>
           {/*Policies list*/}
           <div className="section-header">Policies</div>
           <div className="policies-container">
             {specifications.policySpecification &&
-  specifications.policySpecification.map((policy, key) => (
-              <div key={key}>
-                <Policy
-                  id={policy.id}
-                  bool={policyActivation ? policyActivation[policy.id] : false}
-                  onChange={onClickPolicy}
-                />
-              </div>
-            ))}
+              specifications.policySpecification.map((policy, key) => (
+                <div key={key}>
+                  <Policy
+                    id={policy.id}
+                    bool={
+                      policyActivation ? policyActivation[policy.id] : false
+                    }
+                    onChange={onClickPolicy}
+                  />
+                </div>
+              ))}
           </div>
         </div>
       </div>
@@ -316,5 +326,5 @@ export default function Game() {
 }
 
 // Dylan's TODO
-// Add buttons to control the game like pause, continue, reset, etc. 
+// Add buttons to control the game like pause, continue, reset, etc.
 // Add a timeline slider on the top

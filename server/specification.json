@@ -94,6 +94,14 @@
     {
       "id": "shikoku",
       "loc": "maps/shikoku/continents.json"
+    },
+    {
+      "id": "tam_bold",
+      "loc": "maps/tam_bold/continents.json"
+    },
+    {
+      "id": "dylan_bold",
+      "loc": "maps/dylan_bold/continents.json"
     }
   ],
   "facilitySpecification": [
@@ -135,7 +143,7 @@
       "img" : "/img/pngegg.png"
     },
     {
-      "id": "City Developement",
+      "id": "City Development",
       "size": 5,
       "pdf": "normal",
       "stddtv": 6,
@@ -185,19 +193,19 @@
   ],
   "policySpecification": [
     {
-      "id": "Free Diddy",
+      "id": "Hire 2x more workers",
       "parameter": "maxImpact",
-      "multiplier": -100,
+      "multiplier": -200,
       "cost": 1000000
     },
     {
-      "id": "Resurrect the Lorax",
+      "id": "Use Renewable Energy",
       "parameter": "sd",
       "multiplier": 3,
       "cost": 1000000
     },
     {
-      "id": "Imprison Taylor Swift",
+      "id": "Eco Certification Program (Increase tree growth)",
       "parameter": "timeToLive",
       "multiplier": 1.5,
       "cost": 1000000

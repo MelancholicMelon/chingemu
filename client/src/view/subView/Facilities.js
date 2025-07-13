@@ -1,6 +1,15 @@
 import React from "react";
 
 export default function Facilities(props) {
+  function formatNumber(num) {
+    if (num >= 1_000_000_000)
+      return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, "") + "B";
+    if (num >= 1_000_000)
+      return (num / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
+    if (num >= 1_000) return (num / 1_000).toFixed(1).replace(/\.0$/, "") + "K";
+    return num.toString();
+  }
+
   return (
     <>
       <style>{`
@@ -36,19 +45,17 @@ export default function Facilities(props) {
       `}</style>
 
       <div
-      className={`facility-container ${props.active ? "active" : ""}`}
-      onClick={() => props.onClick(props.name)}
-    >
-      <img
-        className="facility-image"
-        src={props.img}
-        alt={props.name}
-      />
-      <div className="facility-text">
-        <p>{props.name}</p>
-        <p>{props.cost}</p>
+        className={`facility-container ${props.active ? "active" : ""}`}
+        onClick={() => props.onClick(props.name)}>
+        <div className="facility-text">
+          <p>{props.name}</p>
+          <p>cost : {formatNumber(props.cost)}</p>
+          <p>profit: {props.profit}</p>
+          <p>timeToLive: {props.timeToLive}</p>
+          <p>maxImpact: {props.maxImpact}</p>
+          <p>placement size: {props.size}</p>
+        </div>
       </div>
-    </div>
     </>
   );
 }

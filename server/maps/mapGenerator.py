@@ -160,7 +160,9 @@ paths = {
     "maps/japan/": 5,
     "maps/northAmerica/": 5,
     "maps/indonesia/": 5,
-    "maps/shikoku/": 5
+    "maps/shikoku/": 5,
+    "maps/tam_bold/": 5,
+    "maps/dylan_bold/": 5
 }
 n = 200
 min_continent_size = n/10
