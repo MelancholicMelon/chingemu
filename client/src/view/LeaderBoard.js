@@ -79,7 +79,7 @@ export default function LeaderBoard() {
 
   return (
     <section className="leaderboard-container">
-      <h2 className="leaderboard-title">LeaderBoard</h2>
+      <h2 className="leaderboard-title">Leaderboard</h2>
 
       {highScore && (
         <article className="highscore">
