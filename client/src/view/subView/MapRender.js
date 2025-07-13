@@ -76,7 +76,13 @@ export default function MapRender({
         for (let x = 0; x < cols; x++) {
           const value = kernel[y][x];
           if (value !== -1) {
-            ctx.fillStyle = `rgb(${(value - 205) * -1}, 255, ${(value - 255) * -1})`;
+            const lerp = (a, b, t) => a + (b - a) * t;
+            const t = value / 255; // normalize to 0–1
+            const r = Math.round(lerp(82, 50, t));
+            const g = Math.round(lerp(54, 255, t));
+            const b = Math.round(lerp(16, 0, t));
+
+            ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
             ctx.fillRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
           }
         }
@@ -102,19 +108,19 @@ export default function MapRender({
       );
     }
 
-    // Ocean drawing
-    const oceanColorSpec = specifications.colorSpecification.find(item => item.id === "ocean");
-    if(oceanColorSpec){
-        const oceanColor = oceanColorSpec.color;
-        ctx.fillStyle = `rgb(${oceanColor.r}, ${oceanColor.g}, ${oceanColor.b})`;
-        for (let y = 0; y < rows; y++) {
-          for (let x = 0; x < cols; x++) {
-            let isLand = map.some(continent => continent.kernel[y][x] !== -1);
-            if (!isLand) {
-              ctx.fillRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
-            }
-          }
+    // Ocean drawing...
+    const oceanColor = specifications.colorSpecification.find(item => item.id === "ocean").color;
+
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const salt = Math.random() * 10 - 5;
+        ctx.fillStyle = `rgb(${oceanColor.r + salt} ${oceanColor.g + salt} ${oceanColor.b + salt})`;
+
+        let isLand = map.some(continent => continent.kernel[y][x] !== -1);
+        if (!isLand) {
+          ctx.fillRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
         }
+      }
     }
   }, [map, facilityCoordinate, canvasHeight, specifications, setCellSize]);
 

@@ -135,8 +135,34 @@ export default function Game() {
 
     updateCanvasHeight();
     window.addEventListener("resize", updateCanvasHeight);
+    // fix map wrapper height and width 
+    // const mapWrapper = document.getElementsByClassName('map-wrapper')[0];
+    // if (mapWrapper && canvasRef.current) {
+    //   // Get the width and height of the mapWrapper element
+    //   console.log("my balls")
+    //   const width = mapWrapper.clientWidth;
+    //   const height = mapWrapper.clientHeight;
+
+    //   // Set the canvas size accordingly
+    //   canvasRef.current.width = width;
+    //   canvasRef.current.height = height;
+    // }
     return () => window.removeEventListener("resize", updateCanvasHeight);
   }, []);
+
+  useEffect(() => {
+    if (canvasRef.current) {
+      const canvasWidth = canvasRef.current.width;
+      const canvasHeight = canvasRef.current.height;
+      
+      const mapWrapper = document.getElementsByClassName('map-wrapper')[0];
+      if (mapWrapper) {
+        mapWrapper.style.width = `${canvasWidth}px`;
+        mapWrapper.style.height = `${canvasHeight}px`;
+      }
+    }
+  }, [canvasRef.current]);
+
   const handleFacilityHover = (facility, position) => {
     if (facility) {
       // Find the full facility details from specifications
@@ -267,9 +293,8 @@ export default function Game() {
           <div className="map-header">
             <h2 className="map-title">Japan Map</h2>
           </div>
-          <div>
             {greennessMap ? (
-              <div>
+              <div className="map-wrapper">
                 <MapRender
                   canvasRef={canvasRef}
                   map={greennessMap}
@@ -288,7 +313,6 @@ export default function Game() {
                 <p className="map-loading-text">Loading World Map...</p>
               </div>
             )}
-          </div>
           <div className="map-instructions">
             <p>
               {gameState

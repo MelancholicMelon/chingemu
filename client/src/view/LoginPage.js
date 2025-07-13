@@ -84,7 +84,7 @@ export default function LoginPage({ setUser }) {
           <p className="login-subtext">
             {isRegistering ? "Already have an account?" : "Don't have an account?"}{" "}
             <button
-              className="login-link"
+              className="register-button"
               onClick={() => {
                 setError("");
                 setIsRegistering(!isRegistering);
