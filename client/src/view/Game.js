@@ -176,7 +176,7 @@ export default function Game() {
 
     const runSimulationTick = () => {
       // console.log("Simulation tick", new Date().toLocaleTimeString());
-      if (yearRef.current > 2125 - 1) {
+      if (yearRef.current > 2125 - 1.1) {
         setScore((prev) =>
           simulation.calculateScore(budget, profit, greennessMapRef.current)
         );
