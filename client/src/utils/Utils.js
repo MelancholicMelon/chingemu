@@ -13,7 +13,7 @@ export default async function Utils() {
 
   const token = localStorage.getItem("token");
   const baseUrl = process.env.REACT_APP_API_URL;
-  const mapId = 1;
+  const mapId = 5;
 
   const headers = {
     Authorization: "Bearer " + token,

@@ -191,10 +191,12 @@ export default function Game() {
 
     const runSimulationTick = () => {
       // console.log("Simulation tick", new Date().toLocaleTimeString());
-      if (year > 2125) {
+      if(year > 2125){
         setScore(simulation.calculateScore());
         simulation.endSimulation(score, budget, 10);
+        //alert("The simulation has ended, you score is ", score, ". Your remaining budget is ", budget, ".")
         navigate("/leaderboard", { replace: true });
+        return;
       }
 
       setFacilityCoordinate(prev => {
