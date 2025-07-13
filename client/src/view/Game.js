@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Utils from "../utils/Utils";
 import MapRender from "./subView/MapRender";
 import Simulation from "../utils/Simulation";
@@ -30,6 +31,7 @@ export default function Game() {
   const [gameState, setGameState] = useState(false);
   const [greennessMap, setGreennessMap] = useState(null);
   const greennessMapRef = useRef(greennessMap);
+  const navigate = useNavigate();
 
   // // Policy state handling
   // const policySpecification = [
@@ -200,6 +202,11 @@ export default function Game() {
 
     const runSimulationTick = () => {
       // console.log("Simulation tick", new Date().toLocaleTimeString());
+      if(year > 2035){
+        setScore(simulation.calculateScore());
+        simulation.endSimulation(score, budget, 10);
+        navigate("/leaderboard", { replace: true });
+      }
 
       setFacilityCoordinate(prev => {
         const updated = prev
@@ -208,7 +215,7 @@ export default function Game() {
           
         simulation.progress(
           greennessMapRef.current,
-          updated, // ✅ not stale
+          updated, 
           policyActivation,
           specifications,
           setGreennessMap
@@ -218,11 +225,13 @@ export default function Game() {
       });
 
       setBudget(prev => prev + profit);
-
       setYear(prevYear => prevYear + 1);
+      setScore(simulation.calculateScore(
+
+      ))
       tickCounter++;
 
-      if (tickCounter >= 10) {
+      if (tickCounter >= 20) {
         setGameState(false);
       }
     };
@@ -234,7 +243,7 @@ export default function Game() {
 
   return (
     <div>
-      <button className = "resume" onClick={() => setGameState(true)} disabled={gameState}>
+      <button className = "resume" onClick={() => setGameState(true)} disabled={true}>
         Resume
       </button>
       <div className="game-container">

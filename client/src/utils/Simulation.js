@@ -71,7 +71,9 @@ export default class Simulation {
     }
   }
 
-  calculateScore(budget, profit, setScore) {}
+  calculateScore(budget, profit, setScore) {
+    return 12345678
+  }
 
   progress(
     mapDict,
@@ -174,7 +176,16 @@ export default class Simulation {
     return pdfKernel;
   }
 
-  endSimulation() {
-
+  endSimulation(score, budget, greenness) {
+    const token = localStorage.getItem("token");
+    console.log(typeof score, typeof budget, typeof greenness)
+    fetch("http://localhost:3001/scores/add", {
+      headers: {
+          Authorization: "Bearer " + token,
+          score: score,
+          finalBudget: budget,
+          finalAvgGreenness: greenness
+      }
+    })
   }
 }

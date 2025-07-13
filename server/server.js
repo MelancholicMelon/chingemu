@@ -142,6 +142,9 @@ app.get("/scores/delete", (req, res) => {
 app.get("/scores/add", (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
   const score = req.headers.score;
+  const finalBudget = req.headers.finalBudget;
+  const finalAvgGreenness = req.headers.finalAvgGreenness;
+  console.log(score, finalBudget, finalAvgGreenness)
   if (!token) return res.status(401).json({ message: "No token provided" });
   jwt.verify(token, SECRET, (err, user) => {
     if (err) return res.status(403).json({ message: "Invalid token" });
@@ -157,7 +160,7 @@ app.get("/scores/add", (req, res) => {
       }
       return i;
     };
-    db.scores.push({ id: scoreid(), title: score, userId: user.id });
+    db.scores.push({ id: scoreid(), score: score, userId: user.id, finalBudget: finalBudget, finalAvgGreenness: finalAvgGreenness });
     fs.writeFileSync("user_score.json", JSON.stringify(db, null, 2));
     res.json(db.scores.filter((s) => s.userId === user.id));
   });
