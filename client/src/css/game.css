@@ -9,7 +9,29 @@
   background-color: #fffbe6;
   overflow: hidden; /* Prevent scrollbars */
 }
+.facility-popup {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 1px solid #fff;
+  z-index: 1000; /* Ensures it's on top of other elements */
+  pointer-events: none; /* Crucial: Allows mouse events to pass through to the canvas */
+  font-family: sans-serif;
+  transition: opacity 0.1s ease-in-out;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
 
+.facility-popup h4 {
+  margin: 0 0 5px 0;
+  padding: 0;
+}
+
+.facility-popup p {
+  margin: 0;
+  padding: 0;
+  font-size: 0.9em;
+}
 /* Canvas Container - Takes appropriate space for the map */
 .canvas-container {
   flex: 1 1 60%; /* Allow it to grow and shrink, start with 60% */
