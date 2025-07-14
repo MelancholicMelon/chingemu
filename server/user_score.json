@@ -4,7 +4,7 @@
       "id": 0,
       "username": "admin",
       "password": "admin",
-      "highScoreId": 1752433202181
+      "highScoreId": 1752467214692
     },
     {
       "id": 1751815731846,
@@ -49,25 +49,25 @@
   ],
   "scores": [
     {
-      "id": 1752426149616,
-      "score": 287386067,
-      "userId": 0,
-      "finalBudget": 2305200000,
-      "finalAvgGreenness": "0.2389"
+      "id": 1752467281637,
+      "score": 6422768,
+      "userId": 1752388427535,
+      "finalBudget": 980000000,
+      "finalAvgGreenness": "0.0140"
     },
     {
-      "id": 1752433137409,
-      "score": 293084004,
-      "userId": 0,
-      "finalBudget": 1416800000,
-      "finalAvgGreenness": "0.2606"
+      "id": 1752467355144,
+      "score": 3871661,
+      "userId": 1752388427535,
+      "finalBudget": 610000000,
+      "finalAvgGreenness": "0.0039"
     },
     {
-      "id": 1752433202181,
-      "score": 365357676,
-      "userId": 0,
-      "finalBudget": 1730600000,
-      "finalAvgGreenness": "0.2838"
+      "id": 1752467479584,
+      "score": 546271755,
+      "userId": 1752388427535,
+      "finalBudget": 3344600000,
+      "finalAvgGreenness": "0.2630"
     },
     {
       "id": 1752433202306,

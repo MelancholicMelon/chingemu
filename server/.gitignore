@@ -10,6 +10,7 @@
 
 # production
 /build
+./user_score.json
 
 # misc
 .DS_Store
