@@ -40,10 +40,10 @@ export default function Facilities(props) {
         onClick={() => props.onClick(props.name)}>
         <div className="facility-text">
           <p>{props.name}</p>
-          <p>cost : {props.formatNumber(props.cost)}</p>
-          <p>profit: {props.formatNumber(props.profit)} per year</p>
-          <p>Active for: {props.timeToLive} Years</p>
-          <p>placement size: {props.size} Block</p>
+          <p>Cost : {props.formatNumber(props.cost)}</p>
+          <p>Profit: {props.formatNumber(props.profit)} Per Year</p>
+          <p>Active for: {props.timeToLive > 100 ? "Forever" : `${props.timeToLive} Years`}</p>
+          <p>Placement size: {props.size} Block</p>
         </div>
       </div>
     </>

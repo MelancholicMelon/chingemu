@@ -18,7 +18,7 @@ export default function Policy({ id, bool, onChange, cost, timeToLive, disabled 
           Cost: <span>{cost}</span>
         </p>
         <p>
-          Duration: <span>{timeToLive} Years</span>
+          Duration: <span>{timeToLive > 100 ? "Forever" : `${timeToLive} Years`}</span>
         </p>
       </div>
     </div>
