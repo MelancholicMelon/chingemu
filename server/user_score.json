@@ -27,6 +27,12 @@
       "id": 1752388427535,
       "username": "bomboclat",
       "password": "bunda"
+    },
+    {
+      "id": 1752467143605,
+      "username": "John Timber",
+      "password": "johntimber",
+      "highScoreId": 1752467540286
     }
   ],
   "scores": [
@@ -200,6 +206,34 @@
       "userId": 0,
       "finalBudget": 1730600000,
       "finalAvgGreenness": "0.2834"
+    },
+    {
+      "id": 1752467116187,
+      "score": 221206166,
+      "userId": 0,
+      "finalBudget": 1030000000,
+      "finalAvgGreenness": "0.2701"
+    },
+    {
+      "id": 1752467221150,
+      "score": 90535856,
+      "userId": 1752467143605,
+      "finalBudget": 839600000,
+      "finalAvgGreenness": "0.2432"
+    },
+    {
+      "id": 1752467385866,
+      "score": 22486275,
+      "userId": 1752467143605,
+      "finalBudget": 4240900000,
+      "finalAvgGreenness": "0.6022"
+    },
+    {
+      "id": 1752467540286,
+      "score": 112061966,
+      "userId": 1752467143605,
+      "finalBudget": 2986300000,
+      "finalAvgGreenness": "0.5490"
     }
   ]
 }
