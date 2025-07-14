@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import '../css/leaderboard.css';
 export default function LeaderBoard() {
   const [scores, setScores] = useState([]);
   const [highScore, setHighScore] = useState(null);
@@ -79,7 +79,7 @@ export default function LeaderBoard() {
 
   return (
     <section className="leaderboard-container">
-      <h2 className="leaderboard-title">LeaderBoard</h2>
+      <h2 className="leaderboard-title">Leaderboard</h2>
 
       {highScore && (
         <article className="highscore">
@@ -103,11 +103,6 @@ export default function LeaderBoard() {
           ))}
         </tbody>
       </table>
-
-      <section className="posts-section">
-        {/* <h3>Posts Section</h3> */}
-        {/* Your posts/forum/chat UI here */}
-      </section>
     </section>
   );
 }

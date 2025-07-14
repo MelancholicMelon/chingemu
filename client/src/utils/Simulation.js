@@ -1,10 +1,8 @@
+// In Simulation.js
 export default class Simulation {
   get2DGreennessMap(mapDict) {
-    let greennessMap = [];
-    for (let i = 0; i < mapDict.length; i++) {
-      greennessMap.push(mapDict[i]["kernel"]);
-    }
-    return greennessMap;
+    if (!mapDict) return [];
+    return mapDict.map((continent) => continent.kernel);
   }
 
   validateInput(
@@ -60,11 +58,16 @@ export default class Simulation {
 
       let totalProfit = 0;
       for (const fc of updated) {
-        const profit = facilitySpecification.find(item => item.id === fc.id)?.profit || 0;
+        const profit =
+          facilitySpecification.find((item) => item.id === fc.id)?.profit || 0;
         totalProfit += profit;
       }
-      setProfit(totalProfit)
-      setBudget(prev => prev-facilitySpecification.find(item => item.id == selectedFacility).cost)
+      setProfit(totalProfit);
+      setBudget(
+        (prev) =>
+          prev -
+          facilitySpecification.find((item) => item.id == selectedFacility).cost
+      );
       return true;
     } else {
       return false;
@@ -76,19 +79,24 @@ export default class Simulation {
     const a_b = 1;
     const a_p = 1;
     let a_g = 1;
-    for(let i = 0;i<mapDict.length;i++){
+    for (let i = 0; i < mapDict.length; i++) {
       const greennessContinent = mapDict[i].kernel;
       let avg = 0;
-      for (let i = 0; i < greennessContinent.length; i++) { 
-        for (let j = 0; j < greennessContinent[i].length; j++) { 
+      for (let i = 0; i < greennessContinent.length; i++) {
+        for (let j = 0; j < greennessContinent[i].length; j++) {
           avg += greennessContinent[i][j];
         }
       }
-      avg = (avg + greennessContinent.length*greennessContinent[0].length) / mapDict[i].size / 255;
-      if(avg < a_g){ a_g = avg }
+      avg =
+        (avg + greennessContinent.length * greennessContinent[0].length) /
+        mapDict[i].size /
+        255;
+      if (avg < a_g) {
+        a_g = avg;
+      }
     }
     score = Math.ceil((budget * a_b + profit * a_p) * a_g);
-    return score
+    return score;
   }
 
   progress(
@@ -102,10 +110,12 @@ export default class Simulation {
       ...continent,
       kernel: continent.kernel.map((row) => [...row]),
     }));
+
     const mapSize = [
       mapDict[0]["kernel"].length,
       mapDict[0]["kernel"][0].length,
     ];
+
     const PDFKernel = this.generatePDFKernel(
       facilityCoordinate,
       policyActivation,
@@ -113,6 +123,7 @@ export default class Simulation {
       specifications.policySpecification,
       mapSize
     );
+
     let greennessMap = this.get2DGreennessMap(mapDict);
     for (let i = 0; i < mapDict.length; i++) {
       for (let x = 0; x < mapSize[0]; x++) {
@@ -142,25 +153,17 @@ export default class Simulation {
   ) {
     let pdfKernel = [];
 
-    const activatePolicyIds = Object.keys(policyActivation).filter(
-    (key) => policyActivation[key]?.active === true
-  );
+    const activatePolicy = Object.keys(policyActivation).filter(
+      (key) => policyActivation[key].active === true
+    );
 
     const prms = policySpecification.map((f) => f.parameter);
 
-  const policyMultiplier = Object.fromEntries(prms.map((key) => [key, 1]));
-
-  // Loop through the IDs of active policies
-  for (var i = 0; i < activatePolicyIds.length; i++) {
-    const policyId = activatePolicyIds[i];
-    // Find the full policy object from the specification
-    const policy = policySpecification.find(p => p.id === policyId);
-
-    if (policy) {
-      let prm = policy.parameter;
-      policyMultiplier[prm] += policy.multiplier;
+    const policyMultiplier = Object.fromEntries(prms.map((key) => [key, 1]));
+    for (var i = 0; i < activatePolicy.length; i++) {
+      let prm = activatePolicy[i].params;
+      policyMultiplier[prm] += activatePolicy[i].multiplier;
     }
-  }
 
     for (var x = 0; x < mapSize[0]; x++) {
       const row = [];
@@ -173,7 +176,7 @@ export default class Simulation {
 
           const fc = facilityCoordinate[i];
           const fs = facilitySpecification.find((item) => item.id === fc.id);
-          const sd = fs.stddtv;
+          const sd = fs.stddev;
 
           if (fs.pdf === "normal") {
             const muX = fc.coordinate[1];
@@ -200,15 +203,36 @@ export default class Simulation {
     return pdfKernel;
   }
 
-  endSimulation(score, budget, greenness) {
+  endSimulation(score, budget, mapDict) {
     const token = localStorage.getItem("token");
-    fetch("http://localhost:3001/scores/add", {
-      headers: {
-          Authorization: "Bearer " + token,
-          score: score,
-          finalBudget: budget,
-          finalAvgGreenness: greenness
+    let totalLandCells = 0;
+    let totalGreennessSum = 0;
+    if (mapDict) {
+      for (const continent of mapDict) {
+        for (const row of continent.kernel) {
+          for (const value of row) {
+            if (value !== -1) {
+              totalGreennessSum += value;
+              totalLandCells++;
+            }
+          }
+        }
       }
-    })
+    }
+    const finalAvgGreenness =
+      totalLandCells > 0 ? totalGreennessSum / totalLandCells / 255 : 0;
+
+    fetch("http://localhost:3001/scores/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify({
+        score: score,
+        finalBudget: budget,
+        finalAvgGreenness: finalAvgGreenness.toFixed(4),
+      }),
+    }).catch((error) => console.error("Failed to submit score:", error));
   }
 }

@@ -4,7 +4,7 @@
       "id": 0,
       "username": "admin",
       "password": "admin",
-      "highScoreId": 1
+      "highScoreId": 1752467214692
     },
     {
       "id": 1751815731846,
@@ -26,7 +26,8 @@
     {
       "id": 1752388427535,
       "username": "bomboclat",
-      "password": "bunda"
+      "password": "bunda",
+      "highScoreId": 1752467479584
     }
   ],
   "scores": [
@@ -102,6 +103,106 @@
       "id": 3,
       "score": "194939333",
       "userId": 0
+    },
+    {
+      "id": 28,
+      "score": "12345678",
+      "userId": 0
+    },
+    {
+      "id": 4,
+      "score": "203985181",
+      "userId": 0
+    },
+    {
+      "id": 5,
+      "score": "186684531",
+      "userId": 0
+    },
+    {
+      "id": 4,
+      "score": "189793154",
+      "userId": 0
+    },
+    {
+      "id": 5,
+      "score": "197807110",
+      "userId": 0
+    },
+    {
+      "id": 6,
+      "score": "198517216",
+      "userId": 0
+    },
+    {
+      "id": 7,
+      "score": "199052891",
+      "userId": 0
+    },
+    {
+      "id": 8,
+      "score": "195101754",
+      "userId": 0
+    },
+    {
+      "id": 9,
+      "score": "211005912",
+      "userId": 0
+    },
+    {
+      "id": 10,
+      "score": "169762629",
+      "userId": 0
+    },
+    {
+      "id": 11,
+      "score": "198446636",
+      "userId": 0
+    },
+    {
+      "id": 12,
+      "score": "210080591",
+      "userId": 0
+    },
+    {
+      "id": 13,
+      "score": "211912302",
+      "userId": 0
+    },
+    {
+      "id": 1752467214692,
+      "score": 134965405,
+      "userId": 0,
+      "finalBudget": 625500000,
+      "finalAvgGreenness": "0.3592"
+    },
+    {
+      "id": 1752467281637,
+      "score": 6422768,
+      "userId": 1752388427535,
+      "finalBudget": 980000000,
+      "finalAvgGreenness": "0.0140"
+    },
+    {
+      "id": 1752467355144,
+      "score": 3871661,
+      "userId": 1752388427535,
+      "finalBudget": 610000000,
+      "finalAvgGreenness": "0.0039"
+    },
+    {
+      "id": 1752467479584,
+      "score": 546271755,
+      "userId": 1752388427535,
+      "finalBudget": 3344600000,
+      "finalAvgGreenness": "0.2630"
+    },
+    {
+      "id": 1752467479637,
+      "score": 546271755,
+      "userId": 1752388427535,
+      "finalBudget": 3344600000,
+      "finalAvgGreenness": "0.2630"
     }
   ]
 }

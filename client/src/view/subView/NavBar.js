@@ -16,20 +16,22 @@ export default function NavBar(props) {
   };
 
   return (
-    <nav style={{ padding: "1rem", background: "#D5ED9F" }}>
-      {!isLoggedIn && <Link to="/">Login</Link>}{" "}
-      {isLoggedIn && (
-        <>
-          <Link to="/leaderboard">LeaderBoard</Link> |{" "}
-          <Link to="/game">Game</Link>
-        </>
-      )}
-      <div style={{ float: "right" }}>
-        {props.nametag}
+    <nav className="navbar">
+      <div className="navbar-links">
+        {!isLoggedIn && <Link to="/">Login</Link>}
         {isLoggedIn && (
           <>
-            {" "} | <button onClick={logout}>Log Out</button> |
+            <Link to="/leaderboard">Leaderboard</Link>
+            <Link to="/game">Game</Link>
           </>
+        )}
+      </div>
+      <div className="navbar-right">
+        <span>{props.nametag}</span>
+        {isLoggedIn && (
+          <button className="navbar-button" onClick={logout}>
+            Log Out
+          </button>
         )}
       </div>
     </nav>
