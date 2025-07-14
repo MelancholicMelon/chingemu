@@ -34,11 +34,18 @@ export default function Game() {
   const [greennessMap, setGreennessMap] = useState(null);
   const greennessMapRef = useRef(greennessMap);
   const navigate = useNavigate();
+  //Update every tick
+  const facilityCoordinateRef = useRef(facilityCoordinate);
+  useEffect(() => {
+    facilityCoordinateRef.current = facilityCoordinate;
+  }, [facilityCoordinate]);
 
   const tickRef = useRef(null);
   const canvasRef = useRef(null);
   const [cellSize, setCellSize] = useState({ width: 0, height: 0 });
   const [canvasHeight, setCanvasHeight] = useState(500);
+
+  const policyActivationRef = useRef(policyActivation);
 
   useEffect(() => {
     if (specifications.policySpecification) {
@@ -206,10 +213,6 @@ export default function Game() {
       setProfit,
       setBudget
     );
-
-    if (!success) {
-      alert("Placement not allowed at this position.");
-    }
   };
 
   useEffect(() => {
@@ -236,7 +239,6 @@ export default function Game() {
         return;
       }
       // 1. Calculate the next state for policies
-      let updatedPolicies;
       setPolicyActivation((prevPolicies) => {
         const nextPolicies = { ...prevPolicies };
         for (const key in nextPolicies) {
@@ -248,20 +250,20 @@ export default function Game() {
             }
           }
         }
-        updatedPolicies = nextPolicies; // Store the result for step 3
+        policyActivationRef.current = nextPolicies; // Store the result for step 3
         return nextPolicies;
       });
 
       // 2. Calculate the next state for facilities
-      const updatedFacilities = facilityCoordinate
-        .map((fc) => ({ ...fc, timeToLive: fc.timeToLive - 1 }))
-        .filter((fc) => fc.timeToLive > 0);
+      const updatedFacilities = facilityCoordinateRef.current
+    .map((fc) => ({ ...fc, timeToLive: fc.timeToLive - 1 }))
+    .filter((fc) => fc.timeToLive > 0);
 
       // 3. Run the simulation with the NEWLY calculated states
       simulation.progress(
         greennessMapRef.current,
         updatedFacilities,
-        updatedPolicies, // Use the variable that holds the new state
+        policyActivationRef.current, // Use the variable that holds the new state
         specifications,
         setGreennessMap
       );

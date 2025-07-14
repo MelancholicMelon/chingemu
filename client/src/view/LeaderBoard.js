@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import '../css/leaderboard.css';
 export default function LeaderBoard() {
   const [scores, setScores] = useState([]);
   const [highScore, setHighScore] = useState(null);
@@ -103,11 +103,6 @@ export default function LeaderBoard() {
           ))}
         </tbody>
       </table>
-
-      <section className="posts-section">
-        {/* <h3>Posts Section</h3> */}
-        {/* Your posts/forum/chat UI here */}
-      </section>
     </section>
   );
 }
