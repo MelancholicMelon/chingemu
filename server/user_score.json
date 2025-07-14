@@ -33,152 +33,21 @@
       "username": "user1",
       "password": "1234",
       "highScoreId": 1752466803512
+    },
+    {
+      "id": 1752467545723,
+      "username": "user5",
+      "password": "admin",
+      "highScoreId": 1752467586737
+    },
+    {
+      "id": 1752469682285,
+      "username": "demo",
+      "password": "demo",
+      "highScoreId": 1752469781137
     }
   ],
   "scores": [
-    {
-      "id": 0,
-      "score": 1000000,
-      "userId": 0
-    },
-    {
-      "id": 1,
-      "score": 999999,
-      "userId": 0,
-      "finalBudget": 400,
-      "finalAvgGreenness": 85.3
-    },
-    {
-      "id": 2,
-      "score": 3000,
-      "userId": 1751815731846,
-      "finalBudget": 600,
-      "finalAvgGreenness": 90.1
-    },
-    {
-      "id": 1751823060493,
-      "score": 1000,
-      "userId": 1751822797286,
-      "finalBudget": 500,
-      "finalAvgGreenness": 80
-    },
-    {
-      "id": 1751823062336,
-      "score": 1000,
-      "userId": 1751822797286,
-      "finalBudget": 500,
-      "finalAvgGreenness": 80
-    },
-    {
-      "id": 1751823062773,
-      "score": 1000,
-      "userId": 1751822797286,
-      "finalBudget": 500,
-      "finalAvgGreenness": 80
-    },
-    {
-      "id": 1751823062925,
-      "score": 1000,
-      "userId": 1751822797286,
-      "finalBudget": 500,
-      "finalAvgGreenness": 80
-    },
-    {
-      "id": 1751823063245,
-      "score": 1000,
-      "userId": 1751822797286,
-      "finalBudget": 500,
-      "finalAvgGreenness": 80
-    },
-    {
-      "id": 1751823063400,
-      "score": 1000,
-      "userId": 1751822797286,
-      "finalBudget": 500,
-      "finalAvgGreenness": 80
-    },
-    {
-      "id": 1751823066369,
-      "score": 1000000,
-      "userId": 1751822797286,
-      "finalBudget": 500,
-      "finalAvgGreenness": 80
-    },
-    {
-      "id": 3,
-      "score": "194939333",
-      "userId": 0
-    },
-    {
-      "id": 28,
-      "score": "12345678",
-      "userId": 0
-    },
-    {
-      "id": 4,
-      "score": "203985181",
-      "userId": 0
-    },
-    {
-      "id": 5,
-      "score": "186684531",
-      "userId": 0
-    },
-    {
-      "id": 4,
-      "score": "189793154",
-      "userId": 0
-    },
-    {
-      "id": 5,
-      "score": "197807110",
-      "userId": 0
-    },
-    {
-      "id": 6,
-      "score": "198517216",
-      "userId": 0
-    },
-    {
-      "id": 7,
-      "score": "199052891",
-      "userId": 0
-    },
-    {
-      "id": 8,
-      "score": "195101754",
-      "userId": 0
-    },
-    {
-      "id": 9,
-      "score": "211005912",
-      "userId": 0
-    },
-    {
-      "id": 10,
-      "score": "169762629",
-      "userId": 0
-    },
-    {
-      "id": 11,
-      "score": "198446636",
-      "userId": 0
-    },
-    {
-      "id": 12,
-      "score": "210080591",
-      "userId": 0
-    },
-    {
-      "id": 13,
-      "score": "211912302",
-      "userId": 0
-    },
-    {
-      "id": 14,
-      "score": "213119924",
-      "userId": 0
-    },
     {
       "id": 1752426149616,
       "score": 287386067,
@@ -213,6 +82,20 @@
       "userId": 1752466588658,
       "finalBudget": 1135800000,
       "finalAvgGreenness": "0.5230"
+    },
+    {
+      "id": 1752467586737,
+      "score": 206349808,
+      "userId": 1752467545723,
+      "finalBudget": 1000000000,
+      "finalAvgGreenness": "0.3160"
+    },
+    {
+      "id": 1752469781137,
+      "score": 140696019,
+      "userId": 1752469682285,
+      "finalBudget": 668000000,
+      "finalAvgGreenness": "0.6104"
     }
   ]
 }
