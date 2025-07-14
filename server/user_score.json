@@ -27,6 +27,12 @@
       "id": 1752388427535,
       "username": "bomboclat",
       "password": "bunda"
+    },
+    {
+      "id": 1752466588658,
+      "username": "user1",
+      "password": "1234",
+      "highScoreId": 1752466803512
     }
   ],
   "scores": [
@@ -200,6 +206,13 @@
       "userId": 0,
       "finalBudget": 1730600000,
       "finalAvgGreenness": "0.2834"
+    },
+    {
+      "id": 1752466803512,
+      "score": 256228496,
+      "userId": 1752466588658,
+      "finalBudget": 1135800000,
+      "finalAvgGreenness": "0.5230"
     }
   ]
 }

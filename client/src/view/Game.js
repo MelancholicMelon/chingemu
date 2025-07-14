@@ -306,7 +306,7 @@ export default function Game() {
       <div className="game-container">
         <div className="canvas-container">
           <div className="map-header">
-            <h2 className="map-title">Japan Map</h2>
+            <h2 className="map-title">Map</h2>
           </div>
           {greennessMap ? (
             <div className="map-wrapper">
@@ -342,7 +342,7 @@ export default function Game() {
             className="resume"
             onClick={() => setGameState(true)}
             disabled={gameState}>
-            Resume
+            Progress Simulation for 10 Years
           </button>
           <Timeline currentYear={year} startYear={2025} endYear={2125} />
           {/* Budget */}

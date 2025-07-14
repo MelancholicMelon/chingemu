@@ -92,9 +92,10 @@ export default function MapRender({
           if (value !== -1) {
             const lerp = (a, b, t) => a + (b - a) * t;
             const t = value / 255; // normalize to 0–1
-            const r = Math.round(lerp(82, 50, t));
-            const g = Math.round(lerp(54, 255, t));
-            const b = Math.round(lerp(16, 0, t));
+            // 214, 187, 96; 82, 54, 16
+            const r = Math.round(lerp(214, 0, t)); 
+            const g = Math.round(lerp(187, 125, t));
+            const b = Math.round(lerp(96, 10, t));
 
             ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
             ctx.fillRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
