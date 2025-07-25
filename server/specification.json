@@ -110,7 +110,7 @@
       "size": 3,
       "pdf": "normal",
       "stddev": 5,
-      "maxImpact": -0.05,
+      "maxImpact": -0.1,
       "cost": 1000000,
       "profit": 200000,
       "timeToLive": 10,
@@ -194,7 +194,7 @@
     {
       "id": "Hire 2x more workers",
       "parameter": "maxImpact",
-      "multiplier": 2,
+      "multiplier": 1.3,
       "cost": 1000000,
       "timeToLive": 40
     },
@@ -203,13 +203,13 @@
       "parameter": "sd",
       "multiplier": 3,
       "cost": 1000000,
-      "timeToLive": 1000
+      "timeToLive": 30
     },
     {
       "id": "Eco Certification Program",
       "parameter": "maxImpact",
-      "multiplier": 3,
-      "cost": 1000000,
+      "multiplier": 2,
+      "cost": 100000000,
       "timeToLive": 1000
     }
   ]
