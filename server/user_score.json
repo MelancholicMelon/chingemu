@@ -4,7 +4,7 @@
       "id": 0,
       "username": "admin",
       "password": "admin",
-      "highScoreId": 1752467214692
+      "highScoreId": 1753422446957
     },
     {
       "id": 1751815731846,
@@ -96,6 +96,13 @@
       "userId": 1752469682285,
       "finalBudget": 668000000,
       "finalAvgGreenness": "0.6104"
+    },
+    {
+      "id": 1753422446957,
+      "score": 178066028,
+      "userId": 0,
+      "finalBudget": 888000000,
+      "finalAvgGreenness": "0.1934"
     }
   ]
 }

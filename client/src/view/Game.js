@@ -59,6 +59,10 @@ export default function Game() {
     }
   }, [specifications.policySpecification]);
 
+  useEffect(() => {
+    policyActivationRef.current = policyActivation;
+  }, [policyActivation]);
+
   // In Game.js
 
   function formatNumber(num) {
