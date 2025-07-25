@@ -115,8 +115,7 @@
       "profit": 200000,
       "timeToLive": 10,
       "description": "not yet",
-      "img" : "/img/pngegg.png"
-      
+      "img": "/img/pngegg.png"
     },
     {
       "id": "Mega Factory",
@@ -128,7 +127,7 @@
       "profit": 1000000,
       "timeToLive": 40,
       "description": "not yet",
-      "img" : "/img/pngegg.png"
+      "img": "/img/pngegg.png"
     },
     {
       "id": "Transit Center",
@@ -140,7 +139,7 @@
       "profit": 500000,
       "timeToLive": 40,
       "description": "not yet",
-      "img" : "/img/pngegg.png"
+      "img": "/img/pngegg.png"
     },
     {
       "id": "City Development",
@@ -152,7 +151,7 @@
       "profit": 5000000,
       "timeToLive": 1000,
       "description": "not yet",
-      "img" : "/img/pngegg.png"
+      "img": "/img/pngegg.png"
     },
     {
       "id": "Wild Life Reserve",
@@ -164,7 +163,7 @@
       "profit": -100000,
       "timeToLive": 70,
       "description": "not yet",
-      "img" : "/img/pngegg.png"
+      "img": "/img/pngegg.png"
     },
     {
       "id": "National Park",
@@ -176,7 +175,7 @@
       "profit": -50000,
       "timeToLive": 50,
       "description": "not yet",
-      "img" : "/img/pngegg.png"
+      "img": "/img/pngegg.png"
     },
     {
       "id": "Plant Tree",
@@ -188,7 +187,7 @@
       "profit": 0,
       "timeToLive": 1000,
       "description": "not yet",
-      "img" : "/img/pngegg.png"
+      "img": "/img/pngegg.png"
     }
   ],
   "policySpecification": [
@@ -197,7 +196,7 @@
       "parameter": "maxImpact",
       "multiplier": 2,
       "cost": 1000000,
-      "timeToLive": 10
+      "timeToLive": 40
     },
     {
       "id": "Use Renewable Energy",
@@ -207,9 +206,9 @@
       "timeToLive": 1000
     },
     {
-      "id": "Eco Certification Program (Increase tree growth)",
-      "parameter": "timeToLive",
-      "multiplier": 1.5,
+      "id": "Eco Certification Program",
+      "parameter": "maxImpact",
+      "multiplier": 3,
       "cost": 1000000,
       "timeToLive": 1000
     }
