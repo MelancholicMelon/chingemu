@@ -15,9 +15,7 @@ import "./css/App.css";
 
 export default function App() {
   const [user, setUser] = useState(null);
-  const nametag = !user
-    ? "Not Logged In"
-    : `ID: ${user.id} Username: ${user.username}`;
+  const nametag = !user ? "Not Logged In" : `Username: ${user.username}`;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
