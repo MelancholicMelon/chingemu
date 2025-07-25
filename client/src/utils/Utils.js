@@ -13,7 +13,7 @@ export default async function Utils() {
 
   const token = localStorage.getItem("token");
   const baseUrl = process.env.REACT_APP_API_URL;
-  const mapId = 5;
+  const mapId = 1;
 
   const headers = {
     Authorization: "Bearer " + token,
@@ -22,7 +22,9 @@ export default async function Utils() {
   const allSpecification = await fetch(`${baseUrl}/specification`, { headers });
 
   if (!allSpecification.ok) {
-    throw new Error(`Failed to fetch specification: ${allSpecification.statusText}`);
+    throw new Error(
+      `Failed to fetch specification: ${allSpecification.statusText}`
+    );
   }
 
   const s = await allSpecification.json();

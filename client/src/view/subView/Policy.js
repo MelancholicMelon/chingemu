@@ -1,6 +1,14 @@
 import React from "react";
 
-export default function Policy({ id, bool, onChange, cost, timeToLive, disabled }) {
+export default function Policy({
+  id,
+  bool,
+  onChange,
+  cost,
+  timeToLive,
+  disabled,
+  formatNumber,
+}) {
   return (
     <div className={`policy-item${bool ? " active" : ""}`}>
       <label className="policy-label">
@@ -15,10 +23,11 @@ export default function Policy({ id, bool, onChange, cost, timeToLive, disabled 
       </label>
       <div className="policy-details">
         <p>
-          Cost: <span>{cost}</span>
+          Cost: <span>{formatNumber(cost)}</span>
         </p>
         <p>
-          Duration: <span>{timeToLive > 100 ? "Forever" : `${timeToLive} Years`}</span>
+          Duration:{" "}
+          <span>{timeToLive > 100 ? "Forever" : `${timeToLive} Years`}</span>
         </p>
       </div>
     </div>

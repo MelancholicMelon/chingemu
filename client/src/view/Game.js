@@ -260,8 +260,8 @@ export default function Game() {
 
       // 2. Calculate the next state for facilities
       const updatedFacilities = facilityCoordinateRef.current
-    .map((fc) => ({ ...fc, timeToLive: fc.timeToLive - 1 }))
-    .filter((fc) => fc.timeToLive > 0);
+        .map((fc) => ({ ...fc, timeToLive: fc.timeToLive - 1 }))
+        .filter((fc) => fc.timeToLive > 0);
 
       // 3. Run the simulation with the NEWLY calculated states
       simulation.progress(
@@ -401,6 +401,7 @@ export default function Game() {
                         ? policyActivation[policy.id]?.active
                         : false
                     }
+                    formatNumber={formatNumber}
                   />
                 </div>
               ))}
